@@ -1,0 +1,72 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform', impulse forcing)
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Delta functions and impulse forcing)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.4')
+## Problem1('1') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+Context()->variables->are(s=>"Real");
+
+$lim = Compute("s"); 
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Compute the limit 
+\( \displaystyle \lim_{\Delta t \to 0} \left( \frac{e^{s\Delta t} - e^{-s\Delta t}}{2\Delta t} \right) = \) \{ans_rule(4)\}.
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($lim->cmp);
+
+ENDDOCUMENT();        

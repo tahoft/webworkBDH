@@ -1,0 +1,84 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform')
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Discontinuous functions)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.2')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context("Numeric")->functions->add(
+  u => {
+    class => 'Parser::Legacy::Numeric',
+    perl => 'Parser::Legacy::Numeric::do_step'
+  },
+); # Heaviside / unit step function
+Context()->variables->add(s=>"Real", t=>"Real", a=>"Real");
+
+$Lg = Compute("1/(as^2)(1-e^(-as))");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Suppose \(a\ge0\). Compute the Laplace transform of the function
+\[g_a(t) = \begin{cases} 
+t/a, \quad \text{if}\; t<a; \\
+1, \quad \text{if}\; t\ge a.
+\end{cases}\]
+Hint: your solution should contain \(a\) as a parameter.
+
+$PAR \(\mathcal{L}[g_a] = \) \{ans_rule(20)\}
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($Lg->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,259 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Euler's method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Error in Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGtikz.pl",
+   "niceTables.pl",
+   "PGML.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("4 arctan(t/4)")->with(limits=>[-10,10]); 
+# limits are so that test point evaluations are beyond default range [-2,2]
+# otherwise t/2 + sin(t/2) marked correct (I have no idea why a student would
+# enter this, but it's an excellent approximation to 4arctan(t/4) on [-2,2]!)
+
+$tn = Real(4);
+$y_exact = $y->eval(t=>$tn);
+#$y_exact = Compute("pi");
+
+@n = (2,4,8,16,32,64,128,256,512);
+
+@def_val_y = (0, 100);
+@def_val_e = (1e2, 1e-16);
+
+@yn_eul = (
+3.54030231,
+3.32589634,
+3.23080972,
+3.18553788,
+3.16340705,
+3.15246118,
+3.14701736,
+3.14430263,
+3.14294705);
+
+@en_eul = (
+0.398709652,
+0.184303690,
+0.0892170700,
+0.0439452276,
+0.0218143921,
+0.0108685266,
+0.00542470289,
+0.00270997448,
+0.00135439462);
+
+$N = 8; # number of entries, zero-indexed
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization");
+$im_y->tikzOptions("scale=2");
+
+$tikz_str_y = "scientific axes, all axes={grid, ticks=many},
+             x axis={logarithmic, label=\(n\), ticks={major={at={1,10,100}}, 
+                minor steps between steps=8}, min value=1}, 
+             y axis={label=\(y_n\)}, 
+%             visualize as scatter=def, def={style={draw opacity=0,mark=.}},
+% above line not needed to set axis range from def data!
+             visualize as line=pts, 
+                pts={style={mark=*}, label in legend={text={\(y_n\) (Euler's)}}},
+             visualize as line=lin, 
+                lin={style={dashed}, label in legend={text={exact value}}},
+             legend={north east inside},
+             legend entry options/default label in legend path/.style=
+                straight label in legend line,";
+                
+$im_e = createTikZImage();
+$im_e->tikzLibraries("datavisualization");
+$im_e->tikzOptions("scale=2");
+$tikz_str_e = "scientific axes, all axes={grid, ticks=many},
+             x axis={logarithmic, label=\(n\), ticks={major={at={1,10,100}}, 
+                minor steps between steps=8}, min value=1}, 
+             y axis={logarithmic, label=\(e_n\) (Euler's)}, 
+%             visualize as scatter=def, def={style={draw opacity=0,mark=.}},
+% above line not needed to set axis range from def data!
+             visualize as line=en_eul, 
+                en_eul={style={mark=*}}";
+
+# to get link to numerical methods widget to open in new tab
+HEADER_TEXT(<<EOF);
+  <script type="text/javascript" language="javascript">
+  <!-- //
+  function windowpopup() {
+    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var opt = "_blank";
+    window.open(url,opt).focus();
+  }
+  // -->
+  </script>
+EOF
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+$showPartialCorrectAnswers = 1;
+$refreshCachedImages=1;
+
+BEGIN_PGML
+Consider the initial-value problem 
+[``` \frac{dy}{dt} = \cos^2{\left(\frac{y}{4}\right)}, \quad y(0) = 0. ```]
+
+Solve, by hand, the initial value problem:
+    [`y(t) = `] [__________________]{$y}
+
+Compute the exact value: 
+    [`y([$tn]) = `] [__________________]{$y_exact}
+
+Calculate the Euler's method approximation [`y_{n}`] to [`y([$tn])`] using [`n = 2, 4, 8, 16, \dots , 512`], and the corresponding errors [`e_n`]. (your answers should to be correct to [`\pm 0.0001\%`])
+
+You can use 
+[@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
+(opens in new tab).
+
+[@ DataTable([
+['n', 'y_n', 'e_n'],
+["$n[0]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[1]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[2]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[3]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[4]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[5]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[6]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[7]", PGML('[__________________]'), PGML('[__________________]')],
+["$n[8]", PGML('[__________________]'), PGML('[__________________]')],
+], midrules=>1, align => '|r|c|c|');
+@]*
+
+END_PGML
+
+# check student answers
+foreach my $i (0..$N) { 
+    ANS( Real($yn_eul[$i])->cmp(tolType => 'relative', tolerance => .0001) );
+    ANS( Real($en_eul[$i])->cmp(tolType => 'relative', tolerance => .0001) );
+}
+
+# pull student entries 
+$a_ext = $inputs_ref->{ANS_NUM_TO_NAME(2)}; # answer blanks not zero-indexed ?!
+foreach my $i (0..$N) { 
+    $a_y[$i] = $inputs_ref->{ANS_NUM_TO_NAME(2*$i+3)}; 
+    $a_e[$i] = $inputs_ref->{ANS_NUM_TO_NAME(2*$i+4)}; 
+}
+
+# to make sure 1/2 gets converted to 0.5 etc: 
+if($a_ext) {$a_ext = Real($a_ext);} 
+#foreach my $i (0..$N) { # don't want to convert floats (fails, actually)
+#    if($a_y[$i]) {$a_y[$i] = Real($a_y[$i]);} 
+#    if($a_e[$i]) {$a_e[$i] = Real($a_e[$i]);} 
+#}
+
+# convert student entries to tikZ
+$pts_str_y = ""; # initialize data string
+foreach my $i (0..$N) { # if ans exists, tack on to string
+    if ($a_y[$i]) {$pts_str_y .= "$n[$i],$a_y[$i]
+                                ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    if ($a_e[$i]) {$pts_str_e .= "$n[$i],$a_e[$i]
+                                ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+
+# find max & min for setting axis range
+$y_max = -1e100; # initialize w/absurdly low/hi values
+$y_min =  1e100;
+$e_max = -1e100; 
+$e_min =  1e100;
+foreach my $i (0..$N) { # hacky way to find max & min
+    if ($a_y[$i]) { # if there's anything in this entry of array
+        if ($a_y[$i] > $y_max) { $y_max = $a_y[$i]; } 
+        if ($a_y[$i] < $y_min) { $y_min = $a_y[$i]; } 
+    } 
+    if ($a_e[$i]) { # if there's anything in this entry of array
+        if ($a_e[$i] > $e_max) { $e_max = $a_e[$i]; } 
+        if ($a_e[$i] < $e_min) { $e_min = $a_e[$i]; } 
+    } 
+}
+if ($a_ext > $y_max) { $y_max = $a_ext; } # also check ans_exact
+if ($a_ext < $y_min) { $y_min = $a_ext; } 
+if ($y_max != -1e100) { $def_val_y[1] = $y_max*1.1; } # found a max
+if ($y_min !=  1e100) { $def_val_y[0] = $y_min*0.9; } # found a min
+if ($e_max != -1e100) { # found a max, next larger power of 10
+    $def_val_e[1] = 10**(ceil(log($e_max)/log(10))); } 
+if ($e_min !=  1e100) { # found a min, next smaller power of 10
+    $def_val_e[0] = 10**(floor(log($e_min)/log(10))); } 
+
+$im_y->BEGIN_TIKZ
+\datavisualization [$tikz_str_y]
+    data [set=pts, headline={x, y}] { $pts_str_y } % student input
+    data [set=lin, headline={x, y}] { % exact y-value
+             1, $a_ext
+        $n[$N], $a_ext
+    }
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $n[ 0], $def_val_y[0]
+        $n[$N], $def_val_y[1]
+    };
+END_TIKZ
+
+$im_e->BEGIN_TIKZ
+\datavisualization [$tikz_str_e]
+    data [set=en_eul, headline={x, y}] { $pts_str_e } % student input
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $n[ 0], $def_val_e[0]
+        $n[$N], $def_val_e[1]
+    };
+END_TIKZ
+
+BEGIN_PGML
+[@ image( insertGraph($im_y), width=>700,tex_size=>800 ) @]*
+
+[@ image( insertGraph($im_e), width=>700,tex_size=>800 ) @]*
+END_PGML
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ENDDOCUMENT();        

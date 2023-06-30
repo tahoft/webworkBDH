@@ -1,0 +1,125 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Euler method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Numerical error in Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.1')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("11/9 e^(3t) + 1/3 t - 2/9");
+$y2 = Real("(11 e^3 + 1)/9");
+$y16 = Real(19.22231600); 
+$e16 = Real(5.43778469); 
+
+@ans = (
+16.91010068,	7.75000000,
+13.08588193,	11.57421875,
+ 8.93291907,	15.72718161,
+ 5.43778469,	19.22231600,
+ 3.04454209,	21.61555860,
+ 1.61818920,	23.04191149,
+ 0.83525772,	23.82484297,
+ 0.42447070,	24.23562998,
+ 0.21398539,	24.44611529);
+
+$N = 17; # number of entries, zero-indexed
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Consider the initial-value problem 
+\[ \frac{dy}{dt} = 1-t+3y, \quad y(0) = 1. \]
+
+$PAR $HR $PAR 
+(a) Solve, by hand, the initial value problem.
+$BR \(\quad y(t) = \) \{ans_rule(20)\}
+
+$PAR $HR $PAR 
+(b) Given the interval \(0 \le t \le 1\) and n = 16, calculate the Euler approximation \(y_{16}\) to \(y(1)\).
+$BR \(\quad y_{16} = \) \{ans_rule(15)\}
+$PAR Calculate the total error \(e_{16}\) involved in your approximation.
+$BR \(\quad e_{16} = \) \{ans_rule(15)\}
+$PAR Note that the exact value is \(y(1) = \) \{ans_rule(15)\}
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+
+$PAR $HR $PAR 
+(c) Repeat the calculations in part (b) using \(n = 2, 4, 8, 16, \dots , 256, 512\).
+$PAR
+$BCENTER
+\{begintable(3)\}
+        \{row(" \(n\) ", " \(e_n\) ","\( y_n\)")\}
+        \{row("\( 2 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 4 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 8 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 16\)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 32\)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 64\)", ans_rule(7), ans_rule(7))\}
+        \{row("\(128\)", ans_rule(7), ans_rule(7))\}
+        \{row("\(256\)", ans_rule(7), ans_rule(7))\}
+        \{row("\(512\)", ans_rule(7), ans_rule(7))\}
+        \{endtable()\}
+$ECENTER
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+$PAR Make a graph of the errors using your favorite spreadsheet software (not for credit). A log-scale on both axes may  be useful. $BBOLD Note: making this graph is the main point of the exercise! $EBOLD
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($y->cmp);
+ANS($y16->cmp(tolType => 'absolute', tolerance => .0001));
+ANS($e16->cmp(tolType => 'absolute', tolerance => .0001));
+ANS($y2->cmp);
+foreach my $i (0..$N) {
+  ANS( Real($ans[$i])->cmp(tolType => 'absolute', tolerance => .0001) );
+}
+
+ENDDOCUMENT();        

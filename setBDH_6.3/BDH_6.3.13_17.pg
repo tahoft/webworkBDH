@@ -1,0 +1,78 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform')
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Second-order equations)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.3')
+## Problem1('13') # and 17
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(s=>"Real", t=>"Real");
+
+$F = Compute("(s+1/2)^2 + (sqrt(3)/2)^2"); # WW won't be able to tell if the form was obeyed
+$f = Compute("2 e^(-t/2) cos(sqrt(3)/2 t) + 4/sqrt(3) e^(-t/2) sin(sqrt(3)/2 t)");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+(a) Write the quadratic \(s^2+s+1\) in the form \((s+\alpha)^2+\beta^2\) (that is, complete the square).
+$PAR \(\quad\) \{ans_rule(30)\}
+
+$PAR 
+(b) Compute the inverse Laplace transform of the function 
+\(\displaystyle \frac{2s+3}{s^2+s+1}\) using the result of (a).
+$PAR \(\quad\) \{ans_rule(60)\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($F->cmp);
+ANS($f->cmp);
+
+ENDDOCUMENT();        

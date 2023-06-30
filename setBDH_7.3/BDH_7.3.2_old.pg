@@ -1,0 +1,99 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Runge-Kutta method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Improving Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.3')
+## Problem1('2') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+@ans = (
+0.83428043,
+0.83342973,
+0.83338590,
+0.83338354,
+0.83338340,
+0.83338339);
+
+$N = 5; # number of entries, zero-indexed
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Consider the initial-value problem 
+\[ \frac{dy}{dt} = t - y^2, \quad y(0) = 1, \]
+which is a non-linear equation (but not separable) for which we do not know a solution method.
+
+$PAR  
+Using \(n = 2, 4, 8, 16, \dots , 512\), calculate the Runge-Kutta approximation \(y_{n}\) to \(y(1)\).
+$PAR
+$BCENTER
+\{begintable(3)\}
+        \{row(" \(n\) ", " \( y_n\)")\}
+        \{row("\( 2 \)", ans_rule(7))\}
+        \{row("\( 4 \)", ans_rule(7))\}
+        \{row("\( 8 \)", ans_rule(7))\}
+        \{row("\( 16\)", ans_rule(7))\}
+        \{row("\( 32\)", ans_rule(7))\}
+        \{row("\( 64\)", ans_rule(7))\}
+       \{endtable()\}
+$ECENTER
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+$PAR Make a graph of the values using your favorite spreadsheet software (not for credit). $BBOLD Note: making this graph is the main point of the exercise! $EBOLD
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+foreach my $i (0..$N) {
+  ANS( Real($ans[$i])->cmp(tolType => 'absolute', tolerance => .0001) );
+}
+
+ENDDOCUMENT();        

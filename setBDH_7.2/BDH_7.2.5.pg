@@ -1,0 +1,186 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Improved Euler's method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Improving Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.2')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGtikz.pl",
+   "parserPopUp.pl",
+   "PGML.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("3 (1-exp(-4*t))/(1+3 exp(-4*t))");
+$t_end = 5;
+$n = 8;
+
+# Unicode symbols for use in PopUp
+$inf = "~~x{221E}";
+$ninf = "-~~x{221E}";
+
+$mc1 = PopUp(["?", $inf, "3", "0", "-1", $ninf], "3");
+$mc2 = PopUp(["?", "above", "below"], "below");
+
+@def_val_y = (0, 4); # default vertical range of graph
+
+$del_t = ($t_end-0)/$n;
+foreach my $i (0..$n) { $tn[$i] = $i * $del_t; }
+
+$y_imp = List(0.00000000, 1.94824219, 1.56396412, 1.39918018, 1.40010295, 1.39998714, 1.40000161, 1.39999980, 1.40000003);
+
+@y_eul = (0.00000000, 1.87500000, 3.89648438, 1.15297079, 3.63834575, 1.78780306, 3.89990702, 1.14399406, 3.63103513);
+
+$N = 9; # number of entries, zero-indexed, including y_0 and y_n
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization, plotmarks");
+$im_y->tikzOptions("scale=2");
+
+$tikz_str_y = "scientific axes, all axes={grid, ticks=many},
+             x axis={label=\(t\),}, 
+             y axis={label=\(y\)}, 
+             visualize as smooth line=fun,
+                fun={style={dashed}, label in legend={text={\(y(t)\) (exact)}}},
+             visualize as line=pts, 
+                pts={style={mark=*}, label in legend={text={\(y_n\) (Improved Euler)}}},
+             visualize as line=eul, 
+                eul={style={mark=diamond, color=gray}, label in legend={text={\(y_n\) (Euler's)}}},
+             legend={north east outside},
+             legend entry options/default label in legend path/.style=
+                straight label in legend line,";
+                
+# to get link to numerical methods widget to open in new tab
+HEADER_TEXT(<<EOF);
+  <script type="text/javascript" language="javascript">
+  <!-- //
+  function windowpopup() {
+    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var opt = "_blank";
+    window.open(url,opt).focus();
+  }
+  // -->
+  </script>
+EOF
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+$showPartialCorrectAnswers = 1;
+$refreshCachedImages=1;
+
+BEGIN_PGML
+Consider the initial-value problem 
+[``` \frac{dy}{dt} = (3-y)(y+1), \quad y(0) = 0. ```]
+
+As [`t\to\infty`] the solution to this initial-value problem approaches [_]{$mc1} from [_]{$mc2}.
+
+Solve, by hand, the initial value problem:
+    [`y(t) = `] [____________________________________]{$y}
+
+Use Improved Euler's method with [`n = [$n]`] steps to approximate the solution to the initial-value problem over the time interval [`0 \le t \le [$t_end]`].
+(your answers should to be correct to [`\pm 0.0001\%`])
+
+You can use 
+[@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
+(opens in new tab).
+
+    [`y_0, y_1, y_2, \dots , y_n = `] [____________________________________]
+
+    (enter as a comma-separated list)
+
+END_PGML
+
+ANS( $y_imp->cmp(tolType => 'relative', tolerance => .0001) );
+
+# pull student entries 
+#$a_y  = $inputs_ref->{ANS_NUM_TO_NAME(3)}; # answer blanks not zero-indexed ?!
+#$ans_hash_y = $y->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(3)} );
+$ans_hash_y = $inputs_ref->{ANS_NUM_TO_NAME(3)};
+$a_y_func = Compute($ans_hash_y->{student_ans});
+
+$ans_hash_yn = $y_imp->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(4)} );
+@a_yk = split(',', $ans_hash_yn->{original_student_ans}); 
+
+# convert student entries to tikZ
+$pts_str_y = ""; # initialize data string
+foreach my $i (0..$n) { # if ans exists, tack on to string
+    if ($a_yk[$i]) {$pts_str_y .= "$tn[$i],$a_yk[$i]
+                                  ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+$eul_str_y = ""; # initialize data string
+foreach my $i (0..$n) { # make string for Euler 
+    $eul_str_y .= "$tn[$i],$y_eul[$i]
+                  ";  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+if ($ans_hash_y->{student_ans}){
+foreach my $i (0..$n) { # make string for curve 
+    $tmp = $a_y_func->eval(t=>$tn[$i]);
+    $y_str_f .= "$tn[$i],$tmp
+                  ";  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+}
+
+$im_y->BEGIN_TIKZ
+\datavisualization [$tikz_str_y]
+    data [set=pts, headline={x, y}] { $pts_str_y } % student input
+    data [set=eul, headline={x, y}] { $eul_str_y } % Euler values
+    data [set=fun, headline={x, y}] { $y_str_f } % curve
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $n[ 0], $def_val_y[0]
+        $n[$N], $def_val_y[1]
+    };
+END_TIKZ
+
+BEGIN_PGML
+[@ image( insertGraph($im_y), width=>800,tex_size=>800 ) @]*
+
+(click on the graph to embiggen)
+END_PGML
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ENDDOCUMENT();        

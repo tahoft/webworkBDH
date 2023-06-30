@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform')
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Discontinuous functions)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.2')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context("Numeric")->functions->add(
+  u => {
+    class => 'Parser::Legacy::Numeric',
+    perl => 'Parser::Legacy::Numeric::do_step'
+  },
+); # Heaviside / unit step function
+Context()->variables->add(s=>"Real", t=>"Real", a=>"Real");
+
+$ga = Compute("1-u(t-a)");
+$Lg = Compute("1/s - e^(-a s)/s");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+For \(a\ge0\), let \(g_a(t)\) denote the function
+\[g_a(t) = \begin{cases} 
+1, \quad \text{if}\; t<a; \\
+0, \quad \text{if}\; t\ge a.
+\end{cases}\]
+
+$PAR (a) Give an expression for \(g_a(t)\) using the Heaviside function \(u_a(t)\). 
+$PAR \(\quad g_a(t) = \) \{ans_rule(20)\}
+$PAR \(\quad\) Note: in WeBWorK, enter \(u_a(t)\) as \(u(t-a)\).
+
+$PAR (b) Compute \(\mathcal{L}[g_a] = \) \{ans_rule(20)\}
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($ga->cmp);
+ANS($Lg->cmp);
+
+ENDDOCUMENT();        

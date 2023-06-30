@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform', impulse forcing)
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Delta functions and impulse forcing)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.4')
+## Problem1('3') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context("Numeric")->functions->add(
+  u => {
+    class => 'Parser::Legacy::Numeric',
+    perl => 'Parser::Legacy::Numeric::do_step'
+  },
+); # Heaviside / unit step function
+Context()->variables->are(s=>"Real", t=>"Real");
+
+$Ly = Compute("(s+1)/((s+1)^2+4) + 2/((s+1)^2+4) + (1/2) e^(-3s) 2/((s+1)^2+4)"); 
+$y = Compute("e^(-t) cos(2t) + e^(-t) sin(2t) + (1/2) u(t-3) e^(-(t-3)) sin(2(t-3))")->with(limits=>[[-2,2],[0,10]]); # limits are [s, t]
+# limits are so that test point evaluations are beyond default range [-2,2]
+# if don't do this, any u(t-3)(...) is "correct"!
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Solve the initial value problem 
+\[ \frac{d^2y}{dt^2} + 2 \frac{dy}{dt} + 5 y = \delta_3(t) , \quad y(0)=1, \; y'(0)=1. \]
+
+(a) Compute the Laplace transform of both sides of the differential equation,
+substitute in the initial conditions and simplify to obtain the Laplace transform of the solution:
+$PAR \(\quad\ \mathcal{L}[y] = \) \{ans_rule(90)\}
+
+$PAR (b) find the solution by taking the inverse Laplace transform:
+$PAR \(\quad y(t) = \) \{ans_rule(100)\}
+$PAR \(\quad\) Note: in WeBWorK, enter \(u_a(t)\) as \(u(t-a)\).
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($Ly->cmp);
+ANS($y->cmp);
+
+ENDDOCUMENT();        

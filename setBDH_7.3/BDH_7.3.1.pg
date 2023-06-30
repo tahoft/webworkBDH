@@ -1,0 +1,210 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Runge-Kutta method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Improving Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.3')
+## Problem1('1') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGtikz.pl",
+   "parserRadioButtons.pl",
+   "scaffold.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("(7e^(2t)-1)/2");
+$y_exact = Real("(7e^(2*2)-1)/2");
+
+@n = (2,4,8,16,32,64,128,256,512);
+
+@yn_RK4 = (
+171.00000000,
+187.81135314,
+190.33056211,
+190.57331084,
+190.59212362,
+190.59343285,
+190.59351920,
+190.59352474,
+190.59352509);
+
+@en_RK4 = (
+19.59352512,
+2.78217197,
+0.26296301,
+0.02021428,
+0.00140150,
+0.00009227,
+0.00000592,
+0.00000037,
+0.00000002);
+
+$N = 8; # number of entries, zero-indexed
+
+$mc = RadioButtons(["looks right!"], "looks right!");
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization");
+$im_y->tikzOptions("scale=2");
+$im_y->BEGIN_TIKZ
+\datavisualization [scientific axes, all axes={grid},
+                    x axis={label=\(n\), logarithmic,
+                            ticks={major={at={10,100}}, 
+                            minor steps between steps=10}}, 
+                    y axis={label=\(y_n\)},
+                    visualize as line=yn_RK4, 
+                    yn_RK4={style={mark=*}, label in legend={text={RK4}}},
+                    visualize as line=lin, 
+                    lin={style={dashed}, 
+                         label in legend={text={exact}}},
+                    legend={south east inside, transparent},
+                    legend entry options/default label in legend path/.style=
+                        straight label in legend line,]
+    data [set=yn_RK4] {
+        x, y
+    $n[0], $yn_RK4[0]
+    $n[1], $yn_RK4[1]
+    $n[2], $yn_RK4[2]
+    $n[3], $yn_RK4[3]
+    $n[4], $yn_RK4[4]
+    $n[5], $yn_RK4[5]
+    $n[6], $yn_RK4[6]
+    $n[7], $yn_RK4[7]
+    $n[8], $yn_RK4[8]
+    }
+    data [set=lin] {
+        x, y
+    $n[0], $y_exact
+    $n[8], $y_exact
+    };
+END_TIKZ
+
+$im_e = createTikZImage();
+$im_e->tikzLibraries("datavisualization");
+$im_e->tikzOptions("scale=2");
+$im_e->BEGIN_TIKZ
+\datavisualization [scientific axes, all axes={logarithmic, grid},
+                    x axis={label=\(n\), 
+                            ticks={major={at={10,100}}, 
+                            minor steps between steps=10}}, 
+                    y axis={label=error},
+                    visualize as line=en_RK4, en_RK4={style={mark=*}}]
+    data [set=en_RK4] {
+        x, y
+    $n[0], $en_RK4[0]
+    $n[1], $en_RK4[1]
+    $n[2], $en_RK4[2]
+    $n[3], $en_RK4[3]
+    $n[4], $en_RK4[4]
+    $n[5], $en_RK4[5]
+    $n[6], $en_RK4[6]
+    $n[7], $en_RK4[7]
+    $n[8], $en_RK4[8]
+    };
+END_TIKZ
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+$showPartialCorrectAnswers = 1;
+
+$Scaffold::isInstructor = 0; # for testing
+
+Scaffold::Begin();
+BEGIN_TEXT
+Consider the initial-value problem 
+\[ \frac{dy}{dt} = 2y+1, \quad y(0) = 3. \]
+END_TEXT
+
+Section::Begin("Exact and numerical solutions");
+BEGIN_TEXT
+$PAR Solve, by hand, the initial value problem.
+$BR \(\quad y(t) = \) \{ans_rule(20)\}
+$PAR Compute the exact value 
+$BR \(\quad y(2) = \) \{ans_rule(15)\}
+$PAR \(\quad\) (your answer should to be correct to \(\pm0.0001\))
+
+$PAR Calculate the RK4 approximation \(y_{n}\) to \(y(2)\) using \(n = 2, 4, 8, 16, \dots , 512\), and the corresponding errors \(e_n\).
+$PAR
+$BCENTER
+\{begintable(3)\}
+        \{row(" \(n\) ", " \(y_n\) ","\( e_n\)")\}
+        \{row("\($n[0]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[1]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[2]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[3]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[4]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[5]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[6]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[7]\)", ans_rule(10), ans_rule(10))\}
+        \{row("\($n[8]\)", ans_rule(10), ans_rule(10))\}
+        \{endtable()\}
+$ECENTER
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+END_TEXT
+ANS($y->cmp);
+ANS($y_exact->cmp);
+foreach my $i (0..$N) {
+  ANS( Real($yn_RK4[$i])->cmp(tolType => 'absolute', tolerance => .0001) );
+  ANS( Real($en_RK4[$i])->cmp(tolType => 'absolute', tolerance => .0001) );
+}
+Section::End();
+
+Section::Begin("Graphs");
+BEGIN_TEXT
+Make graphs of \(y_n\) and \(e_n\) in your favorite spreadsheet or graphing tool. Compare with the graphs below.
+$PAR \{image($im_y, width=>700, tex_size => 1000)\}
+$PAR \{image($im_e, width=>700, tex_size => 1000)\}
+$PAR \{$mc->buttons()\}
+END_TEXT
+ANS($mc->cmp);
+Section::End();
+
+Scaffold::End();
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ENDDOCUMENT();        

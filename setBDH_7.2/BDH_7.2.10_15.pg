@@ -1,0 +1,121 @@
+##DESCRIPTION
+##  Numerical methods for differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods', 'Improved Euler method')
+
+## DBsubject(Differential equations)
+## DBchapter(Numerical methods)
+## DBsection(Improving Euler's method.)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('7.2')
+## Problem1('10') # 10ab, 15
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("e^(t^2/2)");
+$y2 = Real("e^(1.4^2/2)");
+$y4 = Real(2.61088255); 
+$e4 = Real(0.05357370); 
+
+@ans = (
+0.20545674,	2.45899950,
+0.05357370,	2.61088255,
+0.01339959,	2.65105665,
+0.00332138,	2.66113486,
+0.00082431,	2.66363193,
+0.00020515,	2.66425110);
+
+$N = 11; # number of entries, zero-indexed
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Consider the initial-value problem 
+\[ \frac{dy}{dt} = ty, \quad y(0) = 1. \]
+
+$PAR $HR $PAR 
+(a) Solve, by hand, the initial value problem.
+$BR \(\quad y(t) = \) \{ans_rule(20)\}
+
+$PAR $HR $PAR 
+(b) Given the interval \(0 \le t \le 1.4\) and n = 4, calculate the Euler approximation \(y_{4}\) to \(y(1.4)\). 
+$BR \(\quad y_{4} = \) \{ans_rule(15)\}
+$PAR Calculate the total error \(e_{4}\) involved in your approximation.
+$BR \(\quad e_{4} = \) \{ans_rule(15)\}
+$PAR Note that the exact value is \(y(1.4) = \) \{ans_rule(15)\}
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+
+$PAR $HR $PAR 
+(c) Repeat the calculations in part (b) using \(n = 2, 4, 8, 16, \dots , 64\).
+$PAR
+$BCENTER
+\{begintable(3)\}
+        \{row(" \(n\) ", " \(e_n\) ","\( y_n\)")\}
+        \{row("\( 2 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 4 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 8 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 16\)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 32\)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 64\)", ans_rule(7), ans_rule(7))\}
+        \{endtable()\}
+$ECENTER
+$PAR \(\quad\) (your answers should to be correct to \(\pm0.0001\))
+$PAR Make a graph of the errors using your favorite spreadsheet software (not for credit). A log-scale on both axes may  be useful. $BBOLD Note: making this graph is the main point of the exercise! $EBOLD
+
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($y->cmp);
+ANS($y4->cmp(tolType => 'absolute', tolerance => .0001));
+ANS($e4->cmp(tolType => 'absolute', tolerance => .0001));
+ANS($y2->cmp);
+foreach my $i (0..$N) {
+  ANS( Real($ans[$i])->cmp(tolType => 'absolute', tolerance => .0001) );
+}
+
+ENDDOCUMENT();        

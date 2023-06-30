@@ -1,0 +1,119 @@
+##DESCRIPTION
+##  Laplace transforms.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'Laplace transform', impulse forcing)
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Delta functions and impulse forcing)
+## Date('11/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('6.4')
+## Problem1('6') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context("Numeric")->functions->add(
+  u => {
+    class => 'Parser::Legacy::Numeric',
+    perl => 'Parser::Legacy::Numeric::do_step'
+  },
+); # Heaviside / unit step function
+Context()->variables->are(s=>"Real", t=>"Real");
+
+$w0 = Real("sqrt(2)");
+$T0 = Real("sqrt(2) pi");
+
+# Unicode symbols for use in PopUp
+$inf = "~~x{221E}";
+$ninf = "-~~x{221E}";
+
+$str1 = ["?", "oscillating with increasing amplitude", "oscillating with decreasing amplitude", "in equilibrium"];
+$str2 = ["?", $inf, "1", "0", $ninf];
+
+$mc1 = PopUp($str1, "oscillating with decreasing amplitude");
+$mc2 = PopUp($str2, "0");
+$mc3 = PopUp($str1, "oscillating with decreasing amplitude");
+
+
+$Ly = Compute("(s+1)/((s+1)^2+2) + (1/sqrt(2)) sqrt(2)/((s+1)^2+2) + (1/sqrt(2)) e^(-4s) sqrt(2)/((s+1)^2+2)"); 
+$y = Compute("e^(-t) cos(sqrt(2)t) + 1/sqrt(2) e^(-t) sin(sqrt(2)t) + 1/sqrt(2) u(t-4) e^(-(t-4)) sin(sqrt(2)(t-4))")->with(limits=>[[-2,2],[0,10]]); # limits are [s, t]
+# limits are so that test point evaluations are beyond default range [-2,2]
+# if don't do this, any u(t-4)(...) is "correct"!
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Consider the damped harmonic oscillator with impulse forcing
+\[ \frac{d^2y}{dt^2} + 2 \frac{dy}{dt} + 3 y = \delta_4(t), \quad y(0)=1, \; y'(0)=0. \]
+
+(a) Determine the qualitative behavior of the solution of the initial-value problem:
+$BR \(\quad\) The natural (angular) frequency is \(\omega_0 = \) \{ans_rule(10)\}. 
+$BR \(\quad\) The natural period is \(T_0 = \) \{ans_rule(10)\}. 
+$BR \(\quad\) For \(0 \le t < 4\) the system is \{$mc1->menu()\} and approaching \{$mc2->menu()\}. 
+$BR \(\quad\) At \(t=4\) the system is given a jolt, and the solution increases for a short time. 
+$BR \(\quad\) For \(t > 4\) the system is \{$mc1->menu()\}. 
+$BR \(\quad\) As \(t\to\infty\) the solution approaches \{$mc2->menu()\}.
+
+$PAR (b) Compute the Laplace transform of both sides of the differential equation,
+substitute in the initial conditions and simplify to obtain the Laplace transform of the solution:
+$PAR \(\quad\ \mathcal{L}[y] = \) \{ans_rule(90)\}
+
+$PAR (c) find the solution by taking the inverse Laplace transform:
+$PAR \(\quad y(t) = \) \{ans_rule(100)\}
+$PAR \(\quad\) Note: in WeBWorK, enter \(u_a(t)\) as \(u(t-a)\).
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($w0->cmp);
+ANS($T0->cmp);
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($Ly->cmp);
+ANS($y->cmp);
+
+ENDDOCUMENT();        
