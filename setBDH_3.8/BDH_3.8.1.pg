@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Three-dimensional first-order linear differential systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'three dimensions')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Linear systems in three dimensions)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.8')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$str2 = "I plugged \(\mathbf{Y}_2\) into the LHS and the RHS and verified that they are the same.";
+$mc2 = RadioButtons([$str2],$str2);
+
+$str3 = "I plugged \(\mathbf{Y}_3\) into the LHS and the RHS and verified that they are the same.";
+$mc3 = RadioButtons([$str3],$str3);
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the linear system
+\[ \frac{d\mathbf{Y}}{dt} = \mathbf{AY} = 
+                            \begin{pmatrix} 0   & 0.1 & 0   \\
+                                            0   & 0   & 0.2 \\
+                                            0.4 & 0   & 0 \end{pmatrix} 
+                            \begin{pmatrix} x \\ y \\ z \end{pmatrix}. \]
+Check that the functions
+\[ \mathbf{Y}_2(t) = e^{-0.1 t} \begin{pmatrix}
+-\cos{\left(\sqrt{0.03}\;t\right)} -\sqrt{3}\sin{\left(\sqrt{0.03}\;t\right)} \\
+-2\cos{\left(\sqrt{0.03}\;t\right)} +2\sqrt{3}\sin{\left(\sqrt{0.03}\;t\right)} \\
+4\cos{\left(\sqrt{0.03}\;t\right)}
+\end{pmatrix} \]
+and 
+\[ \mathbf{Y}_3(t) = e^{-0.1 t} \begin{pmatrix}
+-\cos{\left(\sqrt{0.03}\;t\right)} +\sqrt{3}\sin{\left(\sqrt{0.03}\;t\right)} \\
+-2\cos{\left(\sqrt{0.03}\;t\right)} -2\sqrt{3}\sin{\left(\sqrt{0.03}\;t\right)} \\
+4\cos{\left(\sqrt{0.03}\;t\right)}
+\end{pmatrix} \]
+are solutions to the system. 
+
+$PAR \{$mc2->buttons()\}
+$PAR \{$mc3->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+
+ENDDOCUMENT();        

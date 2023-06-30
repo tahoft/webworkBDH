@@ -1,0 +1,103 @@
+##DESCRIPTION
+##  Three-dimensional first-order linear differential systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'three dimensions')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Linear systems in three dimensions)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.8')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Complex");
+
+$lam1 = Real(-1); 
+$lam23 = List(-2+i, -2-i);
+
+$mcc = PopUp(["?", "sink", "source", "saddle", "spiral sink", "spiral source", "center"], "spiral sink");
+
+$mcplane = PopUp(["?", "i", "ii", "iii"], "ii");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+For the linear system 
+\[ \frac{d\mathbf{Y}}{dt} = \mathbf{AY} = \begin{pmatrix}-4 & 3 & 0 \\
+                                                          0 &-1 & 1 \\
+                                                          5 &-5 & 0 \end{pmatrix}
+                            \begin{pmatrix} x \\ y \\ z \end{pmatrix}: \]
+
+$PAR $HR $PAR (a) Show that \(\mathbf{v_1} = (1, 1, 0)\) is an eigenvector of the coefficient matrix by computing \(\mathbf{Av_1}\). 
+$BR \(\quad\) What is the eigenvalue for this eigenvector? \(\;\;\) \(\lambda_1 = \) \{ans_rule(5)\}
+
+$PAR $HR $PAR (b) Find the other two eigenvalues for the matrix: 
+$BR \(\quad\) \(\lambda_2, \lambda_3 = \) \{ans_rule(20)\} \(\;\) (comma-separated list)
+$BR \(\quad\)Hint: use (a) to factor the characteristic polynomial.
+
+$PAR $HR $PAR (c) Classify the system: The equilibrium point at the origin is a \{$mcc->menu()\}
+
+$PAR $HR $PAR (d) Attempt to sketch, on paper, the three-dimensional phase portrait. 
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcplane->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.8.16.png",width=>250,height=>250)\} \(\qquad\)
+( ii )       \{image("BDH_3.8.17.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.8.18.png",width=>250,height=>250)\} $ECENTER 
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($lam1->cmp);
+ANS($lam23->cmp);
+ANS($mcc->cmp);
+ANS($mcplane->cmp);
+
+ENDDOCUMENT();        

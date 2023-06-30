@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Second-order linear differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Second-order linear  equations)
+## Date('10/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.6')
+## Problem1('31')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$mc = RadioButtons(["I showed it!"], "I showed it!");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Suppose \(y(t)\) is a complex-valued solution of
+\[ \frac{d^2y}{dt} + p \frac{dy}{dt} + q y = 0, \]
+where \(p\) and \(q\) are real numbers. Show that if \(y(t) = y_\text{re}(t) + i\,y_\text{im}(t)\), where \(y_\text{re}(t)\) and \(y_\text{im}(t)\) are real valued, then both \(y_\text{re}(t)\) and \(y_\text{im}(t)\) are solutions of the second-order equation.
+
+$PAR Online version in development -- do this on paper.
+$BR \{$mc->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

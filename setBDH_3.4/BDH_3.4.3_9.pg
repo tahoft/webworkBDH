@@ -1,0 +1,196 @@
+##DESCRIPTION
+##  Linear systems with complex eigenvalues.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'complex eigenvalues')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Complex Eigenvalues)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.4')
+## Problem1('3') # and 9
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserMultiAnswer.pl",
+   "parserVectorUtils.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$mc1 = PopUp(["?", "spiral sink", "spiral source", "center"], "center");
+$mc2 = PopUp(["?", "clockwise", "counterclockwise"], "clockwise");
+$str = ["?", "i", "ii", "iii", "iv"];
+$mc_phase = PopUp($str, "iii");
+$mc_xy    = PopUp($str, "iii");
+
+# coefficient matrix A = [a, b; c, d]
+$a = 0;
+$b = 2; 
+$c = -2; 
+$d = 0;
+
+# initial condition Y_0 = [x0; y0]
+$x0 = 1; 
+$y0 = 0;
+$const_1 = 1; # k1
+$const_2 = 0; # k2
+
+# eigenvalues
+Context("Complex");
+$lam1 = Complex("2i");
+$lam2 = conj($lam1);
+$lam = List($lam1, $lam2);
+
+$ansT = Real("pi"); # natural period
+$answ = 1 / $ansT; # natural frequency
+
+Context("Vector");
+Context()->variables->add(t => 'Real');
+Context()->variables->add(k1 => 'Real', k2 => 'Real');
+$y1 = Compute("< cos(2t), -sin(2t) >");
+$y2 = Compute("< sin(2t),  cos(2t) >");
+$ans_gen = Compute("k1 $y1 + k2 $y2");
+$ans_spec = $ans_gen->substitute(k1=>$const_1, k2=>$const_2)->reduce; 
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the linear system
+\( \displaystyle \frac{d\mathbf{Y}}{dt} = \begin{pmatrix} $a & $b \\ $c & $d \end{pmatrix} \mathbf{Y}, \)
+with initial condition 
+\( \mathbf{Y}_0 = \begin{pmatrix} $x0 \\ $y0 \end{pmatrix}. \)
+
+$PAR (a) find the eigenvalues of the coefficient matrix;
+$BR \(\quad\) \(\lambda_1, \lambda_2 = \) \{ans_rule(20)\} 
+\(\quad\) (comma-separated list; use "i" for the imaginary unit)
+
+$PAR (b) determine if the origin is a spiral sink, a spiral source, or a center;
+\(\quad\) \{$mc1->menu()\}
+
+$PAR (c) determine the natural period and natural frequency of the oscillations;
+$BR \(\quad\) \(T_0 = \)      \{ans_rule(10)\}, 
+    \(\quad\) \(\omega_0 = \) \{ans_rule(10)\} \(\quad\) 
+    (use "pi" for \(\pi\))
+
+$PAR (d) determine the direction of the oscillations in the phase plane (do the solutions go clockwise or counterclockwise around the origin?);
+\(\quad\) \{$mc2->menu()\}
+
+$PAR (e) find the general solution;
+$BR \(\quad\) \(\mathbf{Y}(t) = \) \{ans_rule(65)\} 
+$BR \(\quad\) (Use "k1" and "k2" as the constants and enter your answer using angle brackets "3 e$CARET(-t) \(<\)cos(t),sin(t)\(>\)")
+
+$PAR (f) find the particular solution with the given initial value; 
+$BR \(\quad\) \(\mathbf{Y}(t) = \) \{ans_rule(65)\} 
+
+$PAR (g) sketch, on paper, the \(xy\)-phase portrait and the \(x(t)\)- and \(y(t)\)-graphs of the particular solution;
+$BR \(\quad\) Select the graph corresponding to your sketch. \{$mc_phase->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.4.8_phase.png",width=>200,height=>200)\}\(\quad\)
+     ( ii )       \{image("BDH_3.4.5_phase.png",width=>200,height=>200)\} 
+$PAR ( iii )      \{image("BDH_3.4.3_phase.png",width=>200,height=>200)\}\(\quad\)
+     ( iv )       \{image("BDH_3.4.7_phase.png",width=>200,height=>200)\} 
+$ECENTER
+
+$PAR (h) sketch, on paper, the \(x(t)\)- and \(y(t)\)-graphs of the particular solution.
+$BR \(\quad\) Select the graph corresponding to your sketch. \{$mc_xy->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.4.8_xy.png",width=>250,height=>150)\} \(\quad\)
+     ( ii )       \{image("BDH_3.4.5_xy.png",width=>250,height=>150)\} 
+$PAR ( iii )      \{image("BDH_3.4.3_xy.png",width=>250,height=>150)\} \(\quad\)
+     ( iv )       \{image("BDH_3.4.7_xy.png",width=>250,height=>150)\} 
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+Context("Complex");
+
+ANS($lam->cmp); # a)
+
+ANS($mc1->cmp); # b)
+
+ANS($ansT->cmp); # c)
+ANS($answ->cmp); # c)
+
+ANS($mc2->cmp); # d)
+
+Context("Vector");
+
+sub solveDE{
+    my ( $x, $y ) = @_;
+    if( ( $x->D('t') == $a*$x + $b*$y ) && # solves DE in 1st component
+        ( $y->D('t') == $c*$x + $d*$y ) )  # solves DE in 2nd component
+    {return 1;}
+    else
+    {return 0;}
+}
+
+sub bothTerms{ # check if solution has *both* terms not just one written twice
+    my ( $Y ) = @_;
+    my $v1 = $Y->eval(k1=>1, k2=>0, t=>0); # first initial vector
+    my $v2 = $Y->eval(k1=>0, k2=>1, t=>0); # second initial vector
+    if ( !( $v1->isParallel($v2) ) ) # check if linearly independent
+    {return 1;} # yes independent / non-parallel
+    else
+    {return 0;} # not independent / parallel
+}
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( solveDE($xstu,$ystu)      && # solves DE
+       $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       bothTerms($student) )        # has both terms not just one repeated
+  { return 1; } else { return 0; } 
+}
+
+ANS($ans_gen->cmp(checker=>~~&mycheck)); # e)
+
+ANS($ans_spec->cmp); # f)
+
+ANS($mc_phase->cmp); # g)
+ANS($mc_xy->cmp); # h)
+
+ENDDOCUMENT();        

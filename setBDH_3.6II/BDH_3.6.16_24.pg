@@ -1,0 +1,163 @@
+##DESCRIPTION
+##  Second-order linear differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Second-order linear  equations)
+## Date('10/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.6')
+## Problem1('16') # and 24
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserMultiAnswer.pl",
+   "parserVectorUtils.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+# parameters
+$m = Real(1);
+$k = Real(8);
+$b = Real(0);
+
+# initial condition
+$y0 = Real(1);
+$v0 = Real(4);
+$const_1 = Real(1); # k1
+$const_2 = Real(sqrt(2)); # k2
+
+# eigenvalues and eigenvectors
+Context("Complex");
+$lam1 = Complex(i*2*sqrt(2)); # use positive real part, please!
+$lam2 = conj($lam1); # don't actually use this...
+$lam = List($lam1, $lam2);
+# skipping e-vects for complex!
+
+# coefficient matrix
+Context("Matrix");
+$p = $k/$m;
+$q = $b/$m;
+$A = Matrix([[0,1],[-$p,-$q]]);
+Context("Complex");
+
+$mcclass = PopUp(
+    ["?", "underdamped", "overdamped", "critically damped", "undamped"], 
+    "undamped");
+$str = ["?", "i", "ii", "iii", "iv"];
+$mcphase = PopUp($str, "ii");
+$mcxy    = PopUp($str, "ii");
+
+Context()->variables->add(t=>"Real");
+Context()->variables->add(k1=>"Real", k2=>"Real");
+$y1 = Compute("e^( Re($lam1)*t ) * cos( Im($lam1)*t )");
+$y2 = Compute("e^( Re($lam1)*t ) * sin( Im($lam1)*t )");
+$ans_gen = Compute("k1 $y1 + k2 $y2")->reduce;
+$ans_spec = $ans_gen->substitute(k1=>$const_1, k2=>$const_2)->reduce; 
+
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider a harmonic oscillator with mass \(m=$m\), spring constant \(k=$k\), and damping coefficient \(b=$b\), with initial conditions \(y(0)=$y0\), \(v(0)=$v0\).
+
+$PAR $HR $PAR (a) Write the second-order differential equation (on paper; I haven't figured out how to get WeBWorK to do this in a reasonable way), $BR and write the corresponding first-order system.
+$BR \(\quad\) \(\displaystyle\frac{d\mathbf{Y}}{dt} = \) \{$A->ans_array()\} \(\mathbf{Y}\)
+
+$PAR $HR $PAR (b) Find the eigenvalues of the linear system.
+$BR \(\quad\) \(\lambda = \) \{ans_rule(20)\} 
+\(\quad\) (comma-separated list; use "i" for the imaginary unit)
+ 
+$PAR $HR $PAR (c) Classify the oscillator: \(\;\;\) \{$mcclass->menu()\}
+
+$PAR $HR $PAR (d) Sketch, on paper, the phase portrait of the linear system.
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcphase->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.6.15d.png",width=>250,height=>250)\} \(\qquad\)
+( ii )       \{image("BDH_3.6.16d.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.6.13d.png",width=>250,height=>250)\} \(\qquad\)
+( iv )       \{image("BDH_3.6.17d.png",width=>250,height=>250)\} $ECENTER 
+
+$PAR $HR $PAR (e) Sketch, on paper, the \(y(t)\)- and \(v(t)\)-graphs of the solution with the given initial condition.
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcxy->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.6.15e.png",width=>250,height=>160)\} \(\qquad\)
+( ii )       \{image("BDH_3.6.16e.png",width=>250,height=>160)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.6.13e.png",width=>250,height=>160)\} \(\qquad\)
+( iv )       \{image("BDH_3.6.17e.png",width=>250,height=>160)\} $ECENTER 
+
+$PAR $HR $PAR (f) Find the general solution of the second-order equation that models the motion of the oscillator.
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\}
+$PAR \(\quad\) Use "k1" and "k2" for the constants in your solution.
+
+$PAR $HR $PAR (g) Find the particular solution for the given initial condition. 
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($A->cmp()); # (a)
+ANS($lam->cmp()); # (b)
+ANS($mcclass->cmp()); # (c)
+ANS($mcphase->cmp()); # (d)
+ANS($mcxy->cmp()); # (e)
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  if ( $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       ( ($student->substitute(k1=>1, k2=>0) == $y1) || # one of terms is y1
+         ($student->substitute(k1=>0, k2=>1) == $y1) ) && 
+       ( ($student->substitute(k1=>1, k2=>0) == $y2) || # one of terms is y2
+         ($student->substitute(k1=>0, k2=>1) == $y2) )
+     ) 
+  { return 1; } else { return 0; } 
+}
+ANS($ans_gen->cmp(checker=>~~&mycheck)); # (f)
+
+ANS($ans_spec->cmp()); # (g)
+
+ENDDOCUMENT();        

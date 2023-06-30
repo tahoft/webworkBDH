@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Linear systems with complex eigenvalues.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'complex eigenvalues')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Complex Eigenvalues)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.4')
+## Problem1('1') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"parserPopUp.pl",
+   "parserVectorUtils.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+# coefficient matrix A = [a, b; c, d]
+$a = 7;
+$b = -15; 
+$c = 3; 
+$d = -5;
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Suppose the \(2\times2\) matrix \(\mathbf{A}\) has \(\lambda=1+3i\) as an eigenvalue with eigenvector
+\[ \mathbf{Y}_0 = \begin{pmatrix} 2+i \\ 1 \end{pmatrix}. \]
+
+Compute the general solution to \( d\mathbf{Y}/dt = \mathbf{A} \mathbf{Y} \).
+$PAR
+\(\mathbf{Y}(t) = \) \{ans_rule(70)\} 
+$BR Use "k1" and "k2" as the constants and enter your answer using angle brackets "3 e$CARET(-t) \(<\)cos(t),sin(t)\(>\)".
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+Context()->variables->add(t => 'Real');
+Context()->variables->add(k1 => 'Real');
+Context()->variables->add(k2 => 'Real');
+
+$ans = Formula("k1 e^t <2cos(3t)-sin(3t), cos(3t)> + k2 e^t <cos(3t)+2sin(3t), sin(3t)>"); 
+
+sub solveDE{
+    my ( $x, $y ) = @_;
+    if( ( $x->D('t') == $a*$x + $b*$y ) && # solves DE in 1st component
+        ( $y->D('t') == $c*$x + $d*$y ) )  # solves DE in 2nd component
+    {return 1;}
+    else
+    {return 0;}
+}
+
+sub bothTerms{ # check if solution has *both* terms not just one written twice
+    my ( $Y ) = @_;
+    my $v1 = $Y->eval(k1=>1, k2=>0, t=>0); # first initial vector
+    my $v2 = $Y->eval(k1=>0, k2=>1, t=>0); # second initial vector
+    if ( !( $v1->isParallel($v2) ) ) # check if linearly independent
+    {return 1;} # yes independent / non-parallel
+    else
+    {return 0;} # not independent / parallel
+}
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( solveDE($xstu,$ystu)      && # solves DE
+       $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       bothTerms($student) )        # has both terms not just one repeated
+  { return 1; } else { return 0; } 
+}
+
+ANS($ans->cmp(checker=>~~&mycheck));
+
+ENDDOCUMENT();        

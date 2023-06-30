@@ -1,0 +1,107 @@
+##DESCRIPTION
+##  Three-dimensional first-order linear differential systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'three dimensions')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Linear systems in three dimensions)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.8')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$lam = List([1, -1, -5]);
+
+$mcb = RadioButtons([
+"two-dimensional system in the \(xy\)-plane and a one-dimensional system on the \(z\)-axis.",
+"two-dimensional system in the \(xz\)-plane and a one-dimensional system on the \(y\)-axis.",
+"two-dimensional system in the \(yz\)-plane and a one-dimensional system on the \(x\)-axis."],
+"two-dimensional system in the \(xy\)-plane and a one-dimensional system on the \(z\)-axis.");
+
+$mcplane = PopUp(["?", "i", "ii", "iii", "iv"], "ii");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the linear system 
+\[ \frac{d\mathbf{Y}}{dt} = \mathbf{AY} \]
+with the coefficient matrix 
+\[ \mathbf{A} = \begin{pmatrix}-2 & 3 & 0 \\
+                                3 &-2 & 0 \\
+                                0 & 0 &-1 \end{pmatrix}. \]
+This system decouples into a two-dimensional system and a one-dimensional system. 
+
+$PAR $HR $PAR (a) Compute the eigenvalues: \(\;\;\) \{ans_rule(10)\} \(\;\;\) (enter as a comma-separated list)
+
+$PAR $HR $PAR (b) The system decouples into a
+$BR \{$mcb->buttons()\}
+
+$PAR $HR $PAR (c) Sketch, on paper, the two-dimensional phase plane and one-dimensional phase line for the decoupled systems. 
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcplane->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.8.4p.png",width=>166,height=>200)\} 
+             \{image("BDH_3.8.4L.png",width=> 83,height=>200)\} \(\qquad\)
+( ii )       \{image("BDH_3.8.5p.png",width=>166,height=>200)\} 
+             \{image("BDH_3.8.5L.png",width=> 83,height=>200)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.8.6p.png",width=>166,height=>200)\}
+             \{image("BDH_3.8.6L.png",width=> 83,height=>200)\} \(\qquad\)
+( iv )       \{image("BDH_3.8.7p.png",width=>166,height=>200)\}
+             \{image("BDH_3.8.7L.png",width=> 83,height=>200)\} $ECENTER 
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($lam->cmp);
+ANS($mcb->cmp);
+ANS($mcplane->cmp);
+
+ENDDOCUMENT();        

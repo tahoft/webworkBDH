@@ -1,0 +1,76 @@
+##DESCRIPTION
+##  Second-order linear differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Second-order linear  equations)
+## Date('10/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.6')
+## Problem1('36')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc = RadioButtons(["I did it!"], "I did it!");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+An automobile’s suspension system consists essentially of large springs with damping. When the car hits a bump, the springs are compressed. It is reasonable to use a harmonic oscillator to model the up-and-down motion, where \(y(t)\) measures the amount the springs are stretched or compressed and \(v(t)\) is the vertical velocity of the bouncing car.
+$PAR Suppose that you are working for a company that designs suspension systems for cars. One day your boss comes to you with the results of a market research survey indicating that most people want shock absorbers that "bounce twice" when compressed, then gradually return to their equilibrium position from above. That is, when the car hits a bump, the springs are compressed. Ideally they should expand, compress, and expand, then settle back to the rest position. After the initial bump, the spring would pass through its rest position three times and approach the rest position from the expanded state.
+$PAR (a) Sketch a graph of the position of the spring after hitting a bump, where \(y(t)\) denotes the state of the spring at time \(t\), \(y > 0\) corresponds to the spring being stretched, and \(y < 0\) corresponds to the spring being compressed.
+$PAR (b) Explain (politely) why the behavior pictured in the figure is impossible with standard suspension systems that are accurately modeled by the harmonic oscillator system.
+$PAR (c) What is your suggestion for a choice of a harmonic oscillator system that most closely approximates the desired behavior? Justify your answer with an essay.
+
+$PAR No online answer-entry -- think about this and jot notes on paper.
+$BR \{$mc->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

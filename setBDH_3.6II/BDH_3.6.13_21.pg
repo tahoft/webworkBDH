@@ -1,0 +1,208 @@
+##DESCRIPTION
+##  Second-order linear differential equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear Systems)
+## DBsection(Second-order linear  equations)
+## Date('10/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.6')
+## Problem1('13') # and 21
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserMultiAnswer.pl",
+   "parserVectorUtils.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+# parameters
+$m = Real(1);
+$k = Real(7);
+$b = Real(8);
+
+# initial condition
+$y0 = Real(-1);
+$v0 = Real(5);
+$const_1 = Real(-1/3); # k1
+$const_2 = Real(-2/3); # k2
+
+# eigenvalues and eigenvectors
+Context("Vector");
+$lam1 = Real(-1);
+$v1 = Vector(1,-1);
+$lam2 = Real(-7);
+$v2 = Vector(1,-7);
+
+# coefficient matrix
+Context("Matrix");
+$p = $k/$m;
+$q = $b/$m;
+$A = Matrix([[0,1],[-$p,-$q]]);
+Context("Vector");
+
+$mcclass = PopUp(
+    ["?", "underdamped", "overdamped", "critically damped", "undamped"], 
+    "overdamped");
+$str = ["?", "i", "ii", "iii", "iv"];
+$mcphase = PopUp($str, "iii");
+$mcxy    = PopUp($str, "iii");
+
+Context()->variables->add(t=>"Real");
+Context()->variables->add(k1=>"Real", k2=>"Real");
+$y1 = Compute("e^($lam1*t)");
+$y2 = Compute("e^($lam2*t)");
+$ans_gen = Compute("k1 $y1 + k2 $y2");
+$ans_spec = $ans_gen->substitute(k1=>$const_1, k2=>$const_2); 
+
+$eigenans = MultiAnswer($lam1, $v1, $lam2, $v2)->with(
+    singleResult => 0,
+    allowBlankAnswers => 1, # breaks things
+    checker => sub {
+    my ( $correct, $student, $self ) = @_;
+    my ( $lam1s, $tmp1, $lam2s, $tmp2 ) = @{$student};
+    my $lam1_c;
+    my $v1_c;
+    my $lam2_c;
+    my $v2_c;
+    if ( $tmp1 ){ # throws warnings if vector entry is blank so
+        $v1s = Vector($tmp1); # need to copy, else isParallel gets upset...
+    } else { $v1s = $v1 + $v2; } # make it not an e-vect (unless lambda=0)
+    if ( $tmp2 ){ # throws warnings if vector entry is blank so
+        $v2s = Vector($tmp2); # need to copy, else isParallel gets upset...
+    } else { $v2s = $v1 - $v2; } # make it not an e-vect (unless lambda=0)
+    if ( ref($lam1s) eq ref($lam1) && ref($v1s) eq ref($v1) && # lam1 & v1 filled
+         Vector($A*$v1s) == $lam1s*$v1s ) # is it an e-val & e-vect pair?
+        { $lam1_c = 1;
+          $v1_c = 1; 
+        } else { 
+          if ( $lam1s == $lam1 || $lam1s == $lam2) # is e-val right?
+            {$lam1_c = 1;} else {$lam1_c = 0;}
+          $v1_c = 0; # mark e-vect wrong if no e-val
+        }
+    if ( ref($lam2s) eq ref($lam2) && ref($v2s) eq ref($v2) && # lam1 & v1 filled
+         Vector($A*$v2s) == $lam2s*$v2s ) # is it an e-val & e-vect pair?
+        { $lam2_c = 1;
+          $v2_c = 1; 
+        } else { 
+          if ( $lam2s == $lam1 || $lam2s == $lam2) # is e-val right?
+            {$lam2_c = 1;} else {$lam2_c = 0;}
+          $v2_c = 0; # mark e-vect wrong if no e-val
+        }
+    if ( ref($lam2s) eq ref($lam2) && ref($lam2s) eq ref($lam2) # filled
+            && $lam2s == $lam1s ) # same e-val/evect pair twice?
+       { $lam2_c = 0;
+         $v2_c = 0; } 
+         # could check if e-vects are diff & parallel to correct, but...
+    return [$lam1_c, $v1_c, $lam2_c, $v2_c];
+ } # closes sub
+);
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider a harmonic oscillator with mass \(m=$m\), spring constant \(k=$k\), and damping coefficient \(b=$b\), with initial conditions \(y(0)=$y0\), \(v(0)=$v0\).
+
+$PAR $HR $PAR (a) Write the second-order differential equation (on paper; I haven't figured out how to get WeBWorK to do this in a reasonable way), $BR and write the corresponding first-order system.
+$BR \(\quad\) \(\displaystyle\frac{d\mathbf{Y}}{dt} = \) \{$A->ans_array()\} \(\mathbf{Y}\)
+
+$PAR $HR $PAR (b) Find the eigenvalues and eigenvectors of the linear system.
+$BR \(\quad\) \(\lambda_1 = \) \{$eigenans->ans_rule(10)\}, 
+    \(\;\;\)  \(v_1 = \)       \{$eigenans->ans_rule(10)\}
+$BR \(\quad\) \(\lambda_2 = \) \{$eigenans->ans_rule(10)\}, 
+    \(\;\;\)  \(v_2 = \)       \{$eigenans->ans_rule(10)\}
+$BR \(\quad\) Enter vectors using angle brackets: "\(<2,1>\)".
+ 
+$PAR $HR $PAR (c) Classify the oscillator: \(\;\;\) \{$mcclass->menu()\}
+
+$PAR $HR $PAR (d) Sketch, on paper, the phase portrait of the linear system.
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcphase->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.6.15d.png",width=>250,height=>250)\} \(\qquad\)
+( ii )       \{image("BDH_3.6.16d.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.6.13d.png",width=>250,height=>250)\} \(\qquad\)
+( iv )       \{image("BDH_3.6.17d.png",width=>250,height=>250)\} $ECENTER 
+
+$PAR $HR $PAR (e) Sketch, on paper, the \(y(t)\)- and \(v(t)\)-graphs of the solution with the given initial condition.
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcxy->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.6.15e.png",width=>250,height=>160)\} \(\qquad\)
+( ii )       \{image("BDH_3.6.16e.png",width=>250,height=>160)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.6.13e.png",width=>250,height=>160)\} \(\qquad\)
+( iv )       \{image("BDH_3.6.17e.png",width=>250,height=>160)\} $ECENTER 
+
+$PAR $HR $PAR (f) Find the general solution of the second-order equation that models the motion of the oscillator.
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\}
+$PAR \(\quad\) Use "k1" and "k2" for the constants in your solution.
+
+$PAR $HR $PAR (g) Find the particular solution for the given initial condition. 
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($A->cmp()); # (a)
+ANS($eigenans->cmp()); # (b)
+ANS($mcclass->cmp()); # (c)
+ANS($mcphase->cmp()); # (d)
+ANS($mcxy->cmp()); # (e)
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  if ( $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       ( ($student->substitute(k1=>1, k2=>0) == $y1) || # one of terms is y1
+         ($student->substitute(k1=>0, k2=>1) == $y1) ) && 
+       ( ($student->substitute(k1=>1, k2=>0) == $y2) || # one of terms is y2
+         ($student->substitute(k1=>0, k2=>1) == $y2) )
+     ) 
+  { return 1; } else { return 0; } 
+}
+ANS($ans_gen->cmp(checker=>~~&mycheck)); # (f)
+
+ANS($ans_spec->cmp()); # (g)
+
+ENDDOCUMENT();        

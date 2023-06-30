@@ -1,0 +1,259 @@
+##DESCRIPTION
+##  Linear systems with complex eigenvalues.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'complex eigenvalues')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Complex Eigenvalues)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.4')
+## Problem1('15') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   "scaffold.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$yn = ["?", "yes", "no"];
+$cls = ["?", "spiral sink", "spiral source", "center"];
+$strc = ["The amplitude is not monotonically decreasing or increasing.", # (iii)
+         "Oscillation stops at some t.", # (ii)
+         "Oscillation starts at some t. There was no prior oscillation.", # (vi)
+         "The time between successive zeros is not constant.", # (i)
+         ];
+
+$mcia = PopUp($yn, "no");
+$mcib = RadioButtons($strc, "The time between successive zeros is not constant.");
+
+$mciia = PopUp($yn, "no");
+$mciib = RadioButtons($strc, "Oscillation stops at some t.");
+
+$mciiia = PopUp($yn, "no");
+$mciiib = RadioButtons($strc, "The amplitude is not monotonically decreasing or increasing.");
+
+$mciva = PopUp($yn, "yes");
+$mcivb1 = PopUp($cls, "spiral sink");
+$ansivb2 = Real(1.5);
+
+$mcva = PopUp($yn, "yes");
+$mcvb1 = PopUp($cls, "spiral source");
+$ansvb2 = Real(1.25);
+
+$mcvia = PopUp($yn, "no");
+$mcvib = RadioButtons($strc, "Oscillation starts at some t. There was no prior oscillation.");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+$Scaffold::isInstructor = 0; # for testing
+
+### BEGIN (i)
+Scaffold::Begin();
+BEGIN_TEXT
+(i) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15i.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mcia->menu()\}
+END_TEXT
+ANS($mcia->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Why is it not an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mcib->buttons()\}
+END_TEXT
+ANS($mcib->cmp());
+Section::End();
+Scaffold::End();
+### END (i)
+
+BEGIN_TEXT 
+$BR $HR $BR 
+END_TEXT
+
+### BEGIN (ii)
+Scaffold::Begin();
+BEGIN_TEXT
+(ii) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15ii.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mciia->menu()\}
+END_TEXT
+ANS($mciia->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Why is it not an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mciib->buttons()\}
+END_TEXT
+ANS($mciib->cmp());
+Section::End();
+Scaffold::End();
+### END (ii)
+
+BEGIN_TEXT 
+$BR $HR $BR 
+END_TEXT
+
+### BEGIN (iii)
+Scaffold::Begin();
+BEGIN_TEXT
+(iii) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15iii.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mciiia->menu()\}
+END_TEXT
+ANS($mciiia->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Why is it not an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mciiib->buttons()\}
+END_TEXT
+ANS($mciiib->cmp());
+Section::End();
+Scaffold::End();
+### END (iii)
+
+BEGIN_TEXT 
+$BR $HR $BR 
+END_TEXT
+
+### BEGIN (iv)
+Scaffold::Begin();
+BEGIN_TEXT
+(iv) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15iv.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mciva->menu()\}
+END_TEXT
+ANS($mciva->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Classify the origin as a spiral sink, a spiral source, or a center: 
+\(\quad\) \{$mcivb1->menu()\}
+$BR Determine the natural period of the system:
+\(\quad\) \(T_0 = \) \{ans_rule(10)\}
+END_TEXT
+ANS($mcivb1->cmp());
+ANS($ansivb2->cmp(tolType=>absolute,tolerance=>0.25));
+Section::End();
+Scaffold::End();
+### END (iv)
+
+BEGIN_TEXT 
+$BR $HR $BR 
+END_TEXT
+
+### BEGIN (v)
+Scaffold::Begin();
+BEGIN_TEXT
+(v) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15v.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mcva->menu()\}
+END_TEXT
+ANS($mcva->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Classify the origin as a spiral sink, a spiral source, or a center: 
+\(\quad\) \{$mcvb1->menu()\}
+$BR Determine the natural period of the system:
+\(\quad\) \(T_0 = \) \{ans_rule(10)\}
+END_TEXT
+ANS($mcvb1->cmp());
+ANS($ansvb2->cmp(tolType=>absolute,tolerance=>0.25));
+Section::End();
+Scaffold::End();
+### END (v)
+
+BEGIN_TEXT 
+$BR $HR $BR 
+END_TEXT
+
+### BEGIN (vi)
+Scaffold::Begin();
+BEGIN_TEXT
+(vi) Consider the following graph of a function \(x(t)\). 
+$PAR $BCENTER \{image("BDH_3.4.15vi.png",width=>250,height=>150)\} $ECENTER
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+Can this be an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mcvia->menu()\}
+END_TEXT
+ANS($mcvia->cmp());
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Why is it not an \(x(t)\)-graph for a solution of a linear system with complex eigenvalues? \(\quad\) \{$mcvib->buttons()\}
+END_TEXT
+ANS($mcvib->cmp());
+Section::End();
+Scaffold::End();
+### END (vi)
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+
+ENDDOCUMENT();        
