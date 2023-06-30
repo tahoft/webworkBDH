@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  System solutions and partially-decoupled systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'partially-decoupled systems')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(Additional analytic methods for special systems)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.4')
+## Problem1('1') # actually, 1 and 3 both
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc1 = RadioButtons(["Yes, a solution","No, not a solution"], "Yes, a solution");
+$mc2 = RadioButtons(["Yes, a solution","No, not a solution"], "No, not a solution");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the system 
+\[\begin{aligned}
+\frac{dx}{dt} &= 2x + 2y \\
+\frac{dy}{dt} &=  x + 3y. 
+\end{aligned}\]
+For the given functions \(\mathbf{Y}(t) = (x(t), y(t))\), determine if \(\mathbf{Y}(t)\) is a solution.
+
+$PAR (a) \((x(t), y(t)) = (2e^t, -e^t)\)
+$BR \{$mc1->buttons()\} 
+
+$PAR (b) \((x(t), y(t)) = (2e^t - e^{4t}, -e^t + e^{4t} )\)
+$BR \{$mc1->buttons()\} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc1->cmp());
+ANS($mc2->cmp());
+
+ENDDOCUMENT();        

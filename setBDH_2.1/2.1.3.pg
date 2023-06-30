@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Modeling via systems
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(Modeling via systems)
+## Date('9/26/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.1')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans1 = Real(0);
+$ans2 = Real(0);
+$ans3 = Real(0);
+$ans4 = Real(0);
+
+##############################################################
+#
+#  Text
+#
+#
+
+TEXT(beginproblem());
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the following two systems of equations, both predator-prey models:
+\[\begin{aligned}
+\text{(i)} \;
+&\frac{dx}{dt} = 10x\,\left(1-\frac{x}{10}\right) - 20xy 
+&\text{(ii)} \;
+&\frac{dx}{dt} = 0.3x - \frac{xy}{100} \\
+&\frac{dy}{dt} = -5y + \frac{xy}{20}
+&
+&\frac{dy}{dt} = 15y\,\left(1-\frac{y}{15}\right) + 25xy \\
+\\
+& x(t)\ge0, \; y(t)\ge0
+&
+& x(t)\ge0, \; y(t)\ge0.
+\end{aligned} \]
+
+Suppose that the predators are extinct at time \(t_0 = 0\). For each system, verify that the predators remain extinct for all time.
+
+$PAR (i) The equation for \(dy/dt\) now reads \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\}.
+$PAR \(\quad\) The solution to this is \(y(t) = \) \{ans_rule(20)\}.
+
+$PAR (ii) The equation for \(dy/dt\) now reads \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\}.
+$PAR \(\quad\) The solution to this is \(y(t) = \) \{ans_rule(20)\}.
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+ANS($ans1->cmp);
+ANS($ans2->cmp);
+ANS($ans3->cmp);
+ANS($ans4->cmp);
+
+ENDDOCUMENT();        

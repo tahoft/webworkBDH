@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Direction fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The geometry of systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.2')
+## Problem1('27')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc = PopUp(["?", "a", "b", "c", "d"], "c");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+The following graphs are the \(x(t)\)- and the \(y(t)\)-graphs for a solution curve in the \(xy\)-phase plane. 
+$PAR $BCENTER \{image("BDH_2.2.27.png",width=>300,height=>200)\} $ECENTER
+$PAR Sketch, on paper, the solution curve, and indicate the direction that the solution travels as time increases.
+$BR Which of the following curves most closely matches your sketch? 
+\{$mc->menu()\}
+$PAR $BCENTER
+(a) \{image("BDH_2.2.24.png",width=>250,height=>166)\} \(\qquad\)
+(b) \{image("BDH_2.2.25.png",width=>250,height=>166)\} $ECENTER
+$PAR $BCENTER 
+(c) \{image("BDH_2.2.27_sol.png",width=>250,height=>250)\} \(\qquad\)
+(d) \{image("BDH_2.2.26.png",width=>250,height=>250)\} $ECENTER 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp);
+
+ENDDOCUMENT();        

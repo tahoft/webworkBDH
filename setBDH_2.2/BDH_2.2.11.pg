@@ -1,0 +1,121 @@
+##DESCRIPTION
+##  Direction fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The geometry of systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.2')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$lst = [ "?", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+$mc1 = PopUp($lst, "vii" );
+$mc2 = PopUp($lst, "viii" );
+$mc3 = PopUp($lst, "v" );
+$mc4 = PopUp($lst, "vi" );
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Eight systems of differential equations and four direction fields are given below. Determine the system that corresponds to each direction field. You should do this exercise without using technology.
+
+\[\begin{aligned}
+\text{(i)} \;
+&\frac{dx}{dt} = -x 
+&\text{(ii)} \;
+&\frac{dx}{dt} = x^2-1 
+&\text{(iii)} \;
+&\frac{dx}{dt} = x+2y
+&\text{(iv)} \;
+&\frac{dx}{dt} = 2x 
+\\
+&\frac{dy}{dt} = y-1
+&
+&\frac{dy}{dt} = y
+&
+&\frac{dy}{dt} = -y
+&
+&\frac{dy}{dt} = y
+\\
+\\
+\text{(v)} \;
+&\frac{dx}{dt} = x 
+&\text{(vi)} \;
+&\frac{dx}{dt} = x-1 
+&\text{(vii)} \;
+&\frac{dx}{dt} = x^2-1
+&\text{(viii)} \;
+&\frac{dx}{dt} = x-2y 
+\\
+&\frac{dy}{dt} = 2y
+&
+&\frac{dy}{dt} = -y
+&
+&\frac{dy}{dt} = -y
+&
+&\frac{dy}{dt} = -y
+\end{aligned} \]
+
+$PAR$BR
+(a) \{$mc1->menu()\} \(\quad\)
+(b) \{$mc2->menu()\} \(\quad\)
+(c) \{$mc3->menu()\} \(\quad\)
+(d) \{$mc4->menu()\} 
+
+$PAR $BR $BCENTER \{image("BDH_2.2.11.png",width=>600,height=>600)\} $ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+
+ENDDOCUMENT();        

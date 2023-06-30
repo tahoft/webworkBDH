@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Damped harmonic oscillator.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'second order differential equations', 'damped harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The damped harmonic oscillator)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.3')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "unorderedAnswer.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Numeric")->variables->add(t=>"Real");
+$ans1 = Compute("e^(-5t)");
+$ans2 = Compute("e^(2t)");
+
+$mc = PopUp(["?", "a", "b", "c", "d"], "b");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+$PAR In the damped harmonic oscillator \( m\frac{d^2y}{dt^2} + b \frac{dy}{dt} + ky = 0 \), we assume that the coefficients \(m\), \(b\), and \(k\) are positive. However, the rationale underlying the guess-and-test method made no such assumption, and the same analytic technique can be used if some or all of the coefficients of the equation are negative. 
+
+$PAR Consider the harmonic oscillator equation for y(t) 
+\[ \frac{d^2y}{dt^2} + 3 \frac{dy}{dt} - 10y = 0. \]
+
+(a) Using HPGSystemSolver from the DETools software, sketch the associated direction field. (you'll need to convert the second-order equation into a first-order system; no work to submit here)
+
+$PAR (b) Using the guess-and-test method, find two nonzero solutions that are not multiples of one another.
+$BR \(y_1(t) = \) \{ans_rule(20)\}
+$BR \(y_2(t) = \) \{ans_rule(20)\}
+
+$PAR (c) For each solution, plot both its solution curve in the \(yv\)-plane and its \(y(t)\)- and \(v(t)\)-graphs. Use the direction field from (a), but sketch the solution curves in the \(yv\)-plane and the  \(y(t)\)- and \(v(t)\)-graphs by hand on paper.
+$BR Which of the following curves most closely matches your graph? \{$mc->menu()\}
+$BR (click on any graph to embiggen)
+$BCENTER
+$PAR (a) \(\quad\) \{image("BDH_2.3.2.png",width=>500,height=>166)\} 
+$PAR (b) \(\quad\) \{image("BDH_2.3.5.png",width=>500,height=>166)\} 
+$PAR (c) \(\quad\) \{image("BDH_2.3.4.png",width=>500,height=>166)\} 
+$PAR (d) \(\quad\) \{image("BDH_2.3.6.png",width=>500,height=>166)\} 
+$ECENTER 
+
+$PAR What is different in this case, where \(k\) is negative?
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+UNORDERED_ANS( 
+$ans1->cmp(), 
+$ans2->cmp(), 
+$mc->cmp() # this needs to be in the unordered as well -- can't be outside
+);
+
+ENDDOCUMENT();        

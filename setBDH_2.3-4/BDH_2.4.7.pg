@@ -1,0 +1,110 @@
+##DESCRIPTION
+##  System solutions and partially-decoupled systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'partially-decoupled systems')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(Additional analytic methods for special systems)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.4')
+## Problem1('7') # actually, 5, 7, and 11
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc1 = RadioButtons(["Yes, a solution","No, not a solution"], "No, not a solution");
+$mc2 = PopUp(["?", "i", "ii"], "i");
+$mc3 = PopUp(["?", "i", "ii"], "i");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the partially decoupled system 
+\[\begin{aligned}
+\frac{dx}{dt} &= 2x + y \\
+\frac{dy}{dt} &=  -y. 
+\end{aligned}\]
+
+(a) Is \(\mathbf{Y}(t) = (x(t), y(t)) = (e^{2t}-e^{-t}, e^{-2t})\) a solution?
+$BR \{$mc1->buttons()\} 
+
+$PAR (b) Derive the general solution to this system.
+$BR \(x(t) =\) \{ans_rule(20)\} use $BTT k1 $ETT and $BTT k2 $ETT for any constants appearing in \(x(t)\)
+$BR \(y(t) =\) \{ans_rule(20)\} use $BTT k1 $ETT for any constant appearing in \(y(t)\)
+
+
+$PAR (c) Using the result of (b), determine the solution that satisfies the initial condition \(\mathbf{Y}(0) = (x(0), y(0)) = (0, 1)\):
+$BR \(\mathbf{Y}(t) = (x(t), y(t)) = \) ( \{ans_rule(20)\} , \{ans_rule(20)\} )
+
+$PAR (d) Using HPGSystemSolver, generate the direction field for the system. Plot, on paper, the solution curve from (c) in the \(xy\)- phase plane.
+$BR Which of the following most closely matches your sketch? \{$mc2->menu()\}
+$PAR $BCENTER
+(i)  \{image("BDH_2.4.11b.png",width=>250,height=>250)\} \(\qquad\)
+(ii) \{image("BDH_2.4.12b.png",width=>250,height=>250)\} $ECENTER 
+
+$PAR (e) Using only your solution curve from (d), sketch, on paper, the \(x(t)\)- and \(y(t)\)-graphs.
+$BR Which of the following most closely matches your sketch? \{$mc3->menu()\}
+$PAR $BCENTER
+(i)  \{image("BDH_2.4.11c.png",width=>250,height=>175)\} \(\qquad\)
+(ii) \{image("BDH_2.4.12c.png",width=>250,height=>175)\} $ECENTER 
+
+END_TEXT
+Context()->normalStrings;
+
+$ansbx = "k2 e^(2t) - k1/3 e^(-t)";
+$ansby = "k1 e^(-t)";
+$anscx = "1/3 e^(2t) - 1/3 e^(-t)";
+$anscy = "e^(-t)";
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp());
+ANS(fun_cmp($ansbx, var=>["t","k1","k2"]));
+ANS(fun_cmp($ansby, var=>["t","k1","k2"]));
+ANS(fun_cmp($anscx, var=>["t"]));
+ANS(fun_cmp($anscy, var=>["t"]));
+ANS($mc2->cmp());
+ANS($mc3->cmp());
+
+ENDDOCUMENT();        

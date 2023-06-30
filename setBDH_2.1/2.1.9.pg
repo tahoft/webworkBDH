@@ -1,0 +1,90 @@
+##DESCRIPTION
+##  Modeling via systems
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(Modeling via systems)
+## Date('9/26/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.1')
+## Problem1('9')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(R=>"Real", F=>"Real", a=>"Real");
+
+$ans1 = Compute("2R - 1.2RF - a");
+$ans2 = Compute("-F + 0.9RF");
+$ans3 = Compute("R(2-R) - 1.2RF - a");
+$ans4 = Compute("-F + 0.9RF");
+
+##############################################################
+#
+#  Text
+#
+#
+
+TEXT(beginproblem());
+Context()->texStrings;
+BEGIN_TEXT
+
+The predator-prey and modified predator-prey systems disussed in the text are: 
+\[\begin{aligned}
+\text{(i)} \;
+&\frac{dR}{dt} = 2R - 1.2RF 
+&\text{(ii)} \;
+&\frac{dR}{dt} = 2R\,\left(1-\frac{R}{2}\right) - 1.2RF \\
+&\frac{dF}{dt} = -F + 0.9RF
+&
+&\frac{dy}{dt} = -F + 0.9RF.
+\end{aligned} \]
+
+How would you modify these systems to include the effect of hunting of the prey at a rate of \(\alpha\) units of prey per unit of time? (use "a" in your answer instead of "alpha")
+$PAR \(\displaystyle \text{(i)} \; \frac{dR}{dt} = \) \{ans_rule(20)\}
+$BR \(\displaystyle \quad\; \frac{dF}{dt} = \) \{ans_rule(20)\}
+$PAR \(\displaystyle \text{(ii)}\; \frac{dR}{dt} = \) \{ans_rule(20)\}
+$BR \(\displaystyle \quad\;\; \frac{dF}{dt} = \) \{ans_rule(20)\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans1->cmp);
+ANS($ans2->cmp);
+ANS($ans3->cmp);
+ANS($ans4->cmp);
+
+ENDDOCUMENT();        

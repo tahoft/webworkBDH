@@ -1,0 +1,106 @@
+##DESCRIPTION
+##  Direction fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The geometry of systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.2')
+## Problem1('6')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc1 = PopUp(["?", "a", "b", "c", "d"], "c" );
+$mc2 = PopUp(["?", "a", "b", "c", "d"], "c" );
+$mc3 = RadioButtons([ 
+    "As \(t\) increases, solutions move up and right if \(x(0) > 0\), up and left if \(x(0) < 0\).", # 2.2.2
+    "As \(t\) increases, solutions move toward the \(x\)-axis in the \(y\)-direction and away from the \(y\)-axis in the \(x\)-direction.", # 2.2.5
+    "As \(t\) increases, solutions move away from the equilibrium point at the origin.", # 2.2.6
+    "As \(t\) increases, solutions move along horizontal lines toward the right."], # 2.2.1
+    "As \(t\) increases, solutions move away from the equilibrium point at the origin." );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the first-order system of differential equations
+\[\begin{aligned}
+\frac{dx}{dt} &= x \\
+\frac{dy}{dt} &= 2y 
+\end{aligned}\]
+
+$PAR $HR $PAR (a) Sketch, on paper, enough vectors in the direction field to get a sense of its geometric structure (you should do this part of the exercise without the use of technology) and confirm your work with HPGSystemSolver from the DETools software.
+$BR Which of the following direction fields most closely matches your sketch?
+\{$mc1->menu()\} 
+$PAR $BCENTER 
+(a) \{image("BDH_2.2.2_d.png",width=>250,height=>250)\} \(\quad\)
+(b) \{image("BDH_2.2.5_d.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+(c) \{image("BDH_2.2.6_d.png",width=>250,height=>250)\} \(\quad\)
+(d) \{image("BDH_2.2.1_d.png",width=>250,height=>250)\} $ECENTER
+
+$PAR $HR $PAR (b) Make a rough sketch, on paper, of the phase portrait of the system (i.e. sketch solution curves on your vector field) and confirm your answer using HPGSystemSolver.
+$BR Which of the following phase portraits most closely matches your sketch?
+\{$mc2->menu()\} 
+$PAR $BCENTER 
+(a) \{image("BDH_2.2.2_p.png",width=>250,height=>250)\} \(\quad\)
+(b) \{image("BDH_2.2.5_p.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+(c) \{image("BDH_2.2.6_p.png",width=>250,height=>250)\} \(\quad\)
+(d) \{image("BDH_2.2.1_p.png",width=>250,height=>250)\} $ECENTER
+
+$PAR $HR $PAR (c) Briefly describe the behavior of the solutions.
+$BR \{$mc3->buttons()\} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+
+ENDDOCUMENT();        

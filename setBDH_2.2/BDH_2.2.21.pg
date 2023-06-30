@@ -1,0 +1,100 @@
+##DESCRIPTION
+##  Direction fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The geometry of systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.2')
+## Problem1('21')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$str = ["?", "i", "ii", "iii", "iv"];
+$mc1 = PopUp($str, "iii");
+$mc2 = PopUp($str, "ii");
+$mc3 = PopUp($str, "i");
+$mc4 = PopUp($str, "iv");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+$PAR $BCENTER \{image("BDH_2.2.21.png",width=>300,height=>250)\} $ECENTER
+
+$PAR Consider the four solution curves in the phase portrait (i--iv) and the four pairs of \(x(t)-\) and \(y(t)-\)graphs (a--d) shown below.  
+
+$PAR Match each solution curve with its corresponding pair of \(x(t)-\) and \(y(t)-\)graphs.
+
+$PAR $BCENTER 
+(i)   \{image("BDH_2.2.21c_sol.png",width=>250,height=>200)\} \(\qquad\)
+(ii)  \{image("BDH_2.2.21b_sol.png",width=>250,height=>200)\} $ECENTER
+$PAR $BCENTER 
+(iii) \{image("BDH_2.2.21a_sol.png",width=>250,height=>200)\} \(\qquad\)
+(iv) \{ image("BDH_2.2.21d_sol.png",width=>250,height=>200) \} $ECENTER
+
+
+$PAR $BCENTER 
+\{$mc1->menu()\}
+(a) \{image("BDH_2.2.21a.png",width=>200,height=>133)\} \(\qquad\)
+\{$mc2->menu()\}
+(b) \{image("BDH_2.2.21b.png",width=>200,height=>133)\} $ECENTER
+$PAR $BCENTER 
+\{$mc3->menu()\}
+(c) \{image("BDH_2.2.21c.png",width=>200,height=>133)\} \(\qquad\)
+\{$mc4->menu()\}
+(d) \{image("BDH_2.2.21d.png",width=>200,height=>133)\} $ECENTER
+$BR (click on any graph to embiggen)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Damped harmonic oscillator.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'second order differential equations', 'damped harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(First order systems)
+## DBsection(The damped harmonic oscillator)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('2.3')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "unorderedAnswer.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Numeric")->variables->add(t=>"Real");
+$ans1 = Compute("e^(-2t)");
+$ans2 = Compute("e^(-5t)");
+
+$mc = PopUp(["?", "a", "b", "c", "d"], "b");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the harmonic oscillator equation for y(t) 
+\[ \frac{d^2y}{dt^2} + 7 \frac{dy}{dt} + 10y = 0. \]
+
+(a) Using HPGSystemSolver from the DETools software, sketch the associated direction field. (you'll need to convert the second-order equation into a first-order system; no work to submit here)
+
+$PAR (b) Using the guess-and-test method, find two nonzero solutions that are not multiples of one another.
+$BR \(y_1(t) = \) \{ans_rule(20)\}
+$BR \(y_2(t) = \) \{ans_rule(20)\}
+
+$PAR (c) For each solution, plot both its solution curve in the \(yv\)-plane and its \(y(t)\)- and \(v(t)\)-graphs. Use the direction field from (a), but sketch the solution curves in the \(yv\)-plane and the  \(y(t)\)- and \(v(t)\)-graphs by hand on paper.
+$BR Which of the following curves most closely matches your graph? \{$mc->menu()\}
+$BCENTER
+$PAR (a) \(\quad\) \{image("BDH_2.3.2.png",width=>500,height=>166)\} 
+$PAR (b) \(\quad\) \{image("BDH_2.3.1.png",width=>500,height=>166)\} 
+$PAR (c) \(\quad\) \{image("BDH_2.3.4.png",width=>500,height=>166)\} 
+$PAR (d) \(\quad\) \{image("BDH_2.3.3.png",width=>500,height=>166)\} 
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+UNORDERED_ANS( 
+$ans1->cmp(), 
+$ans2->cmp(), 
+$mc->cmp() # this needs to be in the unordered as well -- can't be outside
+);
+
+ENDDOCUMENT();        
