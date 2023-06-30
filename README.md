@@ -5,11 +5,13 @@ Folders have textbook exercises & support files. The setDefs folder has assignme
 
 I used a fairly vanilla webwork AWS server, except for the following: 
 to fix LaTeX hardcopy from barfing on unicode infinity, added
-`\DeclareUnicodeCharacter{221E}{$\infty$}  
+```
+\DeclareUnicodeCharacter{221E}{$\infty$}  
 %%%  
 to  
 /opt/webwork/webwork2/conf/snippets/hardcopyPreamble.tex  
 and  
-/opt/webwork/webwork2/conf/snippets/hardcopyThemes/oneColumn/hardcopyPreamble.tex`  
+/opt/webwork/webwork2/conf/snippets/hardcopyThemes/oneColumn/hardcopyPreamble.tex
+```  
 
 Questions/comments/concerns contact hoft@stthomas.edu (Thomas Höft).
