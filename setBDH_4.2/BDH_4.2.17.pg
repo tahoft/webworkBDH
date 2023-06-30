@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Sinusoidal forcing)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.2')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$lst = [ "?", "i", "ii", "iii", "iv", "v", "vi"];
+$mca = PopUp($lst, "v" );
+$mcb = PopUp($lst, "ii" );
+$mcc = PopUp($lst, "i" );
+$mcd = PopUp($lst, "vi" );
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Six second-order equations and four \(y(t)\)-graphs are given below. The equations are all of the form
+\[ \frac{d^y}{dt^2} + p \frac{dy}{dt} + q \, y = \cos{\omega t} \]
+for various values of the parameters \(p\), \(q\), and \(\omega\). For each \(y(t)\)-graph, determine the second-order equation for which \(y(t)\) is a solution. You should do this exercise without using technology and be able to state briefly how you know your choice is correct.
+
+\[\begin{aligned}
+\text{(i)}\;\;\; p = 5,\, q = 3,\, \omega = 1 \quad
+\text{(ii)}  \; p = 1,\, q = 3,\, \omega = 1 \quad 
+\text{(iii)} \; p = 5,\, q = 2,\, \omega = 2 
+\\
+\text{(iv)} \; p = 1,\, q = 3,\, \omega = 2 \quad 
+\text{(v)}  \; p = 5,\, q = 1,\, \omega = 3 \quad
+\text{(vi)} \; p = 1,\, q = 1,\, \omega = 3 
+\end{aligned} \]
+
+$PAR $BCENTER \{ image("BDH_4.2.17.png",width=>600,height=>375) \}
+$BR (click on image to embiggen) $ECENTER
+
+$PAR (a) \{$mca->menu()\} \(\quad\) (b) \{$mcb->menu()\} \(\quad\)
+     (c) \{$mcc->menu()\} \(\quad\) (d) \{$mcd->menu()\} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mca->cmp);
+ANS($mcb->cmp);
+ANS($mcc->cmp);
+ANS($mcd->cmp);
+
+ENDDOCUMENT();        

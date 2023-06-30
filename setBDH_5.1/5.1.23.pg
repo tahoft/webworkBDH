@@ -1,0 +1,105 @@
+##DESCRIPTION
+##  Three-dimensional first-order linear differential systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'three dimensions')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Euilibrium point analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.1')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context("Point");
+Context()->variables->add(a=>"Real");
+
+$equil = List([Point(0,0), 
+		Point("1/sqrt(a)","1/sqrt(a)"), 
+		Point("-1/sqrt(a)","-1/sqrt(a)")]);
+
+$param = List([0]);
+
+$mcport = PopUp(["?", "i", "ii", "iii", "iv"], "iii");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+The system 
+\[ \begin{aligned}
+\frac{dx}{dt} &= y - ax^3 \\
+\frac{dy}{dt} &= y - x \\
+\end{aligned} \]
+depends on the parameter \(a\). 
+
+$PAR $HR $PAR (a) Find all equilibrium points: \(\;\;\) \{ans_rule(50)\} 
+$BR (enter as a comma-separated list of points \((x_i,y_i)\))
+
+$PAR $HR $PAR (b) Determine all values of \(a\) at which a bifurcation occurs: 
+\(\;\;\) \{ans_rule(10)\} $BR (enter as a comma-separated list of values)
+
+$PAR $HR $PAR (c) Sketch, on paper, the phase portrait before, at, and after each bifurcation value. 
+$BR \(\quad\) Select the graph corresponding to your sketch: \{$mcport->menu()\}
+$PAR $BCENTER
+( i )   \(\;\) \{image("BDH_5.1.20.png",width=>500,height=>150)\} $BR
+\( \qquad a<0 \hskip 140px a=0 \hskip 140px a>0 \) $BR$BR
+( ii )  \(\;\) \{image("BDH_5.1.22.png",width=>500,height=>150)\} $BR
+\( \qquad a<0 \hskip 140px a=0 \hskip 140px a>0 \) $BR$BR
+( iii ) \(\;\) \{image("BDH_5.1.23.png",width=>500,height=>150)\} $BR
+\( \qquad a<0 \hskip 140px a=0 \hskip 140px a>0 \) $BR$BR
+( iv )  \(\;\) \{image("BDH_5.1.25.png",width=>500,height=>150)\} $BR
+\( \qquad a<0 \hskip 140px a=0 \hskip 140px a>0 \) $BR$BR
+$ECENTER 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($equil->cmp);
+ANS($param->cmp);
+ANS($mcport->cmp);
+
+ENDDOCUMENT();        

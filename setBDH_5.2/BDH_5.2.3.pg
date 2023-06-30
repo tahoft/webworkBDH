@@ -1,0 +1,105 @@
+##DESCRIPTION
+##  Nonlinear systems of differential equations, qualitative analysis.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'nonlinear systems of ODEs', 'qualitative analysis')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Qualitative analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.2')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Point");
+
+$equil = List([Point(1,1), Point(0,0)]);
+
+$mc = PopUp(["?", "i", "ii", "iii"], "iii");
+
+$mc2 = RadioButtons([
+    "All three solutions will go down and to the right without bound.", 
+    "The solutions for (a) and (c) tend to infinity in the left-up region; the solution for (b) tends to infinity in the right-down region.", 
+    "The solutions for (a) and (b) tend toward the equilibrium point at (0, 0); the solutions for (c) tends toward the equilibrium point at (1, 1)."],
+    "c",
+    labels => ["a", "b", "c"]);
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the system 
+\[ \begin{aligned}
+\frac{dx}{dt} &= x(x-1) \\
+\frac{dy}{dt} &= x^2-y \\
+\end{aligned} \]
+and the initial conditions
+\[ \begin{aligned}
+&\text{(a)} \; x_0=-1,\; y_0=0 \\
+&\text{(b)} \; x_0=0.8,\; y_0=0 \\
+&\text{(c)} \; x_0=1,\; y_0=3 \\
+\end{aligned} \]
+Sketch, on paper, the \(x\)- and \(y\)-nullclines of the system. Then find all equilibrium points. Using the direction of the vector field between the nullclines, describe the possible fate of the solution curves corresponding to the initial conditions (a), (b), and (c).
+
+$PAR $HR $PAR The equilibrium points are: \(\;\;\) \{ans_rule(50)\} 
+$BR \(\quad\) Enter as a comma-separated list of points \((x_i,y_i)\).
+
+$PAR $HR $PAR Select the graph corresponding to your sketch of the nullclines: \{$mc->menu()\}
+$PAR $BCENTER
+( i )   \(\;\) \{image("BDH_5.2.2.png",width=>200,height=>150)\} \(\;\;\)
+( ii )  \(\;\) \{image("BDH_5.2.1.png",width=>200,height=>200)\} $PAR
+( iii ) \(\;\) \{image("BDH_5.2.3.png",width=>200,height=>200)\} $ECENTER 
+
+$PAR $HR $PAR Describe the long-term behviour of the solutions with initial conditions (a-c): 
+$BR \{$mc2->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($equil->cmp);
+ANS($mc->cmp);
+ANS($mc2->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,120 @@
+##DESCRIPTION
+##  Nonlinear systems of ODEs.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'nonlinear')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Euilibrium point analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.1')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   "scaffold.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context("Point");
+
+$eqs = List([Point(0,0), Point(0,50), Point(40,0)]);
+
+$cls = ["?","sink","source","saddle","spiral sink","spiral source","center"];
+$mc1 = PopUp($cls, "source");
+$mc2 = PopUp($cls, "sink");
+$mc3 = PopUp($cls, "saddle");
+
+$mc = RadioButtons(["I did it!"], "I did it!");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+$Scaffold::isInstructor = 0; # for testing
+
+$showPartialCorrectAnswers = 1;
+
+Scaffold::Begin();
+BEGIN_TEXT
+Consider the system
+\[ \begin{aligned}
+\frac{dx}{dt} &= x(-x-y+40) \\
+\frac{dy}{dt} &= y(-x^2-y^2+2500) \\
+\end{aligned} \]
+where we restrict our attention to \(x,\,y\ge0\). 
+END_TEXT
+
+Section::Begin("(a)");
+BEGIN_TEXT
+The equilibria are \{ans_rule(50)\}.
+$BR (enter a comma-separated list of points \((x_0,y_0)\))
+END_TEXT
+ANS($eqs->cmp);
+Section::End();
+
+Section::Begin("(b)");
+BEGIN_TEXT
+Classify all equilibria.
+$BR The equilibrium at (0,0) is a \{$mc1->menu()\}
+$BR The equilibrium at (0,50) is a \{$mc2->menu()\}
+$BR The equilibrium at (40,0) is a \{$mc3->menu()\}
+END_TEXT
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+Section::End();
+
+Section::Begin("(c)");
+BEGIN_TEXT
+Sketch, on paper, the phase portrait for the linearized system near each equilibrium. Use HPGSystemSolver to compare the actual phase portrait to the phase portraits of the linearizations. (You may need to set \(\Delta t = 0.0001\).) (nothing to enter online)
+$BR \{$mc->buttons()\}
+END_TEXT
+ANS($mc->cmp);
+Section::End();
+
+Scaffold::End();
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+
+ENDDOCUMENT();        

@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Three-dimensional first-order linear differential systems.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'three dimensions')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Euilibrium point analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.1')
+## Problem1('3')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context('Matrix');
+$J1 = Matrix([[-2,1],[0,-1]]);
+$J2 = Matrix([[-2,1],[4,-1]]);
+
+Context("Numeric");
+Context()->variables->add(y=>"Real");
+$dx1 = Compute("-2x+y");
+$dy1 = Compute("-y");
+$dx2 = Compute("-2x+y");
+$dy2 = Compute("4x-y");
+
+$cls = ["?","sink","source","saddle","spiral sink","spiral source","center"];
+$mccls1 = PopUp($cls, "sink");
+$mccls2 = PopUp($cls, "saddle");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the system 
+\[ \begin{aligned}
+\frac{dx}{dt} &= -2x + y \\
+\frac{dy}{dt} &= -y + x^2 \\
+\end{aligned} \]
+which depends on the parameter \(a\). 
+
+$PAR $HR $PAR (a) Find the linearized system for the equilibrium point (0,0).
+$BR The Jacobian is \(J(0,0) = \) \{$J1->ans_array\}
+$BR \(\displaystyle\frac{dx}{dt} = \) \{ans_rule(20)\} 
+$BR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+
+$PAR $PAR (b) The equilibrium at (0,0) is a \{$mccls1->menu()\}
+
+$PAR $PAR (c) Sketch, on paper, the phase portrait for the linearized system near (0,0).  (nothing to enter online)
+
+$PAR $HR $PAR (d) Find the linearized system for the equilibrium point (2,4).
+$BR The Jacobian is \(J(2,4) = \) \{$J2->ans_array\}
+$BR \(\displaystyle\frac{dx}{dt} = \) \{ans_rule(20)\} 
+$BR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+
+$PAR $PAR (e) The equilibrium at (2,4) is a \{$mccls2->menu()\}
+
+$PAR $PAR (f) Sketch, on paper, the phase portrait for the linearized system near (2,4).  (nothing to enter online)
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($J1->cmp);
+ANS($dx1->cmp);
+ANS($dy1->cmp);
+ANS($mccls1->cmp);
+ANS($J2->cmp);
+ANS($dx2->cmp);
+ANS($dy2->cmp);
+ANS($mccls2->cmp);
+
+ENDDOCUMENT();        

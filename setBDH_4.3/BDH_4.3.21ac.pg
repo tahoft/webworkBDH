@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Undamped forcing and resonance)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.3')
+## Problem1('21') # parts (a) & (c) 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$lst = [ "?", "i", "ii", "iii", "iv"];
+$mca = PopUp($lst, "iii" );
+$mcc = PopUp($lst, "i" );
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Four second-order equations and two \(y(t)\)-graphs are given below. For each \(y(t)\)-graph, determine the second-order equation for which \(y(t)\) is a solution. You should do this exercise without using technology and be able to state briefly how you know your choice is correct.
+
+\[\begin{aligned}
+&(\text{i}) \; \frac{d^2y}{dt^2}+16y=10 
+&&(\text{ii})\; \frac{d^2y}{dt^2}+16y=-10 \\\\
+&(\text{iii}) \; \frac{d^2y}{dt^2}+16y=\frac{1}{2}\cos{4t} 
+&&(\text{iv})\; \frac{d^2y}{dt^2}+2\frac{dy}{dt}+16y=\cos{4t}
+\end{aligned}\]
+
+$PAR $BR $BCENTER 
+(a) \{image("BDH_4.3.21a.png",width=>250,height=>160)\} \(\quad\) \{$mca->menu()\}
+$PAR
+(c) \{image("BDH_4.3.21c.png",width=>250,height=>160)\} \(\quad\) \{$mcc->menu()\}
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mca->cmp);
+ANS($mcc->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,97 @@
+##DESCRIPTION
+##  Nonlinear systems of differential equations, qualitative analysis.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'nonlinear systems of ODEs', 'qualitative analysis')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Qualitative analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.2')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc1 = PopUp(["?", "i", "ii", "iii", "iv"], "i");
+
+$mc2 = RadioButtons([
+"Solutions that start in region A eventually enter region B. Solutions that start in region C head down and to the left until they enter region B. Solutions that start in region B stay in region B. All solutions head off to infinity in the a-direction.", #17
+"All solutions in the first quadrant tend to the equilibrium point in the first quadrant.", #18
+"Solutions that start in region A eventually enter region B. Solutions that start in region C head down and to the left until they enter region B. Solutions that start in region B either stay in B or go to C and back to B. All solutions head off to infinity in the a-direction."], #19
+    "c",
+    labels => ["a", "b", "c"]);
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+The system below models a chemical reaction: 
+\[ \begin{aligned}
+\frac{da}{dt} &= 2 - \frac{ab}{2} \\
+\frac{db}{dt} &= \frac{3}{2} - \frac{ab}{2} \\
+\end{aligned} \]
+Here \(a(t)\) is the amount of substance \(A\) in a solution, and \(b(t)\) is the amount of substance \(B\) in a solution at time \(t\). We only need to consider nonnegative \(a(t)\) and \(b(t)\).
+
+$PAR $HR $PAR 
+(a) Sketch, on paper, the nullclines and indicate the direction of the vector field along the nullcline,
+\(\quad\) Select the graph corresponding to your sketch: \{$mc1->menu()\}
+$PAR $BCENTER
+( i )   \(\;\) \{image("BDH_5.2.19.png",width=>200,height=>200)\} \(\quad\)
+( ii )  \(\;\) \{image("BDH_5.2.18.png",width=>300,height=>200)\} $PAR
+( iii ) \(\;\) \{image("BDH_5.2.20.png",width=>200,height=>200)\} \(\quad\) 
+( iv )  \(\;\) \{image("BDH_5.2.17.png",width=>200,height=>200)\} $ECENTER 
+
+$PAR $HR $PAR 
+(b) identify the regions that solutions cannot leave and determine the fate of solutions in these regions as time increases.
+$BR \{$mc2->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Nonlinear systems of differential equations, qualitative analysis.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'nonlinear systems of ODEs', 'qualitative analysis')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Qualitative analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.2')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc1 = PopUp(["?", "i", "ii", "iii", "iv", "v"], "v");
+
+$mc2 = RadioButtons([
+"Most solutions tend towards one of the equilibria on the co-ordinate axes.", #5
+"All solutions off the axes tend towards the solution in the first quadrant.", #7
+"Solutions off the x-axis tend toward the sink on the y-axis.", #9
+"Most solutions tend towards the sink in the first quadrant or the sink on the x-axis.", #11
+"Most solutions tend toward either the sink on the y-axis or toward infinity in the y-direction."], #13
+    "d",
+    labels => ["a", "b", "c", "d", "e"]);
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the system 
+\[ \begin{aligned}
+\frac{dx}{dt} &= x(-8x-6y+480) \\
+\frac{dy}{dt} &= y(-x^2-y^2+2500) \\
+\end{aligned} \]
+with \(x, y \ge 0\). 
+
+Sketch, on paper, the \(x\)- and \(y\)-nullclines and the phase portrait of the system. Describe the long-term behavior of solutions to the system.
+
+$PAR $HR $PAR Select the graph corresponding to your sketch: \{$mc1->menu()\}
+$PAR $BCENTER
+( i )   \(\;\) \{image("BDH_5.2.7.png", width=>440,height=>200)\} $PAR
+( ii )  \(\;\) \{image("BDH_5.2.9.png", width=>440,height=>200)\} $PAR
+( iii ) \(\;\) \{image("BDH_5.2.13.png",width=>440,height=>200)\} $PAR 
+( iv )  \(\;\) \{image("BDH_5.2.5.png", width=>440,height=>200)\} $PAR 
+( v )   \(\;\) \{image("BDH_5.2.11.png",width=>440,height=>200)\} $ECENTER 
+
+$PAR $HR $PAR Describe the long-term behviour of solutions: 
+$BR \{$mc2->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+
+ENDDOCUMENT();        

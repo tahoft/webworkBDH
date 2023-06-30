@@ -1,0 +1,116 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Sinusoidal forcing)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.2')
+## Problem1('15') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+$ypa = Compute("-8/145 cos(3t) + 9/145 sin(3t)");
+$ypb = Compute("-1/sqrt(145) cos( 3t + arctan(9/8) )"); # answer in book
+# equivalent to  1/sqrt(145) cos( 3t + arctan(9/8) + pi)
+# equivalent to  1/sqrt(145) cos( 3t +  pi - arcsin(-9/sqrt(145)) )
+# equivalent to  1/sqrt(145) cos( 3t + 2pi - arccos(-8/sqrt(145)) )
+# webwork accepts previous three comments as equivalent to $ypb
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+To find a particular solution of a forced equation with sine or cosine forcing, we solved the corresponding complexified equation. This method is particularly efficient, but there are other approaches. Find a particular solution via the Method of Undetermined Coefficients for the equation
+\[ \frac{d^2y}{dt^2} + 3 \frac{dy}{dt} + y = \cos{3t} \]
+
+$PAR (a) by using the guess \(y_p(t) = a \cos{3t} + b \sin{3t}\) \(\quad\)(with \(a\) and \(b\) as undetermined coefficients)
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\} 
+
+$PAR (b) by using the guess \(y_p(t) = A \cos{\left(3t+\phi\right)}\) \(\quad\) (with \(A\) and \(\phi\) as undetermined coefficients)
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(40)\} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+#ANS($ypa->cmp);
+# if student enters cos answer from part b, ww recognizes as correct for a!
+#ANS($ypb->cmp); 
+# if student enters cos + sin answer from part a, ww recognizes as correct for b!
+
+sub mychecka {
+  my ($correct, $student, $ansHash) = @_;
+  if ( index($student->{string},"sin")!=-1 ) # check if ans contains sin
+  { if ( index($student->{string},"arcsin")!=-1   ||
+         index($student->{string},"asin")!=-1     ||
+         index($student->{string},"sin^-1")!=-1   ||
+         index($student->{string},"sin^(-1)")!=-1 ||
+         index($student->{string},"sin^[-1]")!=-1 ||
+         index($student->{string},"sin^{-1}")!=-1 ) # check if contains arcsin
+    { return 0; } # sin but it's actually an arcsin, wrong
+    else { return($student==$correct); } # sin, check
+  }
+  else { return 0; } #  no sin, wrong.
+}
+ANS($ypa->cmp(checker=>~~&mychecka));
+
+sub mycheckb {
+  my ($correct, $student, $ansHash) = @_;
+  if ( index($student->{string},"sin")!=-1 ) # check if ans contains sin
+  { if ( index($student->{string},"arcsin")!=-1   ||
+         index($student->{string},"asin")!=-1     ||
+         index($student->{string},"sin^-1")!=-1   ||
+         index($student->{string},"sin^(-1)")!=-1 ||
+         index($student->{string},"sin^[-1]")!=-1 ||
+         index($student->{string},"sin^{-1}")!=-1 ) # check if contains arcsin
+    { return($student==$correct); } # sin but it's actually an arcsin, check
+    else { return 0; } # sin, wrong
+  }
+  else { return($student==$correct); } #  no sin, check.
+}
+ANS($ypb->cmp(checker=>~~&mycheckb));
+
+ENDDOCUMENT();        

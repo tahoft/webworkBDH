@@ -1,0 +1,102 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Sinusoidal forcing)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.2')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+Context()->variables->add(k1=>"Real", k2=>"Real");
+$y1 = Compute("e^(-2t) cos(4t)");
+$y2 = Compute("e^(-2t) sin(4t)");
+$yp = Compute("4/65 e^(-t) cos(t) + 1/130 e^(-t) sin(t)");
+$y_gen = Compute("k1 $y1 + k2 $y2 + $yp");
+
+$mc = RadioButtons([
+"All of the exponential terms tend to 0. Hence, the solution tends to a constant.",
+"The solution tends to infinity.",
+"All solutions oscillate with decaying amplitude and the period of the forcing function since the natural oscillations decay faster than the forcing oscillations.",
+"All exponential terms in the solution tend to zero. Hence, the solution tends to infinity linearly in t."],
+"All solutions oscillate with decaying amplitude and the period of the forcing function since the natural oscillations decay faster than the forcing oscillations.");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+(a) Find the general solution of
+\[ \frac{d^2y}{dt^2} + 4 \frac{dy}{dt} + 20 y = e^{-t} \cos{t}. \]
+\(\quad\) $BITALIC Hint$EITALIC: Consider the forcing function to be the real part of a complex exponential. 
+$PAR \(\quad\) \(y(t) = \) \{ans_rule(60)\} 
+$PAR \(\quad\) Use "k1" and "k2" for the constants in your solution.
+
+$PAR $BR (b) Determine the long-term behavior of solutions of this equation.
+$BR \{$mc->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  if ( $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       ( ($student->substitute(k1=>1, k2=>0) == $y1 + $yp) || # one of terms is y1
+         ($student->substitute(k1=>0, k2=>1) == $y1 + $yp) ) && 
+       ( ($student->substitute(k1=>1, k2=>0) == $y2 + $yp) || # one of terms is y2
+         ($student->substitute(k1=>0, k2=>1) == $y2 + $yp) ) && 
+       $student->substitute(k1=>0, k2=>0) == $yp # probably redundant w/above...
+     ) 
+  { return 1; } else { return 0; } 
+}
+ANS($y_gen->cmp(checker=>~~&mycheck));
+
+ANS($mc->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,126 @@
+##DESCRIPTION
+##  Nonlinear systems of ODEs.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order systems of differential equations', 'nonlinear')
+
+## DBsubject(Differential equations)
+## DBchapter(Nonlinear Systems)
+## DBsection(Euilibrium point analysis)
+## Date('11/18/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('5.1')
+## Problem1('6')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+# the following line should load latex mathtools package to get pmatrix*, but breaks latex...
+#TEXT(MODES(HTML=>'\(\require{mathtools}\)', TeX=>'')); 
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+
+Context('Matrix');
+$J = Matrix([["2-2x-y", "-x"], ["-2y", "3-2y-2x"]]);
+
+Context("Numeric");
+Context()->variables->add(y=>"Real");
+$dx1 = Compute("2x");
+$dy1 = Compute("3y");
+$dx2 = Compute("-x");
+$dy2 = Compute("-6x-3y");
+$dx3 = Compute("-2x-2y");
+$dy3 = Compute("-y");
+
+$cls = ["?","sink","source","saddle","spiral sink","spiral source","center"];
+$mc1 = PopUp($cls, "source");
+$mc2 = PopUp($cls, "sink");
+$mc3 = PopUp($cls, "sink");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+For the competing species population model
+\[ \begin{aligned}
+\frac{dx}{dt} &= 2x\left(1-\frac{x}{2}\right) - xy \\
+\frac{dy}{dt} &= 3y\left(1-\frac{y}{3}\right) - 2xy \\
+\end{aligned} \]
+the equilibrium point (1,1) is a saddle. 
+
+$PAR $HR $PAR The Jacobian is \(J(x,y) = \) \{$J->ans_array\}
+
+$PAR $HR $PAR (a) Find the linearized system for the equilibrium point (0,0).
+$BR \(\displaystyle\frac{dx}{dt} = \) \{ans_rule(20)\} 
+$BR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+
+$PAR $PAR (b) The equilibrium at (0,3) is a \{$mc1->menu()\}
+
+$PAR $PAR (c) Sketch, on paper, the phase portrait for the linearized system near (0,0).  (nothing to enter online)
+
+$PAR $HR $PAR (d) Find the linearized system for the equilibrium point (0,3).
+$BR \(\displaystyle\frac{dx}{dt} = \) \{ans_rule(20)\} 
+$BR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+
+$PAR $PAR (e) The equilibrium at (0,3) is a \{$mc2->menu()\}
+
+$PAR $PAR (f) Sketch, on paper, the phase portrait for the linearized system near (0,3).  (nothing to enter online)
+
+$PAR $HR $PAR (h) Find the linearized system for the equilibrium point (2,0).
+$BR \(\displaystyle\frac{dx}{dt} = \) \{ans_rule(20)\} 
+$BR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+
+$PAR $PAR (i) The equilibrium at (2,0) is a \{$mc3->menu()\}
+
+$PAR $PAR (j) Sketch, on paper, the phase portrait for the linearized system near (2,0).  (nothing to enter online)
+
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($J->cmp);
+ANS($dx1->cmp);
+ANS($dy1->cmp);
+ANS($mc1->cmp);
+ANS($dx2->cmp);
+ANS($dy2->cmp);
+ANS($mc2->cmp);
+ANS($dx3->cmp);
+ANS($dy3->cmp);
+ANS($mc3->cmp);
+
+ENDDOCUMENT();        

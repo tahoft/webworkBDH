@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Sinusoidal forcing)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.2')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+Context()->variables->add(k1=>"Real", k2=>"Real");
+$y1 = Compute("e^(-2t)");
+$y2 = Compute("e^(-t)");
+$yp = Compute("1/10 cos(t) + 3/10 sin(t)");
+$y_gen = Compute("k1 $y1 + k2 $y2 + $yp");
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+Find the general solution of the differential equation
+\[ \frac{d^2y}{dt^2} + 3 \frac{dy}{dt} + 2 y = \cos{t} \]
+
+\(y(t) = \) \{ans_rule(40)\} 
+
+$PAR Use "k1" and "k2" for the constants in your solution.
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+sub mycheck {
+  my ($correct, $student, $ansHash) = @_;
+  if ( $student->usesOneOf("k1") && # uses constant k1
+       $student->usesOneOf("k2") && # uses constant k2
+       ( ($student->substitute(k1=>1, k2=>0) == $y1 + $yp) || # one of terms is y1
+         ($student->substitute(k1=>0, k2=>1) == $y1 + $yp) ) && 
+       ( ($student->substitute(k1=>1, k2=>0) == $y2 + $yp) || # one of terms is y2
+         ($student->substitute(k1=>0, k2=>1) == $y2 + $yp) ) && 
+       $student->substitute(k1=>0, k2=>0) == $yp # probably redundant w/above...
+     ) 
+  { return 1; } else { return 0; } 
+}
+ANS($y_gen->cmp(checker=>~~&mycheck));
+
+ENDDOCUMENT();        

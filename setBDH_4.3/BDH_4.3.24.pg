@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Sinusoidally forced second-order equations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'second order differential equations', 'forced differential equations', 'harmonic oscillator')
+
+## DBsubject(Differential equations)
+## DBchapter(Forcing and resonance)
+## DBsection(Undamped forcing and resonance)
+## Date('10/23/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('4.3')
+## Problem1('24')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans_mi = Real(1/180);
+$ans_ft = Real(29);
+$ans_in = Real(4);
+
+##############################################################
+#
+#  Text
+#
+#
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Suppose the suspension system of the average car can be fairly well modeled by an underdamped harmonic oscillator with a natural period of 2 seconds. How far apart should speed bumps be placed so that a car traveling at 10 miles per hour over several bumps will bounce more and more violently with each bump?
+$PAR \{ans_rule(10)\} miles
+$PAR \{ans_rule(3)\} feet and \{ans_rule(3)\} inches
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($ans_mi->cmp);
+ANS($ans_ft->cmp);
+ANS($ans_in->cmp);
+
+ENDDOCUMENT();        
