@@ -1,0 +1,139 @@
+##DESCRIPTION
+##  Euler's method
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Numerical methods)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.4')
+## Problem1('5')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGtikz.pl",
+   "niceTables.pl",
+   "PGML.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+@def_val_y = (-2, 5); # default vertical range of graph
+
+$t_end = 5;
+$n = 5;
+$del_t = ($t_end-0)/$n;
+foreach my $i (0..$n) { $tn[$i] = $i * $del_t; }
+
+@y_eul = (4, -1, -1, -1, -1, -1);
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization");
+$im_y->tikzOptions("scale=2");
+
+$tikz_str_y = "scientific axes, all axes={grid, ticks=many},
+             x axis={label=\(t\)}, 
+             y axis={label=\(y_n\)}, 
+             visualize as scatter=def, def={style={draw opacity=0,mark=.}},
+             visualize as line=pts, pts={style={mark=*}},";
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+$refreshCachedImages=1;
+
+BEGIN_PGML
+Perform Euler’s method *by hand* with the given step size [`\Delta t`] on the initial-value problem over the time interval specified:
+[``` \frac{dy}{dt} = (3-y)(y+1), \quad y(0)=4, \quad  0 \le t \le5, \quad \Delta t=1.0. ```]
+Fill in the table below of the time values and approximate values of the dependent variable. Use decimals throughout, not fractions.
+
+[@ DataTable([
+['k', 't_k', 'y_k'],
+["0", PGML('[__________________]'), PGML('[__________________]')],
+["1", PGML('[__________________]'), PGML('[__________________]')],
+["2", PGML('[__________________]'), PGML('[__________________]')],
+["3", PGML('[__________________]'), PGML('[__________________]')],
+["4", PGML('[__________________]'), PGML('[__________________]')],
+["5", PGML('[__________________]'), PGML('[__________________]')],
+], midrules=>1, align => '|r|c|c|');
+@]*
+
+(keep four decimals in intermediate calculations; your answers need to be correct to [`\pm0.01`])
+END_PGML
+
+# check student answers
+foreach my $i (0..$n) { 
+    ANS( Real($tn[$i])->cmp );
+    ANS( Real($y_eul[$i])->cmp(tolType => 'absolute', tolerance => .01) );
+}
+
+# pull student entries 
+foreach my $i (0..$n) { 
+    $a_t[$i] = $inputs_ref->{ANS_NUM_TO_NAME(2*$i+1)}; 
+    $a_y[$i] = $inputs_ref->{ANS_NUM_TO_NAME(2*$i+2)}; 
+}
+
+# convert student entries to tikZ
+$pts_str_y = ""; # initialize data string
+foreach my $i (0..$n) { # if ans exists, tack on to string
+    if (exists($a_t[$i])) {
+    if ($a_y[$i]) {
+        $pts_str_y .= "$a_t[$i],$a_y[$i]
+                      ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+}
+
+$im_y->BEGIN_TIKZ
+\datavisualization [$tikz_str_y]
+    data [set=pts, headline={x, y}] { $pts_str_y } % student input
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $tn[ 0], $def_val_y[0]
+        $tn[$n], $def_val_y[1]
+    };
+END_TIKZ
+
+BEGIN_PGML
+[@ image( insertGraph($im_y), width=>700,tex_size=>800 ) @]*
+
+(click on the graph to embiggen)
+END_PGML
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ENDDOCUMENT();        

@@ -1,0 +1,113 @@
+##DESCRIPTION
+##  Phase lines
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Equilibria and phase lines)
+## Date('9/19/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.6')
+## Problem1('23') # modified to make roots nicer
+
+# original is \frac{dy}{dt} = y^2 - 4y + 2 w/roots 2+/-sqrt(2)
+# new is \frac{dy}{dt} = y^2 - 4y + 3 w/roots 1 & 3
+
+########################################################################
+
+# from Library/CSUOhio/differential_equations/phasePortrait/phasePortrait17.pg
+
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+# Unicode symbols for use in PopUp
+$inf = "~~x{221E}";
+$ninf = "-~~x{221E}";
+
+$str1 = ["?", "increasing", "decreasing", "an equilibrium"];
+$str2 = ["?", $inf, "3", "0", "1", $ninf];
+
+$mc1 = PopUp($str1, "decreasing");
+$mc2 = PopUp($str2, "1");
+$mc3 = PopUp($str2, "3");
+
+$mc4 = PopUp($str1, "increasing");
+$mc5 = PopUp($str2, "1");
+$mc6 = PopUp($str2, $ninf);
+
+$mc7 = PopUp($str1, "increasing");
+$mc8 = PopUp($str2, $inf);
+$mc9 = PopUp($str2, "3");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+TEXT(beginproblem());
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Consider the differential equation 
+\[ \frac{dy}{dt} = y^2 - 4y + 3. \]  
+Describe the long-term behavior of solutions with the given initial condition.
+$BR($BITALIC Hint: draw a phase line and use it to answer the questions below. $EITALIC)
+
+$HR 
+$PAR For \(y(0)=2\), the solution is \{$mc1->menu()\} 
+$PAR As \(t\to\infty\) it tends toward \{ $mc2->menu() \}
+$PAR As \(t\to-\infty\) it tends toward \{ $mc3->menu() \}
+
+$HR
+$PAR For \(y(0)=-4\), the solution is \{ $mc4->menu() \} 
+$PAR As \(t\to\infty\) it tends toward \{ $mc5->menu() \}
+$PAR As \(t\to-\infty\) it tends toward \{ $mc6->menu() \}
+
+$HR
+$PAR For \(y(3)=5\), the solution is \{ $mc7->menu() \} 
+$PAR As \(t\to\infty\) it tends toward \{ $mc8->menu() \}
+$PAR As \(t\to-\infty\) it tends toward \{ $mc9->menu() \}
+
+END_TEXT
+Context()->normalStrings;
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+ANS($mc5->cmp);
+ANS($mc6->cmp);
+ANS($mc7->cmp);
+ANS($mc8->cmp);
+ANS($mc9->cmp);
+
+ENDDOCUMENT();        

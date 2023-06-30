@@ -1,0 +1,71 @@
+##DESCRIPTION
+##  Separation of variables
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'separation of variables')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.2')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", y=>"Real");
+
+$ans = Compute("3 t^2 y");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Make up a differential equation of the form \(\displaystyle\frac{dy}{dt} = f(t, y)\) that has \(y(t) = e^{t^3}\) as a solution. 
+$BR (Try to come up with one whose right-hand side \(f(t, y)\) depends explicitly on both \(t\) and \(y\).)
+
+$PAR \(\displaystyle\frac{dy}{dt} =\) \{ ans_rule(10) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,104 @@
+##DESCRIPTION
+##  Euler's method
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Numerical methods)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.4')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Perform Euler’s method with the given step size \(\Delta t\) on the initial-value problem over the time interval specified:
+\[ \frac{dy}{dt} = y^2-4t, \quad y(0)=0.5, \quad  0 \le t \le2, \quad \Delta t=0.25.\]
+Fill in the table below of the time values and approximate values of the dependent variable. Make a sketch of the graph of the approximate solution on paper or using your favorite spreadsheet software (not for credit).
+$PAR
+$BCENTER
+\{begintable(3)\}
+        \{row(" \(k\) ", " \(t_k\) ","\( y_k\)")\}
+        \{row("\( 0 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 1 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 2 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 3 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 4 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 5 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 6 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 7 \)", ans_rule(7), ans_rule(7))\}
+        \{row("\( 8 \)", ans_rule(7), ans_rule(7))\}
+        \{endtable()\}
+$ECENTER
+$PAR
+(keep four decimals in intermediate calculations; your answers need to be correct to \(\pm0.01\))
+END_TEXT
+Context()->normalStrings;
+$ans = Real(-1);
+
+$ans[0]  = Real(0); # t_0
+$ans[1]  = Real(0.5); # y_0
+$ans[2]  = Real(0.25); # t_1
+$ans[3]  = Real(0.56); # y_1
+$ans[4]  = Real(0.5); # t_2
+$ans[5]  = Real(0.39); # y_2
+$ans[6]  = Real(0.75); # t_3
+$ans[7]  = Real(-0.07); # y_3
+$ans[8]  = Real(1); # t_4
+$ans[9]  = Real(-0.82); # y_4
+$ans[10] = Real(1.25); # t_5
+$ans[11] = Real(-1.65); # y_5
+$ans[12] = Real(1.5); # t_6
+$ans[13] = Real(-2.22); # y_6
+$ans[14] = Real(1.75); # t_7
+$ans[15] = Real(-2.49); # y_7
+$ans[16] = Real(2); # t_8
+$ans[17] = Real(-2.69); # y_8
+
+##############################################################
+#
+#  Answers
+#
+#
+
+foreach my $i (0..17) {
+  ANS( $ans[$i]->cmp(tolType => 'absolute', tolerance => .01));
+}
+ENDDOCUMENT();        

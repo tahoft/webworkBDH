@@ -1,0 +1,80 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+#   "PGgraphmacros.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ansa = Real(0);
+$mc = PopUp(["?", "a", "b", "c"], "c");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Locate the bifurcation values for the one-parameter family 
+\[ \frac{dy}{dt} = y^2 + a \]
+and, on paper, draw the phase lines for values of the parameter slightly smaller than, slightly larger than, and at the bifurcation values.
+$PAR \(\quad a = \) \{ans_rule(5)\} (for multiple values, enter a comma-separated list, i.e. "-7, 42")
+$PAR Select the bifurcation diagram that matches your diagram: \{$mc->menu()\} 
+
+$PAR $BCENTER (a) \{ image("BDH_1.7.3.png",width=>550,height=>250) \} $ECENTER
+$PAR $BCENTER (b) \{ image("BDH_1.7.2.png",width=>450,height=>250) \} $ECENTER
+$PAR $BCENTER (c) \{ image("BDH_1.7.1.png",width=>400,height=>250) \} $ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ansa->cmp);
+ANS($mc->cmp);
+
+ENDDOCUMENT();        

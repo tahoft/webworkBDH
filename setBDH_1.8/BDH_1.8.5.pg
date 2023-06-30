@@ -1,0 +1,71 @@
+##DESCRIPTION
+##  Linear equations (undetermined coefficients)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.8')
+## Problem1('5')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", k=>"Real");
+
+$ans = Compute("ke^(3t) - 4te^(3t)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Find the general solution of the differential equation 
+\[ \frac{dy}{dt} = 3y - 4e^{3t}. \]
+Use \(k\) for the constant appearing in your solution. 
+$PAR \(y(t) =\) \{ ans_rule(30) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+
+ENDDOCUMENT();        

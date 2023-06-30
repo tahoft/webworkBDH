@@ -1,0 +1,88 @@
+##DESCRIPTION
+##  Linear equations (integrating factor / variation of parameters)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.9')
+## Problem1('21')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "parserRadioButtons.pl",
+  "parserOneOf.pl",
+  "PGcourse.pl",
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", k=>"Real");
+
+$ans = Compute("ke^(-0.4t) + 15/52 cos(2t) + 75/52 sin(2t)");
+
+$mc = RadioButtons([
+    "Integrating factors / variation of parameters.", 
+    "Undetermined coefficients.", 
+    "Both are of the same degree of ease / difficulty.",
+    "Neither is easy."], "Neither is easy.");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the nonhomogeneous equation 
+\[ \frac{dv}{dt} + 0.4\,v = 3\cos{2t}. \]
+
+(a) Find the general solution using the method of integrating factors or the method of variation of parameters. Use \(k\) for the constant appearing in your solution. 
+$BR \(v(t) =\) \{ans_rule(20)\}
+
+$PAR (b) Find the general solution using the guessing technique from Section 1.8 (the method of undetermined coefficients). Use \(k\) for the constant appearing in your solution. 
+$BR \(v(t) =\) \{ans_rule(20)\}
+
+$PAR Which method was easier for you? 
+$BR \{$mc->buttons\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+ANS($ans->cmp);
+Context()->strings->add("B0"=>{}, "B1"=>{}, "B2"=>{}, "B3"=>{});
+ANS(OneOf("B0","B1","B2","B3")->cmp());
+
+ENDDOCUMENT();        

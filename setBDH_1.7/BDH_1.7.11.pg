@@ -1,0 +1,94 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('11')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGgraphmacros.pl",
+#   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans = List(-1,1);
+
+# GRAPH OF f(y)
+$gr = init_graph(-4,-4,4,4,axes=>[0,0],grid=>[8,8],size=>[300,300]);
+$gr -> lb('reset');
+$gr -> lb(new Label ( 3.5,0,'y','black','left','bottom'));
+$gr -> lb(new Label ( 0.25,3.5,'f(y)','black','left','bottom'));
+$gr -> lb(new Label ( 0.25,$c,'y = f(x)','black','left','bottom'));
+foreach my $i (1..3) {
+  $gr -> lb(new Label ( $i,-0.5, $i,'black','center','middle'));
+  $gr -> lb(new Label (-$i,-0.5,-$i,'black','center','middle'));
+}
+foreach my $j (1..3) {
+  $gr -> lb(new Label (-0.5,$j,$j,'black','center','middle'));
+  $gr -> lb(new Label (-0.5,-$j,-$j,'black','center','middle'));
+}
+add_functions($gr, "-(x-3)*x*(x+3)/10 for x in <-4,4> using color:blue and weight:2");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Locate the bifurcation values that occur in the one-parameter family 
+\[ \frac{dy}{dt} = f(y) + \alpha \]
+where a graph of \(f(y)\) is 
+$PAR $BCENTER
+\{image(insertGraph($gr), width=>300, height=>300, tex_size=>700)\}
+$ECENTER $BR
+(You should, on paper, draw the phase lines for values of the parameter slightly smaller than, slightly larger than, and at the bifurcation values.)
+$PAR
+\(\quad \alpha = \) \{ans_rule(5)\} (for multiple values, enter a comma-separated list, i.e. "-7, 42")
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+ANS($ans->cmp);
+
+
+ENDDOCUMENT();        

@@ -1,0 +1,213 @@
+##DESCRIPTION
+##  Euler's method
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Numerical methods)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.4')
+## Problem1('15')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "PGtikz.pl",
+   "PGML.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real");
+
+$y = Compute("1/4 (t+2)^2");
+
+@def_val_y = (0, 10); # default vertical range of graph
+
+$t_end = 4;
+$n1 = 4;
+$n2 = 8;
+$n3 = 16;
+
+$del_t1 = ($t_end-0)/$n1;
+$del_t2 = ($t_end-0)/$n2;
+$del_t3 = ($t_end-0)/$n3;
+foreach my $i (0..$n1) { $tn1[$i] = $i * $del_t1; }
+foreach my $i (0..$n2) { $tn2[$i] = $i * $del_t2; }
+foreach my $i (0..$n3) { $tn3[$i] = $i * $del_t3; }
+
+$y_1 = List(1.00000000, 2.00000000, 3.41421356, 5.26197263, 7.55587163);
+$y_2 = List(1.00000000, 1.50000000, 2.11237244, 2.83907259, 3.68154997, 4.64091825, 5.71805778, 6.91368082, 8.22837477);
+$y_3 = List(1.00000000, 1.25000000, 1.52950850, 1.83869175, 2.17768767, 2.54661243, 2.94556515, 3.37463137, 3.83388562, 4.32339338, 4.84321266, 5.39339517, 5.97398728, 6.58503082, 7.22656369, 7.89862041, 8.60123252);
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization,plotmarks");
+$im_y->tikzOptions("scale=2");
+
+$tikz_str_y = "scientific axes, all axes={grid, ticks=many},
+             x axis={label=\(t\),}, 
+             y axis={label=\(y\)}, 
+             visualize as smooth line=fun,
+                fun={style={dashed}, label in legend={text={\(y(t)\) (exact)}}},
+             visualize as line=pts1, 
+                pts1={style={mark=o}, label in legend={text={\(y_k\) (n=4)}}},
+             visualize as line=pts2, 
+                pts2={style={mark=square, color=gray}, label in legend={text={\(y_k\) (n=8)}}},
+             visualize as line=pts3, 
+                pts3={style={mark=diamond, color=gray}, label in legend={text={\(y_k\) (n=16)}}},
+             visualize as scatter=def, def={style={draw opacity=1,mark=.}},
+%             legend={north east outside},
+             legend entry options/default label in legend path/.style=
+                straight label in legend line,";
+                
+# to get link to numerical methods widget to open in new tab
+HEADER_TEXT(<<EOF);
+  <script type="text/javascript" language="javascript">
+  <!-- //
+  function windowpopup() {
+    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var opt = "_blank";
+    window.open(url,opt).focus();
+  }
+  // -->
+  </script>
+EOF
+
+$mc1 = RadioButtons(
+    [ "The error between the numerical solution and the exact solution decreases as the stepsize \(\Delta t\) decreases.", 
+    "The error between the numerical solution and the exact solution increases as the stepsize \(\Delta t\) decreases.", 
+    "The approximate solutions should always be greater than the actual solution.", 
+    "The approximate solutions will always be less than the actual solution.",
+    "Both (a) and (c).","Both (b) and (d).","Both (a) and (d).","Both (b) and (c)."],
+    "g",
+    labels=>["a","b","c","d","e","f","g","h"]);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+$showPartialCorrectAnswers = 1;
+$refreshCachedImages=1;
+
+BEGIN_PGML
+Consider the initial-value problem 
+[``` \frac{dy}{dt} = \sqrt{y}, \quad y(0)=1. ```] 
+
+Solve, by hand, the initial value problem:
+    [`y(t) = `] [____________________________________]{$y}
+
+Using Euler's method, compute three different approximate solutions corresponding to [`\Delta t =`] 1.0, 0.5, and 0.25 over the interval [`0 \le t \le 4`].
+
+(your answers should to be correct to [`\pm 0.0001\%`])
+
+You can use 
+[@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
+(opens in new tab).
+
+    [`\Delta t = 1.0: \qquad y_0, y_1, y_2, \dots , y_4 = `] [____________________________________]
+
+    [`\Delta t = 0.5: \qquad y_0, y_1, y_2, \dots , y_8 = `] [____________________________________]
+
+    [`\Delta t = 0.25: \quad y_0, y_1, y_2, \dots , y_{16} = `] [____________________________________]
+
+    (enter as a comma-separated lists)
+END_PGML
+
+ANS( $y_1->cmp(tolType => 'relative', tolerance => .0001) );
+ANS( $y_2->cmp(tolType => 'relative', tolerance => .0001) );
+ANS( $y_3->cmp(tolType => 'relative', tolerance => .0001) );
+
+# pull student entries 
+$ans_hash_y = $y->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(1)} );
+$a_y_func = Compute($ans_hash_y->{student_ans});
+
+$ans_hash_y1 = $y_1->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(2)} );
+@a_yk1 = split(',', $ans_hash_y1->{original_student_ans}); 
+$ans_hash_y2 = $y_2->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(3)} );
+@a_yk2 = split(',', $ans_hash_y2->{original_student_ans}); 
+$ans_hash_y3 = $y_3->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(4)} );
+@a_yk3 = split(',', $ans_hash_y3->{original_student_ans}); 
+
+# convert student entries to tikZ
+$pts_str_y1 = ""; # initialize data string
+foreach my $i (0..$n1) { # if ans exists, tack on to string
+    if ($a_yk1[$i]) {$pts_str_y1 .= "$tn1[$i],$a_yk1[$i]
+                                  ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+$pts_str_y2 = ""; # initialize data string
+foreach my $i (0..$n2) { # if ans exists, tack on to string
+    if ($a_yk2[$i]) {$pts_str_y2 .= "$tn2[$i],$a_yk2[$i]
+                                  ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+$pts_str_y3 = ""; # initialize data string
+foreach my $i (0..$n3) { # if ans exists, tack on to string
+    if ($a_yk3[$i]) {$pts_str_y3 .= "$tn3[$i],$a_yk3[$i]
+                                  ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+
+if ($ans_hash_y->{student_ans}){
+foreach my $i (0..$n3) { # make string for curve 
+    $tmp = $a_y_func->eval(t=>$tn3[$i]);
+    $y_str_f .= "$tn3[$i],$tmp
+                  ";  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+}
+
+$im_y->BEGIN_TIKZ
+\datavisualization [$tikz_str_y]
+    data [set=pts1, headline={x, y}] { $pts_str_y1 } % student input n=4
+    data [set=pts2, headline={x, y}] { $pts_str_y2 } % student input n=8
+    data [set=pts3, headline={x, y}] { $pts_str_y3 } % student input n=16
+    data [set=fun, headline={x, y}] { $y_str_f } % curve
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $tn1[  0], $def_val_y[0]
+        $tn1[$n1], $def_val_y[1]
+    };
+END_TIKZ
+
+BEGIN_PGML
+[@ image( insertGraph($im_y), width=>800,tex_size=>800 ) @]*
+
+(click on the graph to embiggen)
+
+What observations can you make about the actual and approximate solutions to the initial-value problem?
+
+[_]{$mc1} 
+END_PGML
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ENDDOCUMENT();        

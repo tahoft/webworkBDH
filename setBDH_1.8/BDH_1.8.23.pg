@@ -1,0 +1,78 @@
+##DESCRIPTION
+##  Linear equations (undetermined coefficients)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.8')
+## Problem1('23')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(t=>"Real", k=>"Real");
+
+$ansg = Compute("ke^(3t) - (2/3)t - (2/9) - e^(4t)");
+$anss = Compute("(11/9)e^(3t) - (2/3)t - (2/9) - e^(4t)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Find the general solution and the solution that satisfies the initial
+condition \(y(0) = 0\) for the differential equation 
+\[ \frac{dy}{dt} - 3y = 2t - e^{4t}. \]
+Use \(k\) for the constant appearing in your general solution. 
+
+$PAR \(y(t) =\) \{ans_rule(20)\} (general solution)
+
+$PAR \(y(t) =\) \{ans_rule(20)\} (specific solution satisfying the inital condition)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ansg->cmp);
+ANS($anss->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Increasing, decreasing, equilibria
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/7/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.1')
+## Problem1('3')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ansa = List(0, 230);
+$ansb1 = Real(0);
+$ansb2 = Real(230);
+$ansc = Real(230);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the differential equation
+\[ \frac{dP}{dt} = 0.4 P \left( 1 - \frac{P}{230} \right) \]
+where \(P(t)\) is the population at time \(t\).  (consider only \(P>0\) )
+$PAR (a) For what values of \(P\) is the population in equilibrium? \(\;\) \(P =\) \{ans_rule(6)\}   
+$BR \(\quad\) (enter your answer as a comma-separated list)
+$PAR (b) For what values of \(P\) is the population increasing? \(\;\) \{ ans_rule(3) \} \(< P < \) \{ ans_rule(3) \}.
+$PAR (c) For what values of \(P\) is the population decreasing? \(\;\) \(P > \) \{ ans_rule(3) \}.
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ansa->cmp);
+ANS($ansb1->cmp);
+ANS($ansb2->cmp);
+ANS($ansc->cmp);
+
+ENDDOCUMENT();        

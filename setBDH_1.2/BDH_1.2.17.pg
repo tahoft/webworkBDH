@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Separation of variables
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'separation of variables')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.2')
+## Problem1('17')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(k => 'Real');
+Context()->variables->add(t => 'Real');
+
+$ans1 = List([Formula("ke^t/(1+ke^t)"),1]);
+$ans2 = List([Formula("e^t/(k+e^t)"),  0]);
+$ans3 = List([Formula("1/(ke^(-t)+1)"),0]);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+
+BEGIN_TEXT
+
+Find the general solution of the differential equation 
+\[\frac{dy}{dt} = y(1-y).\]
+Use \(k\) for the constant appearing in your solution. 
+
+$PAR \(y(t) =\) \{ ans_rule(20) \}
+$BR (if you need to enter multiple expressions, separate them with a comma)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+# could do nested partial-credits...
+# may have incorrect error message if given in opposite order and one of them is wrong -- i.e. answer given is 1, 1/(ke^(-t)+1) 
+
+ANS(pc_evaluator([ 
+    [$ans1->cmp], 
+    [$ans2->cmp], 
+    [$ans3->cmp], 
+    ]));
+
+ENDDOCUMENT();        

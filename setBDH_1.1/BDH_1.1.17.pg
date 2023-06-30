@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Increasing, decreasing, equilibria
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/7/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.1')
+## Problem1('17')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+Context()->variables->add(P=>"Real", k=>"Real", N=>"Real", a=>"Real");
+
+$ans[0] = Compute("k*(1-P/N)*P-100");
+$ans[1] = Compute("k*(1-P/N)*P-P/3");
+$ans[2] = Compute("k*(1-P/N)*P-a*sqrt(P)");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Suppose a species of fish in a particular lake has a population that is modeled by the logistic population model with growth rate \(k\), carrying capacity \(N\), and time \(t\) measured in years:
+\[\frac{dP}{dt} = k(1-P/N)P.\]
+Adjust the model to account for each of the following situations.
+
+$PAR (a) One hundred fish are harvested each year.
+$PAR \(\quad\) \(\displaystyle\frac{dP}{dt} = \) \{ ans_rule(20) \}
+
+$PAR (b) One-third of the fish population is harvested annually.
+$PAR \(\quad\) \(\displaystyle\frac{dP}{dt} = \) \{ ans_rule(20) \}
+
+$PAR (c) The number of fish harvested each year is proportional to the square root of the number of fish in the lake. 
+$PAR \(\quad\) \(\displaystyle\frac{dP}{dt} = \) \{ ans_rule(20) \}
+$BR \(\quad\) (use \(a\) for the additional constant of proportionality)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+foreach my $i (0..2) {ANS($ans[$i]->cmp);}
+
+ENDDOCUMENT();        

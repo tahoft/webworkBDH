@@ -1,0 +1,84 @@
+##DESCRIPTION
+##  Increasing, decreasing, equilibria
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/7/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.1')
+## Problem1('15')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$str = ["?", "Aly", "Beth", "They both have the same rate"];
+$mca = PopUp($str, "Beth");
+$mcb = PopUp($str, "Aly");
+$mcc = PopUp($str, "They both have the same rate");
+    
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the following two differential equations that model two students’ rates of memorizing a poem. Aly’s rate is proportional to the amount to be learned with proportionality constant \(k = 2\). Beth’s rate is proportional to the square of the amount to be learned with proportionality constant 3. The corresponding differential equations are
+\[ \frac{dL_A}{dt} = 2(1-L_A) \qquad \text{and} \qquad \frac{dL_B}{dt} = 3(1-L_B)^2 \]
+where \(L_A(t)\) and \(LB(t)\) are the fractions of the poem learned at time \(t\) by Aly and Beth, respectively.
+
+$PAR (a) Which student has a faster rate of learning at \(t = 0\) if they both start memorizing together having never seen the poem before? 
+\(\;\) \{$mca->menu()\}
+
+$PAR (b) Which student has a faster rate of learning at \(t = 0\) if they both start memorizing together having already learned one-half of the poem? 
+\(\;\) \{$mcb->menu()\}
+
+$PAR (c) Which student has a faster rate of learning at \(t = 0\) if they both start memorizing together having already learned one-third of the poem?
+\(\;\) \{$mcc->menu()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mca->cmp);
+ANS($mcb->cmp);
+ANS($mcc->cmp);
+
+ENDDOCUMENT();        

@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Separation of variables
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'separation of variables')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.2')
+## Problem1('15')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$e = exp(1);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+
+Find the general solution of the differential equation \(\frac{dy}{dt} = \frac{1}{2y+1}\).
+Use \(c\) for the constant appearing in your solution. 
+$BR
+$BR
+\(\frac{dy}{dt} =\) \{ ans_rule(20) \}
+
+END_TEXT
+Context()->normalStrings;
+
+$ans1 = "-1/2 + sqrt(t+c)";
+$ans2 = "-1/2 + sqrt(t+c+1/4)";
+
+##############################################################
+#
+#  Answers
+#
+#
+
+#ANS(fun_cmp($ans, var=>["t","c"]));
+#ANS( pc_evaluator([[ fun_cmp(0), 0], 
+#  [fun_cmp("k($ans) +c",var=>['x','y'], params=>['k','c']]));
+ANS(pc_evaluator([ [fun_cmp($ans1, var=>["t","c"])], 
+  [fun_cmp($ans2, var=>["t","c"])] ]));
+
+
+
+ENDDOCUMENT();        

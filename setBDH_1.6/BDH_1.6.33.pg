@@ -1,0 +1,80 @@
+##DESCRIPTION
+##  Phase lines
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Equilibria and phase lines)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.6')
+## Problem1('33')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "unionTables.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc = PopUp(["?", "a", "b", "c", "d"], "d" );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+\{ColumnTable(
+"The phase line for an autonomous equation \[\frac{dy}{dt} = f(y) \] is shown to the right.",
+image("BDH_1.6.33.png",width=>100,height=>300))\}
+$PAR Make, on paper, a rough sketch of the graph of the function \(f(y)\).
+$PAR Which of the following graphs most closely resembles yours? \{$mc->menu()\} 
+
+$PAR $BCENTER 
+(a) \{ image("BDH_1.6.34a.png",width=>250,height=>167) \} \(\quad\)
+(b) \{ image("BDH_1.6.35a.png",width=>250,height=>167) \} $ECENTER
+$PAR $BCENTER 
+(c) \{ image("BDH_1.6.36a.png",width=>250,height=>167) \} \(\quad\)
+(d) \{ image("BDH_1.6.33a.png",width=>250,height=>167) \} $ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp);
+
+ENDDOCUMENT();        

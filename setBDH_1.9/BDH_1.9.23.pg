@@ -1,0 +1,48 @@
+##DESCRIPTION
+##  Linear equations (integrating factor / variation of parameters)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.9')
+## Problem1('23')
+
+########################################################################
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "parserRadioButtons.pl",
+  "parserOneOf.pl",
+  "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+######################################
+
+$mc = RadioButtons(["one","two","three"],"one");
+
+######################################
+
+BEGIN_TEXT
+What number is less than three?
+$PAR
+\{$mc->buttons\}
+END_TEXT
+
+######################################
+Context()->strings->add("B0"=>{}, "B1"=>{}, "B2"=>{});
+ANS(OneOf("B0","B1")->cmp());
+ENDDOCUMENT();

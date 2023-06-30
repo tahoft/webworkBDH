@@ -1,0 +1,111 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('19')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"PGgraphmacros.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ansa = Real(16);
+
+$inf = "~~x{221E}";
+$ninf = "-~~x{221E}";
+
+$mc1 = PopUp(["?", "100","90","80","70","60","50","40","30","20","10","0"],"40");
+$mc2 = PopUp(["?", 
+    $inf,"100","90","80","70","60","50","40","30","20","10","0", $ninf],
+    "60");
+
+$mc3 = PopUp(["?", "100","90","80","70","60","50","40","30","20","10","0"],"40");
+$mc4 = PopUp(["?", 
+    $inf,"100","90","80","70","60","50","40","30","20","10","0", $ninf],
+    "0");
+
+$mc5 = RadioButtons([
+    "The fish will all live happy lives.", 
+    "The fish population will crash to zero if only eleven additional fish die.", 
+    "The fish population will explode, with \(P\to\infty\) due to underfishing.",
+    "There is no circumstance that will result in the population failing to to approach a non-zero equilibrium value."],
+    "b",
+    labels=>["a","b","c","d"]);
+    
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the population model
+\[ \frac{dP}{dt} = 2P - \frac{P^2}{50} \]
+for a species of fish in a lake (notice this is a Logistic model). Suppose it is decided that fishing will be allowed, but it is unclear how many fishing licenses should be issued. Suppose the average catch of a fisherman with a license is 3 fish per year (these are hard fish to catch).
+
+$PAR $HR $PAR (a) What is the largest number of licenses that can be issued if the fish are to have a chance to survive in the lake? \{ans_rule(5)\}
+$BR $BITALIC (Hint: think about a bifurcation -- a qualitative change in the behavior of solutions such as population stability at a non-zero value vs die-off to population of zero.) $EITALIC
+
+$PAR $HR $PAR (b) Suppose the number of fishing licenses in part (a) is issued. What will happen to the fish population -- that is, how does the behavior of the population depend on the initial population?
+$BR $BITALIC (Hint: draw a bifurcation diagram with a phase line at the value you found in (a).) $EITALIC
+$PAR If the initial population is greater than \{$mc1->menu()\}, the population will tend towards the value \{$mc2->menu()\}.
+$PAR If the initial population is smaller than \{$mc3->menu()\}, the population will tend towards the value \{$mc4->menu()\}
+
+$PAR $HR $PAR (c) The simple population model above can be thought of as a model of an ideal fish population that is not subject to many of the environmental problems of an actual lake. For the actual fish population, there will be occasional changes in the population that were not considered when this model was constructed. For example, if the water level increases due to a heavy rainstorm, a few extra fish might be able to swim down a usually dry stream bed to reach the lake, or the extra water might wash toxic waste into the lake, killing a few fish. Given the possibility of unexpected perturbations of the population not included in the model, what do you think will happen to the actual fish population if we allow fishing at the level determined in part (b)?
+$PAR \{$mc5->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+ANS($ansa->cmp);
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+ANS($mc5->cmp);
+
+ENDDOCUMENT();        

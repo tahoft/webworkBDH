@@ -1,0 +1,164 @@
+##DESCRIPTION
+##  Euler's method
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Numerical methods)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.4')
+## Problem1('6') # and 11
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGtikz.pl",
+   "parserPopUp.pl",
+   "parserRadioButtons.pl",
+   "PGML.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+$t_end = 5;
+$n = 8;
+
+# Unicode symbols for use in PopUp
+$inf = "~~x{221E}";
+$ninf = "-~~x{221E}";
+
+$mc1 = PopUp(["?", $inf, "3", "0", "-1", $ninf], "3");
+$mc2 = PopUp(["?", "above", "below"], "below");
+$mc3 = RadioButtons(
+    [ "The long-term behavior of the numerical approximation does not approach the long-term behavior from the qualitative analysis.", 
+    "As the solution approaches the equilibrium solution corresponding to \(y = 3\), its slope decreases. We do not expect the solution to 'jump over' an equilibrium solution, as the numerical approximation does.", 
+    "The numerical solution fails to match the initial condition."],
+    "b",
+    labels=>["a","b","c"]);
+
+@def_val_y = (0, 4); # default vertical range of graph
+
+$del_t = ($t_end-0)/$n;
+foreach my $i (0..$n) { $tn[$i] = $i * $del_t; }
+
+$y_eul = List(0.00000000, 1.87500000, 3.89648438, 1.15297079, 3.63834575, 1.78780306, 3.89990702, 1.14399406, 3.63103513);
+
+$N = 9; # number of entries, zero-indexed, including y_0 and y_n
+
+$im_y = createTikZImage();
+$im_y->tikzLibraries("datavisualization, plotmarks");
+$im_y->tikzOptions("scale=2");
+
+$tikz_str_y = "scientific axes, all axes={grid, ticks=many},
+             x axis={label=\(t\),}, 
+             y axis={label=\(y\)}, 
+             visualize as scatter=def, def={style={draw opacity=0,mark=.}},
+             visualize as line=pts, pts={style={mark=*}},";
+                
+# to get link to numerical methods widget to open in new tab
+HEADER_TEXT(<<EOF);
+  <script type="text/javascript" language="javascript">
+  <!-- //
+  function windowpopup() {
+    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var opt = "_blank";
+    window.open(url,opt).focus();
+  }
+  // -->
+  </script>
+EOF
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+$showPartialCorrectAnswers = 1;
+$refreshCachedImages=1;
+
+BEGIN_PGML
+Consider the initial-value problem 
+[``` \frac{dy}{dt} = (3-y)(y+1), \quad y(0) = 0. ```]
+
+As [`t\to\infty`] the solution to this initial-value problem approaches [_]{$mc1} from [_]{$mc2}.
+
+Use Euler's method with [`n = [$n]`] steps to approximate the solution to the initial-value problem over the time interval [`0 \le t \le [$t_end]`].
+(your answers should to be correct to [`\pm 0.0001\%`])
+
+You can use 
+[@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
+(opens in new tab).
+
+    [`y_0, y_1, y_2, \dots , y_n = `] [____________________________________]
+
+    (enter as a comma-separated list)
+
+END_PGML
+
+ANS( $y_eul->cmp(tolType => 'relative', tolerance => .0001) );
+
+# pull student entries 
+$ans_hash_yn = $y_eul->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(3)} );
+@a_yk = split(',', $ans_hash_yn->{original_student_ans}); 
+
+# convert student entries to tikZ
+$pts_str_y = ""; # initialize data string
+foreach my $i (0..$n) { # if ans exists, tack on to string
+    if ($a_yk[$i]) {$pts_str_y .= "$tn[$i],$a_yk[$i]
+                                  ";}  # *WITH* EXPLICIT CARRIAGE RETURN FOR TIKZ
+    }
+
+$im_y->BEGIN_TIKZ
+\datavisualization [$tikz_str_y]
+    data [set=pts, headline={x, y}] { $pts_str_y } % student input
+    data [set=def, headline={x, y}] { % this just sets the axes vertical range
+        $tn[ 0], $def_val_y[0]
+        $tn[$n], $def_val_y[1]
+    };
+END_TIKZ
+
+BEGIN_PGML
+[@ image( insertGraph($im_y), width=>800,tex_size=>800 ) @]*
+
+(click on the graph to embiggen)
+
+What’s wrong with the approximate solution given by Euler's method?
+
+[_]{$mc3} 
+END_PGML
+
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ENDDOCUMENT();        

@@ -1,0 +1,70 @@
+##DESCRIPTION
+##  Linear equations (integrating factor / variation of parameters)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/22/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.R')
+## Problem1('54')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans = Real(17.5);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A 1000-gallon tank initially contains a mixture of 450 gallons of cola and 50 gallons of cherry syrup. Cola is added at the rate of 8 gallons per minute, and cherry syrup is added at the rate of 2 gallons per minute. At the same time, a well mixed solution of cherry cola is withdrawn at the rate of 5 gallons per minute. What percentage of the mixture is cherry syrup when the tank is full?
+
+$PAR \{ans_rule(5)\}\(\%\)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+
+ENDDOCUMENT();        

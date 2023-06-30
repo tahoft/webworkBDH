@@ -1,0 +1,78 @@
+##DESCRIPTION
+##  Separation of variables
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'separation of variables')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.2')
+## Problem1('1')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc = PopUp(
+    ["?", "Bob", "Glen", "Paul", "Bob and Glen", "Bob and Paul", "Glen and Paul", "All three", "None of them"],
+    "Bob and Glen" );
+$ans = Real(-1);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Bob, Glen, and Paul are once again sitting around enjoying their nice, cold glasses of iced cappucino when one of their students asks them to come up with solutions to the differential equation
+\[ \frac{dy}{dt} = \frac{y+1}{t+1}. \]
+After much discussion, Bob says \(y(t) = t\), Glen says \(y(t) = 2t + 1\), and Paul says \(y(t) = t^2 - 2\).
+
+$PAR (a) Who is right? \{$mc->menu()\} 
+
+$PAR (b) What solution should they have seen right way? \(y(t) = \) \{ ans_rule(3) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp);
+ANS($ans->cmp);
+
+ENDDOCUMENT();        

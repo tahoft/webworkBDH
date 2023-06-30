@@ -1,0 +1,98 @@
+##DESCRIPTION
+##  Slope fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Slope fields)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.3')
+## Problem1('16')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$lst = ["?", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+$mc1 = PopUp($lst, "iii" );
+$mc2 = PopUp($lst, "viii" );
+$mc3 = PopUp($lst, "v" );
+$mc4 = PopUp($lst, "vi" );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Eight differential equations and four slope fields are given below. Determine the equation that corresponds to each slope field. You should do this exercise without using technology.
+
+$PAR
+\( \displaystyle
+   \text{(i)}    \quad \frac{dy}{dt}=y^2+y   \qquad\quad
+   \text{(ii)}   \quad \frac{dy}{dt}=y^2-y   \qquad\quad
+   \text{(iii)}  \quad \frac{dy}{dt}=y^3+y^2 \qquad
+   \text{(iv)}   \quad \frac{dy}{dt}=2-t^2          \)
+$PAR
+\( \displaystyle
+   \text{(v)}    \quad \frac{dy}{dt}=ty+ty^2  \qquad
+   \text{(vi)}   \quad \frac{dy}{dt}=t^2+t^2y \qquad
+   \text{(vii)}  \quad \frac{dy}{dt}=t+ty     \qquad
+   \text{(viii)} \quad \frac{dy}{dt}=t^2-2          \)
+
+$PAR (a) \{$mc1->menu()\} \(\quad\)
+     (b) \{$mc2->menu()\} 
+$PAR (c) \{$mc3->menu()\} \(\quad\)
+     (d) \{$mc4->menu()\} 
+
+$PAR $BCENTER
+\{ image("BDH_1.3.16.png",width=>600,height=>600) \}
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+
+ENDDOCUMENT();        

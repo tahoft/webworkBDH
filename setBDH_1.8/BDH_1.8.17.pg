@@ -1,0 +1,96 @@
+##DESCRIPTION
+##  Linear equations (undetermined coefficients)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.8')
+## Problem1('17')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc1 = RadioButtons([
+    "I verified that it is a solution.", 
+    "I discovered that it is $BBOLD not $EBOLD a solution."], 
+    "I verified that it is a solution.");
+$mc2 = RadioButtons([
+    "I verified that it is a solution.", 
+    "I discovered that it is $BBOLD not $EBOLD a solution."], 
+    "I discovered that it is $BBOLD not $EBOLD a solution.");
+$mc3 = RadioButtons([
+    "The Linearity Principle is wrong.", 
+    "The differential equation is not linear.", 
+    "The Linearity Principle should hold for this equation."], 
+    "The differential equation is not linear.");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the nonhomogeneous linear equation
+\[ \frac{dy}{dt} = y^2. \]
+
+$PAR
+(a) Show that \(y_1(t) = 1/(1 - t)\) is a solution.
+$BR \{$mc1->buttons()\}
+
+$PAR
+(b) Show that \(y_2(t) = 2/(1 - t)\) is not a solution.
+$BR \{$mc2->buttons()\}
+
+$PAR
+(c) Why don’t these two facts contradict the Linearity Principle?
+$BR \{$mc3->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+
+ENDDOCUMENT();        

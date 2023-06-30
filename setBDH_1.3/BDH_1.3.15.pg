@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Slope fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Slope fields)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.3')
+## Problem1('15')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc = PopUp(["?", "a", "b", "c", "d"], "b" );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the autonomous differential equation
+\[ \frac{dS}{dt} = S^3 - 2S^2 + S \]
+(a) Make a rough sketch of the slope field without using any technology.
+$BR
+(b) Using this drawing, sketch the graphs of the solutions \(S(t)\) with the initial conditions \(S(0) = 1/2\), \(S(1) = 1/2\), \(S(0) = 1\), \(S(0) = 3/2\), and \(S(0) = -1/2\).
+$BR
+(c) Confirm your answer using HPGSolver.
+$PAR
+Which of the following slope fields most closely matches your sketch? 
+\{$mc->menu()\} 
+
+$PAR $BCENTER
+(a) \{image("BDH_1.3.15_a.png",width=>250,height=>250)\} \(\quad\)
+(b) \{image("BDH_1.3.15_b.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER
+(c) \{image("BDH_1.3.15_c.png",width=>250,height=>250)\} \(\quad\)
+(d) \{image("BDH_1.3.15_d.png",width=>250,height=>250)\} $ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

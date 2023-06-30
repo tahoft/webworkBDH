@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Linear equations (undetermined coefficients)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.8')
+## Problem1('20')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ansa = Real(3/2);
+$ansb = Real(-1/2);
+$ansc = Real(-1/4);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the nonhomogeneous linear equation
+\[ \frac{dy}{dt} + 2y = 3t^2 + 2t - 1. \]
+In order to find the general solution, we must guess a particular solution \(y_p(t)\). Since the right-hand side is a quadratic polynomial, it is reasonable to guess a quadratic for \(y_p(t)\), so let
+\[ y_p(t) = at^2 + bt + c, \]
+where \(a\), \(b\), and \(c\) are constants. Determine values for these constants so that \(y_p(t)\) is a solution.
+
+$PAR \(a=\) \{ ans_rule(5) \}
+$PAR \(b=\) \{ ans_rule(5) \}
+$PAR \(c=\) \{ ans_rule(5) \}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ansa->cmp);
+ANS($ansb->cmp);
+ANS($ansc->cmp);
+
+ENDDOCUMENT();        

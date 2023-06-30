@@ -1,0 +1,82 @@
+##DESCRIPTION
+##  Increasing, decreasing, equilibria
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/7/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.1')
+## Problem1('13')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$e = exp(1);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider an elementary model of the learning process: Although human learning is an extremely complicated process, it is possible to build models of certain simple types of memorization. For example, consider a person presented with a list to be studied. The subject is given periodic quizzes to determine exactly how much of the list has been memorized. (The lists are usually things like nonsense syllables, randomly generated three-digit numbers, or entries from tables of integrals.) If we let \(L(t)\) be the fraction of the list learned at time \(t\), where \(L = 0\) corresponds to knowing nothing and \(L = 1\) corresponds to knowing the entire list, then we can form a simple model of this type of learning based on the assumption:
+$BR
+The rate \(\frac{dL}{dt}\) is proportional to the fraction of the list left to be learned. 
+$BR
+$BR
+Since \(L = 1\) corresponds to knowing the entire list, the model is
+\[ \frac{dL}{dt} = k(1-L) \]
+where \(k\) is the constant of proportionality.
+$BR
+For what value of \(L\), \(0 \le L \le 1\), does learning occur most rapidly?
+$BR
+\(L =\) \{ ans_rule(3) \} 
+
+END_TEXT
+#Context()->normalStrings;
+#$ans = "k*$e^(2*t)-1/2";
+$ans = Real(0);
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+#ANS(fun_cmp($ans, var=>["t","k"]));
+#ANS(fun_cmp("k*$e^(2*t)-1/2", var=>"t" ,params=>'k'));
+ANS($ans->cmp);
+ENDDOCUMENT();        

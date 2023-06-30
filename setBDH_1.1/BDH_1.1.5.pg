@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Increasing, decreasing, equilibria
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'modeling')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/7/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.1')
+## Problem1('5')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ansa = List(-3, 0, 4);
+
+$ansb[0] = Real(-3);
+$ansb[1] = Real(0);
+$ansb[2] = Real(4);
+
+$ansc[0] = Real(-3);
+$ansc[1] = Real(0);
+$ansc[2] = Real(4);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the differential equation
+\[ \frac{dy}{dt} = y^3 - y^2 - 12y. \]
+$PAR (a) For what values of \(y\) is \(y(t)\) in equilibrium? \(\;\) \(y =\) \{ans_rule(9)\}  
+$BR \(\quad\) (enter your answer as a comma-separated list)
+
+$PAR (b) For what values of \(y\) is \(y(t)\) increasing? \(\;\) \{ ans_rule(3) \} \(< y < \) \{ ans_rule(3) \} and \(y > \) \{ ans_rule(3) \}.
+
+$PAR (c) For what values of \(y\) is \(y(t)\) decreasing? \(\;\) \(y < \) \{ ans_rule(3) \} and \{ ans_rule(3) \} \(< y < \) \{ ans_rule(3) \}.
+
+END_TEXT
+Context()->normalStrings;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ansa->cmp);
+foreach my $i (0..2) {ANS($ansb[$i]->cmp);}
+foreach my $i (0..2) {ANS($ansc[$i]->cmp);}
+
+ENDDOCUMENT();        

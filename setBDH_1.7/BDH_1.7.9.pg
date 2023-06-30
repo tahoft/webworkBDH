@@ -1,0 +1,74 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+#   "PGgraphmacros.pl",
+#   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans = List(-1,1);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Locate the bifurcation values of \(\alpha\) for the one-parameter family 
+\[ \frac{dy}{dt} = \sin(y) + \alpha. \]
+(You should, on paper, draw the phase lines for values of the parameter slightly smaller than, slightly larger than, and at the bifurcation values.)
+$PAR
+\(\quad \alpha = \) \{ans_rule(5)\} (for multiple values, enter a comma-separated list, i.e. "-7, 42")
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+
+ENDDOCUMENT();        

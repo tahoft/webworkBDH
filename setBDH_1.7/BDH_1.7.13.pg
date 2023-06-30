@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('13')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$str = ["?", "i", "ii", "iii", "iv", "v", "vi"];
+$mc1 = PopUp($str, "iii");
+$mc2 = PopUp($str, "v");
+$mc3 = PopUp($str, "iv");
+$mc4 = PopUp($str, "i");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Six one-parameter families of differential equations depending on the parameter A and four bifurcation diagrams are given below. Determine the one-parameter family that corresponds to each bifurcation diagram; you should be able to state briefly how you know your choice is correct.
+
+$PAR
+\( \text{(i)}    \quad \frac{dy}{dt} = Ay - y^2  \qquad
+   \text{(ii)}   \quad \frac{dy}{dt} = Ay + y^2   \qquad
+   \text{(iii)}  \quad \frac{dy}{dt} = Ay - y^3 \qquad \)
+$PAR
+\( \text{(iv)}    \quad \frac{dy}{dt} = A - y^2  \qquad
+   \text{(v)}   \quad \frac{dy}{dt} = y^2 - A  \qquad\quad
+   \text{(vi)}  \quad \frac{dy}{dt} = Ay + y^2 \qquad \)
+$PAR
+$BR
+(a) \{$mc1->menu()\} \(\quad\)
+(b) \{$mc2->menu()\} \(\quad\)
+(c) \{$mc3->menu()\} \(\quad\)
+(d) \{$mc4->menu()\} 
+$BR$BR
+$PAR $BCENTER
+\{image("BDH_1.7.13.png",width=>600,height=>450)\}
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+ANS($mc1->cmp);
+ANS($mc2->cmp);
+ANS($mc3->cmp);
+ANS($mc4->cmp);
+
+
+ENDDOCUMENT();        

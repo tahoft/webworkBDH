@@ -1,0 +1,126 @@
+##DESCRIPTION
+##  Bifurcations.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'bifurcations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Bifurcations)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.7')
+## Problem1('23')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"PGgraphmacros.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$strNum = ["?", "0", "1", "2", "3"];
+$strPN = ["?", "positive", "negative", "zero"];
+$mc1 = PopUp($strNum, "2");
+$mc2 = PopUp($strNum, "1");
+$mc3 = PopUp($strPN, "zero");
+$mc4 = PopUp($strPN, "zero");
+
+$ansa = Real(0);
+
+$mc5 = PopUp($strPN, "positive");
+$mc6 = PopUp($strNum, "2");
+$mc7 = PopUp($strNum, "1");
+$mc8 = PopUp($strPN, "negative");
+$mc9 = PopUp($strPN, "positive");
+
+$mc10 = PopUp($strPN, "positive");
+$mc11 = PopUp($strNum, "2");
+$mc12  = PopUp($strNum, "1");
+$mc13 = PopUp($strPN, "positive");
+$mc14 = PopUp($strPN, "negative");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+(a) Use PhaseLines from the DETools software to investigate the bifurcation diagram for the differential equation
+\[ \frac{dy}{dt} = ay - y^3 \]
+where \(a\) is a parameter. 
+$BR For \(a>0\) there are \{$mc1->menu()\} sinks and \{$mc2->menu()\} sources, and and the middle equilibrium is \{$mc3->menu()\};
+for \(a<0\) there is one \{$mc4->menu()\} sink.
+$BR
+What are the bifurcation values for this one-parameter family? \{ans_rule(5)\}
+
+$PAR $HR $PAR (b) Use PhaseLines to investigate the bifurcation diagram for the differential equation
+\[ \frac{dy}{dt} = r + ay - y^3 \]
+where \(r\) is a positive parameter. How does the bifurcation diagram change from
+the \(r = 0\) case (see part (a))?
+$BR
+The bifurcation value of a is now \{$mc5->menu()\};
+for \(a>0\) there are \{$mc6->menu()\} sinks and \{$mc7->menu()\} sources, and the middle equilibrium is \{$mc8->menu()\}; 
+for \(a<0\) there is one \{$mc9->menu()\} sink.
+
+$PAR $HR $PAR (c) Suppose \(r\) is negative in the equation in part (b). How does the bifurcation diagram change?
+$BR
+The bifurcation value of a is now \{$mc10->menu()\};
+for \(a>0\) there are \{$mc11->menu()\} sinks and \{$mc12->menu()\} sources, and the middle equilibrium is \{$mc13->menu()\}; 
+for \(a<0\) there is one \{$mc14->menu()\} sink.
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+ANS($mc1->cmp());
+ANS($mc2->cmp());
+ANS($mc3->cmp());
+ANS($mc4->cmp());
+ANS($ansa->cmp());
+ANS($mc5->cmp());
+ANS($mc6->cmp());
+ANS($mc7->cmp());
+ANS($mc8->cmp());
+ANS($mc9->cmp());
+ANS($mc10->cmp());
+ANS($mc11->cmp());
+ANS($mc12->cmp());
+ANS($mc13->cmp());
+ANS($mc14->cmp());
+
+
+
+ENDDOCUMENT();        

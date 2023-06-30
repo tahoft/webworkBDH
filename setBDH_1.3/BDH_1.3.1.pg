@@ -1,0 +1,86 @@
+##DESCRIPTION
+##  Slope fields.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'slope fields')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Slope fields)
+## Date('9/14/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.3')
+## Problem1('1')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$mc = PopUp(["?" ,"a", "b", "c", "d"], "b" );
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Sketch the slope field for the differential equation 
+\[\frac{dy}{dt}=t^2+t\]
+as follows:
+$BR
+(a) Pick a few points \((t,y)\) with both \(-2 \le t \le 2\) and \(-2 \le y \le 2\) and plot the associated slope marks without the use of technology.
+$BR
+(b) Use HPGSolver to check these individual slope marks.
+$BR
+(c) Make a more detailed drawing of the slope field and then use HPGSolver to confirm your answer.
+$BR
+Which of the following slope fields is the correct one for the differential equation? \{$mc->menu()\} 
+
+$PAR $BCENTER
+(a) \{image("BDH_1.3.3.png",width=>250,height=>250)\} \(\quad\)
+(b) \{image("BDH_1.3.1.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER
+(c) \{image("BDH_1.3.2.png",width=>250,height=>250)\} \(\quad\)
+(d) \{image("BDH_1.3.4.png",width=>250,height=>250)\} $ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

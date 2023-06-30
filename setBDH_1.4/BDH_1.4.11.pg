@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Euler's method
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'numerical methods')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Numerical methods)
+## Date('9/17/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.4')
+## Problem1('11')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+$mc = RadioButtons(
+    [ "The long-term behavior of the numerical approximation does not approach the long-term behavior from the qualitative analysis.", 
+    "As the solution approaches the equilibrium solution corresponding to \(y = 3\), its slope decreases. We do not expect the solution to 'jump over' an equilibrium solution, as the numerical approximation does.", 
+    "The numerical solution fails to match the initial condition."],
+    "b",
+    labels=>["a","b","c"]);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+Do a qualitative analysis of the solution of the initial-value problem 
+\[ \frac{dy}{dt} = (3-y)(y+1), \quad y(0)=0, \quad  0 \le t \le 4, \quad \Delta t=0.5.\]
+and compare your conclusions with your results from Euler's method. What’s wrong with the approximate solution given by Euler's method?
+$PAR
+\{ $mc->buttons() \} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

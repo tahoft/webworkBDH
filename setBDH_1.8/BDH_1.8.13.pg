@@ -1,0 +1,85 @@
+##DESCRIPTION
+##  Linear equations (undetermined coefficients)
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order differential equations', 'linear equations')
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Date('9/12/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('1.8')
+## Problem1('13')
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+Context("Numeric");
+
+$ans = String("DNE");
+
+$mc = RadioButtons(
+    [ "I plugged it in and it worked.", 
+    "The textbook said so.", 
+    "Substitution of this guess into the equation leads to two linear algebraic equations in two unknowns, and such systems of equations usually have a unique solution.", 
+    "The professor said so.", 
+    "All of the above." ],
+    "All of the above.");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the nonhomogeneous linear equation
+\[ \frac{dy}{dt} + 3y = \cos{3t}. \]
+To find a particular solution, it is pretty clear that our guess must contain a cosine function, but it is not so clear that the guess must also contain a sine function.
+
+$PAR (a) Guess \(y_p(t) = \alpha\cos{3t}\) and substitute this guess into the equation. Is there a value of \(\alpha\) such that \(y_p(t)\) is a solution?
+$BR \(\quad \alpha = \) \{ans_rule(5)\} (enter the value of \(\alpha\) as a number, or enter $BBOLD DNE $EBOLD if there is no such \(\alpha\))
+
+$PAR (b) Why is the proper guess for a particular solution \(y_p(t) = \alpha\cos{3t} + \beta\sin{3t}\)?
+$BR \{$mc->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp);
+ANS($mc->cmp);
+
+ENDDOCUMENT();        
