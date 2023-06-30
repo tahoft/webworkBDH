@@ -1,0 +1,130 @@
+##DESCRIPTION
+##  Properties of first-order linear systems of ODES.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'linear systems of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Properties of linear systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.1')
+## Problem1('29')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "scaffold.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context('Matrix')->variables->add(t => 'Real');
+
+$mc1 = RadioButtons([
+    "I verified they are both solutions.", 
+    "\(\mathbf{Y}_1(t)\) is $BBOLD not $EBOLD a solution.",
+    "\(\mathbf{Y}_2(t)\) is $BBOLD not $EBOLD a solution.",
+    "Neither function is a solution."
+    ], 
+    "\(\mathbf{Y}_2(t)\) is $BBOLD not $EBOLD a solution.");
+$mc2 = RadioButtons([
+    "I said stop, but can't figure out how to make WeBWorK do that."
+    ], 
+    "I said stop, but can't figure out how to make WeBWorK do that.");
+
+$mc3 = RadioButtons([
+    "I said stop, but can't figure out how to make WeBWorK do that."
+    ], 
+    "I said stop, but can't figure out how to make WeBWorK do that.");
+
+
+##############################################################
+#
+#  Text
+#
+#
+#$Scaffold::isInstructor = 0; # for testing
+
+Scaffold::Begin();
+
+Context()->texStrings;
+
+BEGIN_TEXT
+Consider the linear system
+\[ \frac{d\mathbf{Y}}{dt} = \mathbf{A}\mathbf{Y}, \;\; \text{where} \; \mathbf{Y}(t) = 
+\begin{pmatrix} x \\ y \end{pmatrix}
+\]
+with coefficient matrix
+\[ \mathbf{A} = \begin{pmatrix} 2 & 3 \\ 1 & 0 \end{pmatrix}. \]
+Consider the two functions 
+\[\begin{aligned}
+\mathbf{Y}_1(t) &= \left( -e^{-t} + 12e^{3t} ,\; e^{-t} + 4e^{3t} \right) \\
+\mathbf{Y}_2(t) &= \left( e^{-t} ,\; 2e^{-t} \right) 
+\end{aligned}\]
+and the initial value 
+\[ \mathbf{Y}(0) = \left( 2 ,\, 3 \right). \]
+END_TEXT
+
+Section::Begin("(a) Solutions?");
+BEGIN_TEXT
+$PAR (a) Check that the two functions are solutions of the system; if they are not solutions, then stop.
+$BR \{$mc1->buttons()\}
+END_TEXT
+ANS($mc1->cmp());
+Section::End();
+
+Section::Begin("(b) Linearly independent?");
+BEGIN_TEXT
+\{$mc2->buttons()\}
+END_TEXT
+ANS($mc2->cmp());
+Section::End();
+
+Section::Begin("(c) Initial value.");
+BEGIN_TEXT
+\{$mc3->buttons()\}
+END_TEXT
+ANS($mc3->cmp());
+Section::End();
+
+Scaffold::End();
+
+Context()->normalStrings;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+#ANS($mc1->cmp());
+#ANS($mc2->cmp());
+#ANS($ans->cmp());
+
+ENDDOCUMENT();        

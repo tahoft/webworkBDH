@@ -1,0 +1,141 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('10/1/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('21') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "PGasu.pl",
+   "parserParametricLine.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$p = 7;
+$q = 10;
+
+$lam1 = Real(-5);
+$v1 = Vector(1,-5);
+$lam2 = Real(-2);
+$v2 = Vector(1,-2);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the harmonic oscillator equation for \(y(t)\) 
+\[ \frac{d^2y}{dt^2} + $p \frac{dy}{dt} + $q y = 0. \]
+
+$PAR (a) convert the equation to a first-order, linear system;
+$PAR \(\displaystyle\frac{dy}{dt} = \) \{ans_rule(20)\} 
+$PAR \(\displaystyle\frac{dv}{dt} = \) \{ans_rule(20)\} 
+
+$PAR (b) compute the eigenvalues and eigenvectors of the system;
+$PAR \(\lambda_1 = \) \{ans_rule(20)\} (the smaller eigenvalue)
+$BR \(\mathbf{v}_1 = \) \{ans_rule(20)\} (the corresponding eigenvector, using angle brackets "\(<1,2>\)")
+$BR \(\lambda_2 = \) \{ans_rule(20)\} (the larger eigenvalue)
+$BR \(\mathbf{v}_2 = \) \{ans_rule(20)\} (the corresponding eigenvector, using angle brackets "\(<1,2>\)")
+
+$PAR (c) for each eigenvalue, pick an associated eigenvector, and determine the solution \(\mathbf{Y}(t)\) to the system; 
+$PAR \(\mathbf{Y_1}(t) = \) \{ans_rule(20)\} (corresponding to \(\lambda_1\) and \(\mathbf{v_1}\))
+$PAR \(\mathbf{Y_2}(t) = \) \{ans_rule(20)\} (corresponding to \(\lambda_2\) and \(\mathbf{v_2}\))
+$PAR (enter your answers using angle brackets "3 e$CARET(-t) \(<2,1>\)")
+
+$PAR (d) and compare the results of your calculations in part (c) with the results that you obtained when you used the guess-and-test method of Section 2.3.
+
+END_TEXT
+#Context()->normalStrings;
+Context("Vector");
+Context()->variables->add(t => 'Real');
+#Context()->variables->add(c => 'Parameter');
+#Context()->variables->add(c1 => 'Parameter');
+#Context()->variables->add(c2 => 'Parameter');
+
+$ansay = "v";
+$ansav = "-$q*y-$p*v";
+
+$y1 = Compute("e^($lam1*t)");
+$y2 = Compute("e^($lam2*t)");
+
+$ansc1 = $y1*$v1;
+$ansc2 = $y2*$v2;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS(fun_cmp($ansay, var=>["y","v"])); 
+ANS(fun_cmp($ansav, var=>["y","v"])); 
+
+ANS($lam1->cmp()); 
+ANS($v1->cmp(parallel=>1)); 
+ANS($lam2->cmp()); 
+ANS($v2->cmp(parallel=>1)); 
+
+#ANS(Compute(c*$ansc1)->cmp());
+#ANS(Compute(c*$ansc2)->cmp());
+
+sub mycheck1 {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$ystu) &&              # solves DE in 1st component
+       ($ystu->D('t')==-$q*$xstu-$p*$ystu) && # solves DE in 2nd component
+       ($xstu->D('t')==$lam1*$xstu) )         # uses correct eigenvalue
+  { return 1; } else { return 0; } 
+}
+ANS( $ansc1->cmp( checker=>~~&mycheck1 ) );
+
+sub mycheck2 {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$ystu) &&              # solves DE in 1st component
+       ($ystu->D('t')==-$q*$xstu-$p*$ystu) && # solves DE in 2nd component
+       ($xstu->D('t')==$lam2*$xstu) )         # uses correct eigenvalue
+  { return 1; } else { return 0; } 
+}
+ANS( $ansc2->cmp( checker=>~~&mycheck2 ) );
+
+
+ENDDOCUMENT();        

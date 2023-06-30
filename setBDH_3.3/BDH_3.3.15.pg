@@ -1,0 +1,120 @@
+##DESCRIPTION
+##  Straight-line solutions, real e-vals, phase portraits.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Phase Portraits for Linear Systems with Real Eigenvalue)
+## Date('10/15/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.3')
+## Problem1('15') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$mc  = PopUp(["?", "i", "ii", "iii", "iv"], "iii");
+
+$p = 4;
+$q = 1;
+
+# coefficient matrix A = [a, b; c, d]
+$a = 0;
+$b = 1; 
+$c = -$q; 
+$d = -$p;
+
+# eigenvalues and eigenvectors of A
+$lam1 = Real(-2-sqrt(3));
+$v1 = Vector(1,-2-sqrt(3));
+$lam2 = Real(-2+sqrt(3));
+$v2 = Vector(1,-2+sqrt(3));
+$v11 = $v1->extract(1);
+$v12 = $v1->extract(2);
+$v21 = $v2->extract(1);
+$v22 = $v2->extract(2);
+
+$tl1 = "-2-\sqrt{3}";
+$tv11 = "1";
+$tv12 = "-2-\sqrt{3}";
+$tl2 = "-2+\sqrt{3}";
+$tv21 = "1";
+$tv22 = "-2+\sqrt{3}";
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the harmonic oscillator equation for \(y(t)\) 
+\[ \frac{d^2y}{dt^2} + $p \frac{dy}{dt} + y = 0. \]
+$PAR
+Earlier, you converted this equation to a first-order system
+\[ 
+\begin{pmatrix} \frac{dy}{dt} \\ \frac{dv}{dt} \end{pmatrix}
+= 
+\begin{pmatrix} $a & $b \\ $c & $d \end{pmatrix} 
+\,
+\begin{pmatrix} y \\ v \end{pmatrix}. 
+\]
+and computed the eigenvalues and eigenvectors of the coefficient matrix: 
+\[
+\lambda_1= $tl1, \; \mathbf{v}_1 = \begin{pmatrix}$tv11\\$tv12\end{pmatrix}; \quad 
+\lambda_2= $tl2, \; \mathbf{v}_2 = \begin{pmatrix}$tv21\\$tv22\end{pmatrix}
+\]
+Sketch, on paper, the phase portrait for this system. 
+$PAR Select the graph corresponding to your sketch. \{$mc->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.3.13.png",width=>250,height=>250)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.14.png",width=>250,height=>250)\} 
+$PAR ( iii )      \{image("BDH_3.3.15.png",width=>250,height=>250)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.16.png",width=>250,height=>250)\} 
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc ->cmp());
+
+ENDDOCUMENT();        

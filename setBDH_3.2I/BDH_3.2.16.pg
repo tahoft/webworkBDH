@@ -1,0 +1,75 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('16')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "parserOneOf.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A matrix of the form 
+\[\mathbf{A} = \begin{pmatrix} a & b \\ 0 & d \end{pmatrix}\]
+is called $BITALIC upper triangular$EITALIC. Suppose that \(b \ne 0\) and \(a \ne d\).
+$PAR Find the eigenvalues of \(\mathbf{A}\).
+$BR \(\lambda\) = \{ans_rule(5)\} (enter your answer as a comma-separated list)
+
+END_TEXT
+Context()->normalStrings;
+Context()->variables->add(a => 'Real', d => 'Real');
+
+$ans = List(["a","d"]);
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp());
+
+ENDDOCUMENT();        

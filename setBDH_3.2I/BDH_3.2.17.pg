@@ -1,0 +1,99 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('17')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc1 = RadioButtons([
+    "One is positive; the other is negative.", 
+    "They are complex (imaginary numbers).",
+    "They are real.",
+    "They could be real or complex."
+    ], 
+    "They are real.");
+
+$mc2 = PopUp(["?",
+    "the same", 
+    "distinct",
+    ], 
+    "distinct");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A matrix of the form 
+\[\mathbf{A} = \begin{pmatrix} a & b \\ b & d \end{pmatrix}\]
+is called $BITALIC symmetric$EITALIC. 
+$PAR (a) Find the eigenvalues of \(\mathbf{A}\).
+$BR \(\lambda\) = \{ans_rule(70)\} 
+$BR (enter your answer as a comma-separated list)
+
+$PAR (b) Which of the following best describes the eigenvalues of \(\mathbf{A}\)?
+$BR \{$mc1->buttons()\}
+
+$PAR (c) If \(b\ne0\), the eigenvalues of \(\mathbf{A}\) are \{$mc2->menu()\}.
+
+END_TEXT
+Context()->normalStrings;
+
+Context()->variables->add(a => 'Real', b => 'Real', d => 'Real');
+
+$ans = List(["( a + d + sqrt( (a-d)^2 + 4b^2 ) )/2", "( a + d - sqrt( (a-d)^2 + 4b^2 ) )/2"]);
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans->cmp());
+ANS($mc1->cmp());
+ANS($mc2->cmp());
+
+ENDDOCUMENT();        

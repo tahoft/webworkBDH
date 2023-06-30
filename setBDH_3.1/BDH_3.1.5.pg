@@ -1,0 +1,79 @@
+##DESCRIPTION
+##  Properties of first-order linear systems of ODES.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'linear systems of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Properties of linear systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.1')
+## Problem1('5')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context('Matrix');
+
+$ans = Matrix([[2,1],[1,1]]);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Rewrite the linear system 
+\[\begin{aligned}
+\frac{dx}{dt} &= 2x + y \\
+\frac{dy}{dt} &= x + y
+\end{aligned}\]
+in matrix form.
+
+$BCENTER
+$PAR \(\displaystyle\frac{\mathbf{dY}}{dt} = \) \{$ans->ans_array\} \(\mathbf{Y}\), where \(\mathbf{Y} = \begin{pmatrix} x \\ y \end{pmatrix}\)
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($ans->cmp());
+
+ENDDOCUMENT();        

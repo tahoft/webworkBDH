@@ -1,0 +1,95 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('1') # parts a, b, c
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc = PopUp(["?", "i", "ii", "iii", "iv"], "iii");
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the system 
+\[ \frac{d\mathbf{Y}}{dt} = \begin{pmatrix} 3 & 2 \\ 0 & -2 \end{pmatrix} \mathbf{Y}. \]
+
+(a) Compute the eigenvalues.
+$BR \(\lambda = \) \{ans_rule(10)\} (enter your answer as a comma-separated list of numbers)
+
+$PAR (b) For each eigenvalue, compute an associated eigenvector.
+$BR For the smaller eigenvalue, \(v = \) \{ans_rule(10)\} 
+$BR For the larger eigenvalue, \(v = \) \{ans_rule(10)\} 
+$BR (enter your answers using angle brackets "<1,2>", or enter "DNE")
+
+$PAR (c) Using HPGSystemSolver, sketch the direction field for the system, and plot the straight-line solutions. Select the graph corresponding to your sketch. 
+\{$mc->menu()\}
+$PAR $BCENTER
+( i ) \(\;\) \{image("BDH_3.2.3c.png",width=>250,height=>250)\} \(\qquad\)
+( ii )       \{image("BDH_3.2.5c.png",width=>250,height=>250)\} $ECENTER
+$PAR $BCENTER 
+( iii )      \{image("BDH_3.2.1c.png",width=>250,height=>250)\} \(\qquad\)
+( iv )       \{image("BDH_3.2.7c.png",width=>250,height=>250)\} $ECENTER 
+
+END_TEXT
+Context()->normalStrings;
+
+$ans1 = List(["-2","3"]);
+Context("Vector");
+$ans2 = Vector(1,-5/2);
+$ans3 = Vector(1,0);
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($ans1->cmp());
+ANS($ans2->cmp(parallel=>1));
+ANS($ans3->cmp(parallel=>1));
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

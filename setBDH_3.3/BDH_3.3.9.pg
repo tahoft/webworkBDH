@@ -1,0 +1,136 @@
+##DESCRIPTION
+##  Straight-line solutions, real e-vals, phase portraits.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Phase Portraits for Linear Systems with Real Eigenvalue)
+## Date('10/15/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.3')
+## Problem1('9') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$str = ["?", "i", "ii", "iii", "iv"];
+$mc  = PopUp($str, "iii");
+$mca = PopUp($str, "iii");
+$mcb = PopUp($str, "iii");
+$mcc = PopUp($str, "iii");
+
+# coefficient matrix A = [a, b; c, d]
+$a = -2;
+$b = -2; 
+$c = -2; 
+$d = 1;
+
+# eigenvalues and eigenvectors of A
+$lam1 = Real(2);
+$v1 = Vector(1,-2);
+$lam2 = Real(-3);
+$v2 = Vector(2,1);
+$v11 = $v1->extract(1);
+$v12 = $v1->extract(2);
+$v21 = $v2->extract(1);
+$v22 = $v2->extract(2);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the initial-value problem 
+\[\begin{aligned}
+\frac{dx}{dt} &= -2x - 2y \\
+\frac{dy}{dt} &= -2x + y, 
+\end{aligned}\]
+where the initial condition \(\mathbf{Y}(0) = (x(0),y(0))\) is specified below.
+$PAR
+Earlier, you computed the eigenvalues and eigenvectors of the coefficient matrix for this system: 
+\[
+\lambda_1= $lam1, \; \mathbf{v}_1 = \begin{pmatrix}$v11\\$v12\end{pmatrix}; \quad 
+\lambda_2= $lam2, \; \mathbf{v}_2 = \begin{pmatrix}$v21\\$v22\end{pmatrix}
+\]
+Sketch, on paper, the phase portrait for this system. 
+$PAR Select the graph corresponding to your sketch. \{$mc->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.3.12.png",width=>250,height=>250)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.10.png",width=>250,height=>250)\} 
+$PAR ( iii )      \{image("BDH_3.3.9.png",width=>250,height=>250)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.11.png",width=>250,height=>250)\} 
+$ECENTER
+$PAR
+Sketch, on paper, the \(x(t)\)- and \(y(t)\)-graphs for the solutions corresponding to the initial conditions specified below
+$PAR (a) \(\mathbf{Y}(0) = (1,0)\)
+$PAR Select the graph corresponding to your sketch. \{$mca->menu()\}
+$PAR ( i ) \(\;\) \{image("BDH_3.3.12a.png",width=>250,height=>175)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.10a.png",width=>250,height=>175)\} 
+$PAR ( iii )      \{image("BDH_3.3.9a.png",width=>250,height=>175)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.11a.png",width=>250,height=>175)\} 
+
+$PAR (b) \(\mathbf{Y}(0) = (0,1)\)
+$PAR Select the graph corresponding to your sketch. \{$mcb->menu()\}
+$PAR ( i ) \(\;\) \{image("BDH_3.3.12b.png",width=>250,height=>175)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.10b.png",width=>250,height=>175)\} 
+$PAR ( iii )      \{image("BDH_3.3.9b.png",width=>250,height=>175)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.11b.png",width=>250,height=>175)\} 
+
+$PAR (c) \(\mathbf{Y}(0) = (1,-2)\)
+$PAR Select the graph corresponding to your sketch. \{$mcc->menu()\}
+$PAR ( i ) \(\;\) \{image("BDH_3.3.12c.png",width=>250,height=>175)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.10c.png",width=>250,height=>175)\} 
+$PAR ( iii )      \{image("BDH_3.3.9c.png",width=>250,height=>175)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.11c.png",width=>250,height=>175)\} 
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc ->cmp());
+ANS($mca->cmp());
+ANS($mcb->cmp());
+ANS($mcc->cmp());
+
+ENDDOCUMENT();        

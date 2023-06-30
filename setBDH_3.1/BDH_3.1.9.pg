@@ -1,0 +1,83 @@
+##DESCRIPTION
+##  Properties of first-order linear systems of ODES.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'linear systems of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Properties of linear systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.1')
+## Problem1('9')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Rewrite the linear system 
+\[ 
+\begin{pmatrix} \frac{dx}{dt} \\ \frac{dy}{dt} \end{pmatrix}\
+= 
+\begin{pmatrix} -3 & 2\pi \\ 4 & -1 \end{pmatrix}
+\;
+\begin{pmatrix} x \\ y \end{pmatrix}\
+\]
+in component form.
+
+$PAR \(\displaystyle \frac{dx}{dt} = \) \{ans_rule{20}\}
+$PAR \(\displaystyle \frac{dy}{dt} = \) \{ans_rule{20}\}
+
+END_TEXT
+Context()->normalStrings;
+
+$ans1 = "-3x + 2 pi y";
+$ans2 = "4x - y";
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS(fun_cmp($ans1, var=>["x","y"]));
+ANS(fun_cmp($ans2, var=>["x","y"]));
+
+ENDDOCUMENT();        

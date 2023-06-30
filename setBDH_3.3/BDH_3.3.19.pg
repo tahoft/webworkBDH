@@ -1,0 +1,208 @@
+##DESCRIPTION
+##  Straight-line solutions, real e-vals, phase portraits.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Phase Portraits for Linear Systems with Real Eigenvalue)
+## Date('10/15/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.3')
+## Problem1('19') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "parserMultiAnswer.pl",
+   "unionTables.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$mc = PopUp(["?", "sink", "source", "saddle"], "sink");
+
+$str = ["?", "i", "ii", "iii", "iv"];
+$mcA = PopUp($str, "iii");
+$mcB = PopUp($str, "i");
+$mcC = PopUp($str, "iv");
+$mcD = PopUp($str, "ii");
+
+# coefficient matrix A = [a, b; c, d]
+$a = -2;
+$b = 1/2; 
+$c = 0; 
+$d = -1;
+
+# eigenvalues and eigenvectors of A
+$lam1 = Real(-2);
+$v1 = Vector(1,0);
+$lam2 = Real(-1);
+$v2 = Vector(1,2);
+$v11 = $v1->extract(1);
+$v12 = $v1->extract(2);
+$v21 = $v2->extract(1);
+$v22 = $v2->extract(2);
+
+Context()->variables->add(t => 'Real');
+$y1 = Compute("e^($lam1*t)");
+$y2 = Compute("e^($lam2*t)");
+
+$ans1 = $y1*$v1;
+$ans2 = $y2*$v2;
+
+sub solveDE{
+    my ( $x, $y ) = @_;
+    if( ( $x->D('t') == $a*$x + $b*$y ) && # solves DE in 1st component
+        ( $y->D('t') == $c*$x + $d*$y ) )  # solves DE in 2nd component
+    {return 1;}
+    else
+    {return 0;}
+}
+
+sub isEigVal{
+    my ( $x, $lam ) = @_;
+    if ( $x->D('t') == $lam*$x )
+    {return 1;}
+    else
+    {return 0;}
+}
+
+$multians = MultiAnswer($ans1, $ans2)->with(
+    singleResult => 0,
+    allowBlankAnswers => 1, # breaks things
+    checker => sub {
+    my ( $correct, $student, $self ) = @_;
+    my ( $a1stu, $a2stu ) = @{$student};
+    my $x1stu = $a1stu . Vector(1,0);
+    my $y1stu = $a1stu . Vector(0,1);
+    my $x2stu = $a2stu . Vector(1,0);
+    my $y2stu = $a2stu . Vector(0,1);
+    if ( ref($a1stu) eq ref($ans1) && ref($a2stu) eq ref($ans2) ) # both filled
+    {  if ( solveDE($x1stu, $y1stu) && solveDE($x2stu, $y2stu)
+             && # used different eigenvalues
+           ( ($x1stu->D('t')/$x1stu) != ($x2stu->D('t')/$x2stu) )
+          )
+         {return [1,1];} 
+       elsif ( solveDE($x1stu, $y1stu) ) {return [1,0];}
+       elsif ( solveDE($x2stu, $y2stu) ) {return [0,1];}
+       else {return [0,0];}
+     }
+    if ( ref($a1stu) eq ref($ans1) ) # only first filled
+    { if ( solveDE($x1stu, $y1stu) ) {return [1,0];} 
+      else {return [0,0];} }
+    if ( ref($a2stu) eq ref($ans2) ) # only second filled
+    { if ( solveDE($x2stu, $y2stu) ) {return [0,1];} 
+      else {return [0,0];} }
+     
+ } # closes sub
+);
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+\{ColumnTable("
+The slope field for the system 
+\[\begin{aligned}
+\frac{dx}{dt} &= -2x + \frac{1}{2}y \\
+\frac{dy}{dt} &= -y
+\end{aligned}\]
+is shown to the right.
+",
+image("BDH_3.3.19.png",width=>250,height=>250)
+)\}
+
+$PAR (a) Determine the type of the equilibrium point at the origin. 
+\{$mc->menu()\}
+$BR $BITALIC Hint: you cannot do this from the slope field without arrows -- find the eigenvalues of the coefficient matrix of the system. $EITALIC
+
+$PAR (b) Calculate all straight-line solutions. 
+$PAR \(\mathbf{Y_1}(t) = \) \{$multians->ans_rule(30)\}
+$PAR \(\mathbf{Y_2}(t) = \) \{$multians->ans_rule(30)\}
+$BR Do not include constants c1, c2 or k1, k2 in your solutions.
+$BR Enter your answers using angle brackets "e$CARET(-t) \(<2,1>\)".
+
+$PAR (c) Plot, on paper, the \(x(t)\)- and \(y(t)\)-graphs, (\(t\ge0\)), for the initial conditions A = (2,1), B = (1,-2), C = (-2,2), and D = (-2, 0).
+$PAR Select the graphs corresponding to your sketches. 
+$PAR 
+A: \{$mcA->menu()\}; 
+B: \{$mcB->menu()\}; 
+C: \{$mcC->menu()\}; 
+D: \{$mcD->menu()\}
+
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.3.19B.png",width=>250,height=>167)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.19D.png",width=>250,height=>167)\} 
+$PAR ( iii )      \{image("BDH_3.3.19A.png",width=>250,height=>167)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.19C.png",width=>250,height=>167)\} 
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp());
+
+sub mycheckgen {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$a*$xstu+$b*$ystu) && # solves DE in 1st component
+       ($ystu->D('t')==$c*$xstu+$d*$ystu) && # solves DE in 2nd component
+       (($xstu->substitute(c2=>0)->D('t')==$lam1*$xstu->substitute(c2=>0)) &&
+        ($xstu->substitute(c1=>0)->D('t')==$lam2*$xstu->substitute(c1=>0)))
+        ||
+       (($xstu->substitute(c2=>0)->D('t')==$lam2*$xstu->substitute(c2=>0)) &&
+        ($xstu->substitute(c1=>0)->D('t')==$lam1*$xstu->substitute(c1=>0)))
+     )
+  { return 1; } else { return 0; } 
+}
+
+#ANS($ans1->cmp(checker=>~~&mycheckgen));
+#ANS($ans2->cmp(checker=>~~&mycheckgen));
+ANS($multians->cmp()); 
+
+ANS($mcA->cmp());
+ANS($mcB->cmp());
+ANS($mcC->cmp());
+ANS($mcD->cmp());
+
+ENDDOCUMENT();        

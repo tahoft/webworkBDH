@@ -1,0 +1,114 @@
+##DESCRIPTION
+##  Straight-line solutions, real e-vals, phase portraits.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Phase Portraits for Linear Systems with Real Eigenvalue)
+## Date('10/15/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.3')
+## Problem1('7') 
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$mc = PopUp(["?", "i", "ii", "iii", "iv"], "iv");
+
+# coefficient matrix A = [a, b; c, d]
+$a = 2;
+$b = 1; 
+$c = 1; 
+$d = 1;
+
+# eigenvalues and eigenvectors of A
+$lam1 = Real((3+sqrt(5))/2);
+$v1 = Vector(2,-1+sqrt(5));
+$lam2 = Real((3-sqrt(5))/2);
+$v2 = Vector(-2,1+sqrt(5));
+$v11 = $v1->extract(1);
+$v12 = $v1->extract(2);
+$v21 = $v2->extract(1);
+$v22 = $v2->extract(2);
+
+$tl1 = "\frac{3+\sqrt{5}}{2}";
+$tv11 = "2";
+$tv12 = "-1+\sqrt{5}";
+$tl2 = "\frac{3-\sqrt{5}}{2}";
+$tv21 = "-2";
+$tv22 = "1+\sqrt{5}";
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the system 
+\[\begin{aligned}
+\frac{dx}{dt} &= 2x + y \\
+\frac{dy}{dt} &= x + y. 
+\end{aligned}\]
+Earlier, you computed the eigenvalues and eigenvectors of the coefficient matrix for this system: 
+
+\[
+\lambda_1= $tl1, \; \mathbf{v}_1 = \begin{pmatrix}$tv11\\$tv12\end{pmatrix}; \quad 
+\lambda_2= $tl2, \; \mathbf{v}_2 = \begin{pmatrix}$tv21\\$tv22\end{pmatrix}
+\]
+
+Sketch, on paper, the phase portrait for this system. 
+
+$PAR Select the graph corresponding to your sketch. \{$mc->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.3.3.png",width=>250,height=>250)\} \(\quad\)
+     ( ii )       \{image("BDH_3.3.1.png",width=>250,height=>250)\} 
+$PAR ( iii )      \{image("BDH_3.3.5.png",width=>250,height=>250)\} \(\quad\)
+     ( iv )       \{image("BDH_3.3.7.png",width=>250,height=>250)\} 
+$ECENTER
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

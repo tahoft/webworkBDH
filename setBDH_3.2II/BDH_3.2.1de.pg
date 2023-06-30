@@ -1,0 +1,167 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('10/10/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('1') # parts d, e
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserPopUp.pl",
+   "PGasu.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context("Vector");
+
+$mc = PopUp(["?", "i", "ii", "iii", "iv"], "i");
+
+# coefficient matrix A = [a, b; c, d]
+$a = 3;
+$b = 2; 
+$c = 0; 
+$d = -2;
+
+# eigenvalues and eigenvectors of A
+$lam1 = Real(-2);
+$v1 = Vector(-2,5);
+$lam2 = Real(3);
+$v2 = Vector(1,0);
+$v11 = $v1->extract(1);
+$v12 = $v1->extract(2);
+$v21 = $v2->extract(1);
+$v22 = $v2->extract(2);
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the system 
+\[ \frac{d\mathbf{Y}}{dt} = \begin{pmatrix} $a & $b \\ $c & $d \end{pmatrix} \mathbf{Y}. \]
+Earlier, you computed the eigenvalues and eigenvectors of the coefficient matrix for this system, and sketched the direction field with straight-line solutions. 
+
+\[
+\lambda_1 = $lam1, \; \mathbf{v}_1 = \begin{pmatrix}$v11\\$v12\end{pmatrix}; \quad 
+\lambda_2 = $lam2, \; \mathbf{v}_2 = \begin{pmatrix}$v21\\$v22\end{pmatrix}
+\]
+
+$PAR (d) for each eigenvalue, specify a corresponding straight-line solution and plot its \(x(t)\)- and \(y(t)\)-graphs.
+$PAR \(\mathbf{Y_1}(t) = \) \{ans_rule(20)\} (corresponding to \(\lambda_1\) and \(\mathbf{v_1}\))
+$PAR \(\mathbf{Y_2}(t) = \) \{ans_rule(20)\} (corresponding to \(\lambda_2\) and \(\mathbf{v_2}\))
+$BR (enter your answers using angle brackets "3 e$CARET(-t) \(<2,1>\)"; if the system does not have two distinct eigenvalues, enter "DNE" for \(\mathbf{Y_2}(t)\))  
+
+$PAR Select the graph corresponding to your sketch. \{$mc->menu()\}
+$BCENTER
+$PAR ( i ) \(\;\) \{image("BDH_3.2.3d.png",width=>550,height=>225)\} 
+$PAR ( ii )       \{image("BDH_3.2.1d.png",width=>550,height=>225)\} 
+$PAR ( iii )      \{image("BDH_3.2.9d.png",width=>550,height=>225)\} 
+$PAR ( iv )       \{image("BDH_3.2.7d.png",width=>550,height=>225)\} 
+$ECENTER
+
+$PAR (e) if the system has two distinct eigenvalues, compute the general solution.
+$PAR \(\mathbf{Y}(t) = \) \{ans_rule(30)\} 
+$BR (Use "c1" and "c2" as the constants and angle brackets as above; enter "DNE" if the system does not have two distinct eigenvalues.)
+
+END_TEXT
+Context()->normalStrings;
+
+##############################################################
+#
+#  Answers
+#
+#
+
+Context("Vector");
+Context()->variables->add(t => 'Real');
+Context()->variables->add(c1 => 'Real');
+Context()->variables->add(c2 => 'Real');
+
+$y1 = Compute("e^($lam1*t)");
+$y2 = Compute("e^($lam2*t)");
+
+$ans1 = $y1*$v1;
+$ans2 = $y2*$v2;
+
+$ansgen = c1*$ans1 + c2*$ans2;
+
+sub mycheck1 {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$a*$xstu+$b*$ystu) &&  # solves DE in 1st component
+       ($ystu->D('t')==$c*$xstu+$d*$ystu) &&  # solves DE in 2nd component
+       ($xstu->D('t')==$lam1*$xstu) )         # uses correct eigenvalue
+  { return 1; } else { return 0; } 
+}
+ANS($ans1->cmp(checker=>~~&mycheck1));
+
+sub mycheck2 {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$a*$xstu+$b*$ystu) &&  # solves DE in 1st component
+       ($ystu->D('t')==$c*$xstu+$d*$ystu) &&  # solves DE in 2nd component
+       ($xstu->D('t')==$lam2*$xstu) )         # uses correct eigenvalue
+  { return 1; } else { return 0; } 
+}
+ANS($ans2->cmp(checker=>~~&mycheck2));
+
+ANS($mc->cmp());
+
+sub mycheckgen {
+  my ($correct, $student, $ansHash) = @_;
+  my $xstu = $student . Vector(1,0);
+  my $ystu = $student . Vector(0,1);
+  if ( ($xstu->D('t')==$a*$xstu+$b*$ystu) && # solves DE in 1st component
+       ($ystu->D('t')==$c*$xstu+$d*$ystu) && # solves DE in 2nd component
+       ($student->usesOneOf("c1")) &&        # uses constant c1
+       ($student->usesOneOf("c2")) &&        # uses constant c2
+       ( # uses *both* Y1 & Y2 w/correct e-val/e-vect (not just c1*Y1+c2*Y1)
+       (($xstu->substitute(c2=>0)->D('t')==$lam1*$xstu->substitute(c2=>0)) &&
+        ($xstu->substitute(c1=>0)->D('t')==$lam2*$xstu->substitute(c1=>0)))
+        ||
+       (($xstu->substitute(c2=>0)->D('t')==$lam2*$xstu->substitute(c2=>0)) &&
+        ($xstu->substitute(c1=>0)->D('t')==$lam1*$xstu->substitute(c1=>0)))
+       )
+     )
+  { return 1; } else { return 0; } 
+}
+
+ANS($ansgen->cmp(checker=>~~&mycheckgen));
+
+ENDDOCUMENT();        

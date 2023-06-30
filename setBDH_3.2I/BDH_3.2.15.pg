@@ -1,0 +1,89 @@
+##DESCRIPTION
+##  Straight-line solutions, e-vals, e-vects.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Straight-line solutions)
+## Date('9/30/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.2')
+## Problem1('15')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+
+$mc = RadioButtons([
+    "There are no eigenvectors.", 
+    "The only eigenvector is (7,-8).",
+    "Every vector \((x_0,y_0)\) is an eigenvector.",
+    "The only eigenvectors are (1,0) and (0,1).",
+    ], 
+    "Every vector \((x_0,y_0)\) is an eigenvector.");
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+A matrix of the form 
+\[\mathbf{A} = \begin{pmatrix} a & 0 \\ 0 & a \end{pmatrix}\]
+is called $BITALIC diagonal$EITALIC. 
+$PAR (a) Find the eigenvalues of \(\mathbf{A}\).
+$BR \(\lambda_1\) = \{ans_rule(5)\}
+$BR \(\lambda_2\) = \{ans_rule(5)\}
+
+$PAR (b) Which of the following best describes the eigenvalues of \(\mathbf{A}\)?
+$BR \{$mc->buttons()\}
+
+END_TEXT
+Context()->normalStrings;
+
+$ans1 = "a";
+$ans2 = "a";
+
+##############################################################
+#
+#  Answers
+#
+#
+
+ANS(fun_cmp($ans1, var=>["a"]));
+ANS(fun_cmp($ans2, var=>["a"]));
+ANS($mc->cmp());
+
+ENDDOCUMENT();        

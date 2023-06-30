@@ -1,0 +1,100 @@
+##DESCRIPTION
+##  Properties of first-order linear systems of ODES.
+##ENDDESCRIPTION
+
+##KEYWORDS('differential equations', 'first order system of differential equations', 'linear systems of differential equations')
+
+## DBsubject(Differential equations)
+## DBchapter(Linear systems)
+## DBsection(Properties of linear systems)
+## Date('9/28/2022')
+## Author('Thomas Hoft')
+## Institution('University of St. Thomas')
+## TitleText1('Differential Equations')
+## EditionText1('4')
+## AuthorText1('Blanchard, Devaney, Hall')
+## Section1('3.1')
+## Problem1('25')
+
+
+########################################################################
+
+DOCUMENT();      
+
+loadMacros(
+   "PGstandard.pl",     # Standard macros for PG language
+   "MathObjects.pl",
+   "parserRadioButtons.pl",
+   #"source.pl",        # allows code to be displayed on certain sites.
+   #"PGcourse.pl",      # Customization file for the course
+);
+
+# Print problem number and point value (weight) for the problem
+TEXT(beginproblem());
+
+# Show which answers are correct and which ones are incorrect
+#$showPartialCorrectAnswers = 1;
+
+##############################################################
+#
+#  Setup
+#
+#
+#Context("Numeric");
+Context('Matrix')->variables->add(t => 'Real');
+
+$mc = RadioButtons(["I verified that it is a solution.", "I discovered that it is $BBOLD not $EBOLD a solution."], "I verified that it is a solution.");
+
+$ans = Matrix( [ ["-2te^(2t)"] , ["2(t+1)e^(2t)"] ] );
+
+
+##############################################################
+#
+#  Text
+#
+#
+
+Context()->texStrings;
+BEGIN_TEXT
+
+Consider the linear system 
+\[
+\begin{pmatrix} \frac{dx}{dt} \\ \frac{dy}{dt} \end{pmatrix}
+= 
+\begin{pmatrix} 1 & -1 \\ 1 & 3 \end{pmatrix}
+\;
+\begin{pmatrix} x \\ y \end{pmatrix}.
+\]
+(a) Show that the function
+\[ \mathbf{Y}(t) = \begin{pmatrix} te^{2t} \\ -(t+1)e^{2t} \end{pmatrix} \]
+is a solution to the differential equation.
+$BR \{$mc->buttons()\}
+
+$PAR (b) Solve the initial value problem 
+\[
+\begin{pmatrix} \frac{dx}{dt} \\ \frac{dy}{dt} \end{pmatrix}
+= 
+\begin{pmatrix} 1 & -1 \\ 1 & 3 \end{pmatrix}
+\;
+\begin{pmatrix} x \\ y \end{pmatrix},
+\quad
+\mathbf{Y}(0) = \begin{pmatrix} 0 \\ 2 \end{pmatrix}.
+\]
+$BR \(\mathbf{Y}(t) = \) \{$ans->ans_array(20)\}
+
+
+END_TEXT
+Context()->normalStrings;
+
+
+##############################################################
+#
+#  Answers
+#
+#
+$showPartialCorrectAnswers = 1;
+
+ANS($mc->cmp());
+ANS($ans->cmp());
+
+ENDDOCUMENT();        
