@@ -1,0 +1,104 @@
+assignmentType      = default
+openDate          = 09/01/2022 at 01:30pm CDT
+reducedScoringDate = 12/31/1969 at 06:00pm CST
+dueDate           = 09/27/2022 at 01:30pm CDT
+answerDate        = 09/27/2022 at 01:30pm CDT
+enableReducedScoring = N
+paperHeaderFile   = defaultHeader
+screenHeaderFile  = defaultHeader
+description       = 
+restrictProbProgression = 0
+emailInstructor   = 0
+
+problemListV2 
+problem_start
+problem_id = 1
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.1.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 2
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.3.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 3
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.5.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 4
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.7.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 5
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.9.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 6
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.13.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 7
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.17.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 8
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.20.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 9
+source_file = ustLibrary/ustDiffEq/setBDH_1.8/BDH_1.8.23.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+

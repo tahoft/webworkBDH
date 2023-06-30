@@ -1,0 +1,84 @@
+assignmentType      = default
+openDate          = 09/01/2022 at 01:30pm CDT
+reducedScoringDate = 12/31/1969 at 06:00pm CST
+dueDate           = 12/13/2022 at 01:30pm CST
+answerDate        = 12/13/2022 at 01:30pm CST
+enableReducedScoring = N
+paperHeaderFile   = defaultHeader
+screenHeaderFile  = defaultHeader
+description       = 
+restrictProbProgression = 0
+emailInstructor   = 0
+
+problemListV2 
+problem_start
+problem_id = 1
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.1.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 2
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.11_15.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 3
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.13_17.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 4
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.27.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 5
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.29.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 6
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.31.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+problem_start
+problem_id = 7
+source_file = ustLibrary/ustDiffEq/setBDH_6.3/BDH_6.3.33.pg
+value = 1
+max_attempts = -1
+showMeAnother = -1
+prPeriod = -1
+counts_parent_grade = 0
+att_to_open_children = 0 
+problem_end
+
