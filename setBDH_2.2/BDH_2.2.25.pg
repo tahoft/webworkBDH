@@ -56,7 +56,7 @@ BEGIN_TEXT
 A solution curve in the \(xy\)-plane and an initial condition on that curve are specified. 
 $PAR $BCENTER \{image("BDH_2.2.25.png",width=>300,height=>200)\} $ECENTER
 $PAR Sketch, on paper, the \(x(t)\)- and \(y(t)\)-graphs for the solution.
-$BR Which of the following direction fields most closely matches your sketch? 
+$BR Which of the following \(x(t)\)- and \(y(t)\)-graphs most closely matches your sketch? 
 \{$mc->menu()\}
 $PAR $BCENTER
 (a) \{image("BDH_2.2.26_sol.png",width=>200,height=>200)\} \(\qquad\)

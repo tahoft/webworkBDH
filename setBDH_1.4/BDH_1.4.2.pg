@@ -75,7 +75,7 @@ HEADER_TEXT(<<EOF);
   <script type="text/javascript" language="javascript">
   <!-- //
   function windowpopup() {
-    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var url = "https://universityofsaintthomas.github.io/hoftweb/sage/numerMethFirstOrderODE.html";
     var opt = "_blank";
     window.open(url,opt).focus();
   }
@@ -99,7 +99,7 @@ Consider the initial-value problem
 which is a non-linear equation (but not separable) for which we do not know a solution method.
 
 Use Euler's method with [`n = [$n]`] steps to approximate the solution to the initial-value problem over the time interval [`0 \le t \le [$t_end]`].
-(your answers should to be correct to [`\pm 0.0001\%`])
+[% (your answers should to be correct to [`\pm 0.0001\%`]) %]
 
 You can use 
 [@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
@@ -111,7 +111,8 @@ You can use
 
 END_PGML
 
-ANS( $y_eul->cmp(tolType => 'relative', tolerance => .0001) );
+#ANS( $y_eul->cmp(tolType => 'relative', tolerance => .0001) );
+ANS( $y_eul->cmp );
 
 # pull student entries 
 $ans_hash_yn = $y_eul->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(1)} );

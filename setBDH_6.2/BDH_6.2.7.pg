@@ -46,9 +46,12 @@ Context("Numeric")->functions->add(
     perl => 'Parser::Legacy::Numeric::do_step'
   },
 ); # Heaviside / unit step function
-Context()->variables->add(s=>"Real", t=>"Real", a=>"Real");
+#Context()->variables->add(s=>"Real", t=>"Real", a=>"Real");
+Context()->variables->are(t=>"Real");
 
-$Lf = Compute("u(t-1)( e^(4(t-1)) - e^(-2/3(t-1)) )");
+#$Lf = Compute("u(t-1)( e^(4(t-1)) - e^(-2/3(t-1)) )")->with(limits=>[0,10]);
+$Lf = Compute("u(t-1)( e^(4(t-1)) - e^(-2/3(t-1)) )")->with(test_at=>[ [0], [0.5], [2], [3], [4] ], limits=>[0,2]);
+# limits are so that test point evaluations are beyond default range [-2,2]
 
 ##############################################################
 #

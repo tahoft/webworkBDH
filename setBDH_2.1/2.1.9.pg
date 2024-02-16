@@ -69,9 +69,9 @@ The predator-prey and modified predator-prey systems disussed in the text are:
 
 How would you modify these systems to include the effect of hunting of the prey at a rate of \(\alpha\) units of prey per unit of time? (use "a" in your answer instead of "alpha")
 $PAR \(\displaystyle \text{(i)} \; \frac{dR}{dt} = \) \{ans_rule(20)\}
-$BR \(\displaystyle \quad\; \frac{dF}{dt} = \) \{ans_rule(20)\}
-$PAR \(\displaystyle \text{(ii)}\; \frac{dR}{dt} = \) \{ans_rule(20)\}
-$BR \(\displaystyle \quad\;\; \frac{dF}{dt} = \) \{ans_rule(20)\}
+$BR$BR \(\displaystyle \quad\; \frac{dF}{dt} = \) \{ans_rule(20)\}
+$PAR$BR \(\displaystyle \text{(ii)}\; \frac{dR}{dt} = \) \{ans_rule(20)\}
+$BR$BR \(\displaystyle \quad\;\; \frac{dF}{dt} = \) \{ans_rule(20)\}
 
 END_TEXT
 Context()->normalStrings;

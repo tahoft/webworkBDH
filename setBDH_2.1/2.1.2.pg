@@ -102,7 +102,7 @@ Explain the significance of these points in terms of the predator and prey popul
 $PAR The equilibria for system (i) have the propertie(s) that $BR \{$mc1->buttons()\}
 $BR (you can ignore the trivial equilibrium (0,0) if it is present)
 
-$PAR The equilibria for system (i) have the propertie(s) that $BR \{$mc2->buttons()\}
+$PAR The equilibria for system (ii) have the propertie(s) that $BR \{$mc2->buttons()\}
 $BR (you can ignore the trivial equilibrium (0,0) if it is present)
 
 END_TEXT

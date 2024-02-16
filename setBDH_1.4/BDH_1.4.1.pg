@@ -87,13 +87,14 @@ Fill in the table below of the time values and approximate values of the depende
 ], midrules=>1, align => '|r|c|c|');
 @]*
 
-(keep four decimals in intermediate calculations; your answers need to be correct to [`\pm0.01`])
+[% (keep four decimals in intermediate calculations; your answers need to be correct to [`\pm0.01`]) %]
 END_PGML
 
 # check student answers
 foreach my $i (0..$n) { 
     ANS( Real($tn[$i])->cmp );
-    ANS( Real($y_eul[$i])->cmp(tolType => 'absolute', tolerance => .01) );
+    #ANS( Real($y_eul[$i])->cmp(tolType => 'absolute', tolerance => .01) );
+    ANS( Real($y_eul[$i])->cmp );
 }
 
 # pull student entries 

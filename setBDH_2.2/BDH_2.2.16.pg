@@ -27,7 +27,6 @@ loadMacros(
 #   "PGgraphmacros.pl",
    "parserRadioButtons.pl",
    "contextLimitedPoint.pl",
-   "AnswerFormatHelp.pl",
    #"source.pl",        # allows code to be displayed on certain sites.
    #"PGcourse.pl",      # Customization file for the course
 );
@@ -76,8 +75,7 @@ Consider the system of equations
 
 $PAR $HR $PAR (a) Find the equilibrium points of the system. 
 $BR\( (x,y) = \) \{ans_rule(30)\}
-$BR (format your answer as a list of points, i.e. (1,2), (3,4), (5,6).)
-\{ AnswerFormatHelp("points")\}
+$BR( format your answer as a list of points, i.e. (1,2), (3,4), (5,6) )
 
 $PAR $HR $PAR (b) Using HPGSystemSolver from the DETools software, sketch the direction field and phase portrait of the system. (no work to enter here)
 

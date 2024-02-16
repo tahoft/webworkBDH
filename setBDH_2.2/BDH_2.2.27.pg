@@ -55,7 +55,7 @@ BEGIN_TEXT
 
 The following graphs are the \(x(t)\)- and the \(y(t)\)-graphs for a solution curve in the \(xy\)-phase plane. 
 $PAR $BCENTER \{image("BDH_2.2.27.png",width=>300,height=>200)\} $ECENTER
-$PAR Sketch, on paper, the solution curve, and indicate the direction that the solution travels as time increases.
+$PAR Sketch, on paper, the solution curve in the \(xy\)-phase plane, and indicate the direction that the solution travels as time increases.
 $BR Which of the following curves most closely matches your sketch? 
 \{$mc->menu()\}
 $PAR $BCENTER

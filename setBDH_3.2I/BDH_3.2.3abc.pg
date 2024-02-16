@@ -68,7 +68,7 @@ $BR \(\lambda = \) \{ans_rule(10)\} (enter your answer as a comma-separated list
 $PAR (b) For each eigenvalue, compute an associated eigenvector.
 $BR For the smaller eigenvalue, \(v = \) \{ans_rule(10)\} 
 $BR For the larger eigenvalue, \(v = \) \{ans_rule(10)\} 
-$BR (enter your answers using angle brackets "<1,2>", or enter "DNE")
+$BR (enter your answers using angle brackets "\(<2,1>\)", or enter "DNE")
 
 $PAR (c) Using HPGSystemSolver, sketch the direction field for the system, and plot the straight-line solutions. Select the graph corresponding to your sketch. 
 \{$mc->menu()\} 

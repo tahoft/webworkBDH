@@ -48,7 +48,7 @@ Context("Numeric")->functions->add(
 ); # Heaviside / unit step function
 Context()->variables->are(t=>'Real'); # so only need to give one variable test pts
 
-$Lf = Formula("u(t-3)( e^(2(t-3)) - e^(t-3) )")->with(limits=>[0,10]);
+$Lf = Formula("u(t-3)( e^(2(t-3)) - e^(t-3) )")->with(test_at=>[[0],[1],[2],[4],[5],[6]],limits=>[0,6]);
 # limits are so that test point evaluations are beyond default range [-2,2]
 # if don't do this, u(t-3) is "correct"!
 

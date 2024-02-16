@@ -58,7 +58,7 @@ Context()->texStrings;
 BEGIN_TEXT
 
 Six second-order equations and four \(y(t)\)-graphs are given below. The equations are all of the form
-\[ \frac{d^y}{dt^2} + p \frac{dy}{dt} + q \, y = \cos{\omega t} \]
+\[ \frac{d^2y}{dt^2} + p \frac{dy}{dt} + q \, y = \cos{\omega t} \]
 for various values of the parameters \(p\), \(q\), and \(\omega\). For each \(y(t)\)-graph, determine the second-order equation for which \(y(t)\) is a solution. You should do this exercise without using technology and be able to state briefly how you know your choice is correct.
 
 \[\begin{aligned}

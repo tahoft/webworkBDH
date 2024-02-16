@@ -5,8 +5,10 @@
 ##KEYWORDS('differential equations', 'first order system of differential equations')
 
 ## DBsubject(Differential equations)
-## DBchapter(Linear systems)
+## DBchapter(Systems of differential equations)
 ## DBsection(Phase Portraits for Linear Systems with Real Eigenvalue)
+## DBsection(Distinct real eigenvalues)
+## DBsection(Phase planes)
 ## Date('10/15/2022')
 ## Author('Thomas Hoft')
 ## Institution('University of St. Thomas')

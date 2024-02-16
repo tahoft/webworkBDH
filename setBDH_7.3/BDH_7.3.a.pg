@@ -173,7 +173,7 @@ HEADER_TEXT(<<EOF);
   <script type="text/javascript" language="javascript">
   <!-- //
   function windowpopup() {
-    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var url = "https://universityofsaintthomas.github.io/hoftweb/sage/numerMethFirstOrderODE.html";
     var opt = "_blank";
     window.open(url,opt).focus();
   }
@@ -200,7 +200,8 @@ Solve, by hand, the initial value problem:
 Compute the exact value: 
     [`y([$tn]) = `] [__________________]{$y_exact}
 
-Calculate the RK4 method approximation [`y_{n}`] to [`y([$tn])`] using [`n = 2, 4, 8, 16, \dots , 512`], and the corresponding errors [`e_n`]. (your answers should to be correct to [`\pm 0.0001\%`])
+Calculate the RK4 method approximation [`y_{n}`] to [`y([$tn])`] using [`n = 2, 4, 8, 16, \dots , 512`], and the corresponding errors [`e_n`]. 
+[% (your answers should to be correct to [`\pm 0.0001\%`]) %]
 
 You can use 
 [@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
@@ -224,8 +225,10 @@ END_PGML
 
 # check student answers
 foreach my $i (0..$N) { 
-    ANS( Real($yn_rk4[$i])->cmp(tolType => 'relative', tolerance => .0001) );
-    ANS( Real($en_rk4[$i])->cmp(tolType => 'relative', tolerance => .0001) );
+    #ANS( Real($yn_rk4[$i])->cmp(tolType => 'relative', tolerance => .0001) );
+    #ANS( Real($en_rk4[$i])->cmp(tolType => 'relative', tolerance => .0001) );
+    ANS( Real($yn_rk4[$i])->cmp );
+    ANS( Real($en_rk4[$i])->cmp );
 }
 
 # pull student entries 

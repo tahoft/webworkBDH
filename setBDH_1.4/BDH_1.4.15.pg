@@ -42,7 +42,7 @@ $showPartialCorrectAnswers = 1;
 #
 #
 Context("Numeric");
-Context()->variables->add(t=>"Real");
+Context()->variables->are(t=>"Real");
 
 $y = Compute("1/4 (t+2)^2");
 
@@ -89,7 +89,7 @@ HEADER_TEXT(<<EOF);
   <script type="text/javascript" language="javascript">
   <!-- //
   function windowpopup() {
-    var url = "https://personal.stthomas.edu/hoft9833/sage/numerMethFirstOrderODE.html";
+    var url = "https://universityofsaintthomas.github.io/hoftweb/sage/numerMethFirstOrderODE.html";
     var opt = "_blank";
     window.open(url,opt).focus();
   }
@@ -125,7 +125,7 @@ Solve, by hand, the initial value problem:
 
 Using Euler's method, compute three different approximate solutions corresponding to [`\Delta t =`] 1.0, 0.5, and 0.25 over the interval [`0 \le t \le 4`].
 
-(your answers should to be correct to [`\pm 0.0001\%`])
+[% (your answers should to be correct to [`\pm 0.0001\%`]) %]
 
 You can use 
 [@ htmlLink("javascript:windowpopup();","this online numerical method widget") @]* 
@@ -137,12 +137,16 @@ You can use
 
     [`\Delta t = 0.25: \quad y_0, y_1, y_2, \dots , y_{16} = `] [____________________________________]
 
-    (enter as a comma-separated lists)
+    (enter as comma-separated lists)
+
 END_PGML
 
-ANS( $y_1->cmp(tolType => 'relative', tolerance => .0001) );
-ANS( $y_2->cmp(tolType => 'relative', tolerance => .0001) );
-ANS( $y_3->cmp(tolType => 'relative', tolerance => .0001) );
+#ANS( $y_1->cmp(tolType => 'relative', tolerance => .0001) );
+#ANS( $y_2->cmp(tolType => 'relative', tolerance => .0001) );
+#ANS( $y_3->cmp(tolType => 'relative', tolerance => .0001) );
+ANS( $y_1->cmp );
+ANS( $y_2->cmp );
+ANS( $y_3->cmp );
 
 # pull student entries 
 $ans_hash_y = $y->cmp()->evaluate( $inputs_ref->{ANS_NUM_TO_NAME(1)} );

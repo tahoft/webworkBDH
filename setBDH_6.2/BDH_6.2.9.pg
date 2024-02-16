@@ -48,7 +48,8 @@ Context("Numeric")->functions->add(
 ); # Heaviside / unit step function
 Context()->variables->are(t=>'Real'); # so only need to give one variable test pts
 
-$y = Compute("-2e^(-9t) + 1/9 u(t-5) ( 1-e^(-9(t-5)) )")->with(limits=>[0,10]);
+#$y = Compute("-2e^(-9t) + 1/9 u(t-5) ( 1-e^(-9(t-5)) )")->with(limits=>[0,10]);
+$y = Compute("-2e^(-9t) + 1/9 u(t-5) ( 1-e^(-9(t-5)) )")->with(test_at=>[ [0], [1], [2], [3], [4], [6], [7], [8], [9] ], limits=>[0,10]);
 # limits are so that test point evaluations are beyond default range [-2,2]
 # if don't do this, any u(t-5)(...) is "correct"!
 
