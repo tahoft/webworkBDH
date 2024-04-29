@@ -63,10 +63,11 @@ BEGIN_TEXT
 
 The system below models a chemical reaction: 
 \[ \begin{aligned}
-\frac{da}{dt} &= 2 - \frac{ab}{2} \\
-\frac{db}{dt} &= \frac{3}{2} - \frac{ab}{2} \\
-\end{aligned} \]
-Here \(a(t)\) is the amount of substance \(A\) in a solution, and \(b(t)\) is the amount of substance \(B\) in a solution at time \(t\). We only need to consider nonnegative \(a(t)\) and \(b(t)\).
+\frac{da}{dt} &= 2 - \frac{ab}{2} + \frac{b^2}{6}\\
+\frac{db}{dt} &= \frac{3}{2} - \frac{ab}{2} - \frac{b^2}{3}\\
+\end{aligned} 
+\]
+Here \(a(t)\) is the amount of substance \(A\) in a solution, and \(b(t)\) is the amount of substance \(B\) in a solution at time \(t.\) We only need to consider nonnegative \(a(t)\) and \(b(t)\).
 
 $PAR $HR $PAR 
 (a) Sketch, on paper, the nullclines and indicate the direction of the vector field along the nullcline,
