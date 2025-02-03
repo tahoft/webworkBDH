@@ -42,8 +42,8 @@ Context("Numeric");
 Context()->flags->set(reduceConstants => 0, reduceConstantFunctions => 0);
 
 $ansa = Compute("3/2");
-$ansb = Real(-1/2);
-$ansc = Real(-1/4);
+$ansb = Compute("-1/2");
+$ansc = Compute("-1/4");
 
 ##############################################################
 #
