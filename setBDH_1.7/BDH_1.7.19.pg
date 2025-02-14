@@ -61,7 +61,7 @@ $mc4 = PopUp(["?",
 
 $mc5 = RadioButtons([
     "The fish will all live happy lives.", 
-    "The fish population will crash to zero if only eleven additional fish die.", 
+    "The fish population will crash to zero if only twenty-one additional fish die.", 
     "The fish population will explode, with \(P\to\infty\) due to underfishing.",
     "There is no circumstance that will result in the population failing to to approach a non-zero equilibrium value."],
     "b",
